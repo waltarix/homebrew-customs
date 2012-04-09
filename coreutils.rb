@@ -2,14 +2,14 @@ require 'formula'
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.15.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.15.tar.xz'
-  sha256 '837eb377414eae463fee17d0f77e6d76bed79b87bc97ef0c23887710107fd49c'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.16.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.16.tar.xz'
+  sha256 '2a458fead15d9336f46bb4304cc3eaa6ed9407b9130e7ee2ec533909881d2067'
 
   depends_on 'xz' => :build
 
   def patches
-    'https://gist.github.com/raw/1408362/fcceeae3987242dc6c0e0288bdbf1dd796ced6d8/coreutils-ls-utf8mac.patch'
+    'https://gist.github.com/raw/1408362/20fe32d7b4e45f71b080336b3a95d0dc809ec8dc/coreutils-ls-utf8mac.patch'
   end
 
   def install
@@ -17,10 +17,13 @@ class Coreutils < Formula
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
 
+    # set installed binaries
+    commands = coreutils_bins
+
     # create a gnubin dir that has all the commands without program-prefix
-    mkdir_p libexec+'gnubin'
-    Dir['../../bin/*'].each do |g|
-      ln_sf g, libexec+"gnubin/#{File.basename(g)[1..-1]}"
+    (libexec+'gnubin').mkpath
+    commands.each do |cmd|
+      ln_sf "../../bin/g#{cmd}", libexec+"gnubin/#{cmd}"
     end
   end
 
@@ -32,5 +35,16 @@ class Coreutils < Formula
 
         PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
     EOS
+  end
+
+  def coreutils_bins
+    require 'find'
+    bin_path = prefix+'bin'
+    commands = Array.new
+    Find.find(bin_path) do |path|
+      next if path == bin_path or File.basename(path) == '.DS_Store'
+      commands << File.basename(path).sub(/^g/,'')
+    end
+    return commands.sort
   end
 end
