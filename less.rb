@@ -5,6 +5,8 @@ class Less < Formula
   homepage 'http://www.greenwoodsoftware.com/less/index.html'
   md5 '56f9f76ffe13f70155f47f6b3c87d421'
 
+  depends_on 'pcre'
+
   def install
     ENV.append "LIBS", "-lncurses"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
