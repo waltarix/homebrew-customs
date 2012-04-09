@@ -1,8 +1,9 @@
 require 'formula'
 
 class Ncurses < Formula
-  url 'http://ftpmirror.gnu.org/ncurses/ncurses-5.9.tar.gz'
   homepage 'http://www.gnu.org/s/ncurses/'
+  url 'http://ftpmirror.gnu.org/ncurses/ncurses-5.9.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz'
   sha1 '3e042e5f2c7223bffdaac9646a533b8c758b65b5'
 
   def options
@@ -16,10 +17,9 @@ class Ncurses < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--with-shared",
-                          "--with-widec",
+                          "--enable-widec",
                           "--with-manpage-format=normal",
-                          "--enable-symlinks",
-                          "--enable-widec"
+                          "--enable-symlinks"
     system "make"
     system "make install"
   end
