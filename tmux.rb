@@ -18,7 +18,7 @@ class Tmux < Formula
     [
       'https://gist.github.com/raw/1399751/3bd3d1d4a9a246bc0e0016b2cfab91f3c1937a2f/tmux-ambiguous-width-cjk.patch',
       'https://gist.github.com/raw/1399751/1bf63c51f01853c228846e1478fe203e400a6dc1/tmux-do-not-combine-utf8.patch',
-      'https://gist.github.com/raw/1399751/97db09a1a617f07a7e9aaa318425fba7c686ab9f/tmux-pane-border-ascii.patch'
+      'https://gist.github.com/raw/1399751/978d0c031ddc5153b32a7dc03475913cdb248345/tmux-pane-border-ascii.patch'
     ]
   end
 
