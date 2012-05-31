@@ -7,6 +7,7 @@ class Zsh < Formula
 
   depends_on 'gdbm'
   depends_on 'pcre'
+  depends_on 'waltarix/customs/ncurses'
 
   skip_clean :all
 
