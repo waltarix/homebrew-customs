@@ -2,14 +2,14 @@ require 'formula'
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.18.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.18.tar.xz'
-  sha256 '11dc114374100ac6f56d4b66f588e51d3fe972855466a35a27de7ec67eb2143f'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.19.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.19.tar.xz'
+  sha256 'ad3873183fd8cfc7672b3ba54644672e59352f9b2dc7e3ad251c1174dde8a9e7'
 
   depends_on 'xz' => :build
 
   def patches
-    'https://gist.github.com/raw/1408362/1186d3bfbcd15e315fd8515ef7814c2a79dc3e7e/coreutils-ls-utf8mac.patch'
+    'https://gist.github.com/raw/1408362/4bf7c8417d262605780c68691d7fee6f751c9018/coreutils-ls-utf8mac.patch'
   end
 
   def install
