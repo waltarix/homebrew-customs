@@ -18,6 +18,7 @@ class Emacs < Formula
   end
 
   depends_on :x11 if build.include? "with-x"
+  depends_on :autoconf => :build
 
   # Stripping on Xcode 4 causes malformed object errors.
   # Just skip everything.
