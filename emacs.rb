@@ -20,10 +20,6 @@ class Emacs < Formula
   depends_on :x11 if build.include? "with-x"
   depends_on :autoconf => :build
 
-  # Stripping on Xcode 4 causes malformed object errors.
-  # Just skip everything.
-  skip_clean :all
-
   fails_with :llvm do
     build 2334
     cause "Duplicate symbol errors while linking."
@@ -32,7 +28,7 @@ class Emacs < Formula
   def patches
     if build.include? "cocoa"
       {
-        # Fullscreen patch, works against 24.1 and HEAD.
+        # Fullscreen patch, works against 24.2 and HEAD.
         :p1 => "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716",
         # IME patch.
         :p0 => "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=582&root=macemacsjp"
@@ -70,6 +66,14 @@ class Emacs < Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+
+      # Replace the symlink with one that avoids starting Cocoa.
+      (bin/"emacs").unlink # Kill the existing symlink
+      (bin/"emacs").write <<-EOS.undent
+        #!/bin/bash
+        #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
+      EOS
+      (bin/"emacs").chmod 0755
     else
       if build.include? "with-x"
         # These libs are not specified in xft's .pc. See:
@@ -95,14 +99,13 @@ class Emacs < Formula
         Emacs.app was installed to:
           #{prefix}
 
-        Command-line emacs can be used by setting up an alias:
-          alias emacs="#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw"
-
          To link the application to a normal Mac OS X location:
            brew linkapps
          or:
            ln -s #{prefix}/Emacs.app /Applications
-
+         
+         A command line wrapper for the cocoa app was installed to:
+          #{prefix}/bin/emacs
       EOS
     end
 
