@@ -1,9 +1,9 @@
 require 'formula'
 
 class Less < Formula
-  url 'http://www.greenwoodsoftware.com/less/less-444.tar.gz'
   homepage 'http://www.greenwoodsoftware.com/less/index.html'
-  md5 '56f9f76ffe13f70155f47f6b3c87d421'
+  url 'http://www.greenwoodsoftware.com/less/less-451.tar.gz'
+  sha1 'ee95be670e8fcc97ac87d02dd1980209130423d0'
 
   depends_on 'pcre'
   depends_on 'waltarix/customs/ncurses'
@@ -13,5 +13,9 @@ class Less < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}", "--with-regex=pcre"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/lesskey"
   end
 end
