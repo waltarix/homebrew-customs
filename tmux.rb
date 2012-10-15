@@ -2,8 +2,8 @@ require 'formula'
 
 class Tmux < Formula
   homepage 'http://tmux.sourceforge.net'
-  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.6/tmux-1.6.tar.gz'
-  sha1 '8756f6bcecb18102b87e5d6f5952ba2541f68ed3'
+  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.7/tmux-1.7.tar.gz'
+  sha1 'ee6942a1bc3fc650036f26921d80bc4b73d56df6'
 
   head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
 
@@ -16,22 +16,11 @@ class Tmux < Formula
   end
 
   def patches
-    # Fix for Japanese characters. See:
-    #   http://sourceforge.net/tracker/?func=detail&aid=3566884&group_id=200378&atid=973264
-    p = ['http://sourceforge.net/tracker/download.php?group_id=200378&atid=973264&file_id=453002&aid=3566884']
-    # This patch adds the implementation of osdep_get_cwd for Darwin platform,
-    # so that tmux can get current working directory correctly under Mac OS.
-    # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
-    #       (because it has been merged upstream)
-    p << DATA if build.stable?
-
-    p.push *[
-      'https://gist.github.com/raw/1399751/3bd3d1d4a9a246bc0e0016b2cfab91f3c1937a2f/tmux-ambiguous-width-cjk.patch',
-      'https://gist.github.com/raw/1399751/1bf63c51f01853c228846e1478fe203e400a6dc1/tmux-do-not-combine-utf8.patch',
-      'https://gist.github.com/raw/1399751/978d0c031ddc5153b32a7dc03475913cdb248345/tmux-pane-border-ascii.patch'
+    [
+      'https://gist.github.com/raw/1399751/8c5f0018c901f151d39680ef85de6d22649b687a/tmux-ambiguous-width-cjk.patch',
+      'https://gist.github.com/raw/1399751/752a6f29f43eb9230a61a2d34d6b36aba2327c42/tmux-do-not-combine-utf8.patch',
+      'https://gist.github.com/raw/1399751/6a6cf47aea405c53edc87adab0bf40531aac741d/tmux-pane-border-ascii.patch'
     ]
-
-    p
   end
 
   def install
@@ -39,7 +28,8 @@ class Tmux < Formula
 
     ENV.append "LDFLAGS", '-lresolv'
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--sysconfdir=#{etc}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     system "make install"
 
     (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
@@ -59,31 +49,3 @@ class Tmux < Formula
   end
 end
 
-__END__
-diff --git a/osdep-darwin.c b/osdep-darwin.c
-index c5820df..7b15446 100644
---- a/osdep-darwin.c
-+++ b/osdep-darwin.c
-@@ -18,6 +18,7 @@
-
- #include <sys/types.h>
- #include <sys/sysctl.h>
-+#include <libproc.h>
-
- #include <event.h>
- #include <stdlib.h>
-@@ -52,6 +53,15 @@
- char *
- osdep_get_cwd(pid_t pid)
- {
-+	static char wd[PATH_MAX];
-+	struct proc_vnodepathinfo pathinfo;
-+	int ret;
-+
-+	ret = proc_pidinfo(pid, PROC_PIDVNODEPATHINFO, 0, &pathinfo, sizeof(pathinfo));
-+	if (ret == sizeof(pathinfo)) {
-+		strlcpy(wd, pathinfo.pvi_cdir.vip_path, sizeof(wd));
-+		return (wd);
-+	}
- 	return (NULL);
- }
