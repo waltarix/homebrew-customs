@@ -10,6 +10,7 @@ class Ncurses < Formula
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.gcc
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
