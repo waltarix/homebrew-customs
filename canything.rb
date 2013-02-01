@@ -2,9 +2,9 @@ require 'formula'
 
 class Canything < Formula
   homepage 'https://github.com/keiji0/canything'
-  url 'https://github.com/keiji0/canything/tarball/master'
-  md5 'b32f80adf2b7b4a73cee9eda57bfeb2a'
-  version '20110511'
+  url 'https://github.com/keiji0/canything/tarball/88a5ca824e721407458767e06212b79902055f9f'
+  sha1 '0f23889be8d74c586c7f190f7174cba8a067e469'
+  version '20130128'
 
   depends_on 'waltarix/customs/ncurses'
 
