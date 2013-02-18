@@ -2,24 +2,17 @@ require 'formula'
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.20.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.20.tar.xz'
-  sha256 'dbcb798764827a0f74be738662ecb516705cf520330cd3d7b2640fdffa499eb2'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.21.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.21.tar.xz'
+  sha256 'adaa44bdab3fa5eb352e80d8a31fdbf957b78653d0c2cd30d63e161444288e18'
 
   depends_on 'xz' => :build
 
   def patches
-    # Build issue with LIBICONV. Can be removed for next release.
-    # http://git.savannah.gnu.org/cgit/coreutils.git/commit/?id=88a6201917cad43fd4efea0f1c34c891b70a7414
-    [
-      DATA,
-      'https://gist.github.com/raw/1408362/1d26102557da3b891c22f4f47914ec7311ab1b0c/coreutils-ls-utf8mac.patch'
-    ]
+    'https://gist.github.com/waltarix/1408362/raw/291a2193ae7a6caff41258f63eb1c9cb93e53f88/coreutils-ls-utf8mac.patch'
   end
 
   def install
-    ENV['LIBS'] = '-liconv'
-    ENV.deparallelize
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
 
@@ -39,12 +32,12 @@ class Coreutils < Formula
     If you really need to use these commands with their normal names, you
     can add a "gnubin" directory to your PATH from your bashrc like:
 
-        PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+        PATH="#{opt_prefix}/libexec/gnubin:$PATH"
 
     Additionally, you can access their man pages with normal names if you add
     the "gnuman" directory to your MANPATH from your bashrc as well:
 
-        MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+        MANPATH="#{opt_prefix}/libexec/gnuman:$MANPATH"
 
     EOS
   end
@@ -58,18 +51,3 @@ class Coreutils < Formula
     filenames.sort
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 9768860..c8f92c2 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -3114,7 +3114,7 @@ src_expand_LDADD = $(LDADD)
-
- # for various GMP functions
- src_expr_LDADD = $(LDADD) $(LIB_GMP)
--src_factor_LDADD = $(LDADD) $(LIB_GMP)
-+src_factor_LDADD = $(LDADD) $(LIB_GMP) $(LIBICONV)
- src_false_LDADD = $(LDADD)
- src_fmt_LDADD = $(LDADD)
- src_fold_LDADD = $(LDADD)
