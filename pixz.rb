@@ -10,7 +10,7 @@ class Pixz < Formula
 
   depends_on 'xz'
   depends_on 'libarchive'
-  depends_on 'asciidoc' unless build.include? 'without-man-pages'
+  depends_on 'asciidoc' => :build unless build.include? 'without-man-pages'
 
   def install
     system 'make'
