@@ -2,8 +2,8 @@ require 'formula'
 
 class Tmux < Formula
   homepage 'http://tmux.sourceforge.net'
-  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.7/tmux-1.7.tar.gz'
-  sha1 'ee6942a1bc3fc650036f26921d80bc4b73d56df6'
+  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.8/tmux-1.8.tar.gz'
+  sha1 '08677ea914e1973ce605b0008919717184cbd033'
 
   head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
 
@@ -18,8 +18,8 @@ class Tmux < Formula
   def patches
     [
       'https://gist.github.com/raw/1399751/8c5f0018c901f151d39680ef85de6d22649b687a/tmux-ambiguous-width-cjk.patch',
-      'https://gist.github.com/raw/1399751/752a6f29f43eb9230a61a2d34d6b36aba2327c42/tmux-do-not-combine-utf8.patch',
-      'https://gist.github.com/raw/1399751/6a6cf47aea405c53edc87adab0bf40531aac741d/tmux-pane-border-ascii.patch'
+      'https://gist.github.com/raw/1399751/eb7277a3105bbf6312119c03ac96e864421e3cf8/tmux-do-not-combine-utf8.patch',
+      'https://gist.github.com/raw/1399751/b95de8a54cfe996f72e778a5d7cddaef7908e6f6/tmux-pane-border-ascii.patch'
     ]
   end
 
@@ -33,15 +33,6 @@ class Tmux < Formula
     system "make install"
 
     (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
-
-    # Install addtional meta file
-    prefix.install 'NOTES'
-  end
-
-  def caveats; <<-EOS.undent
-    Additional information can be found in:
-      #{prefix}/NOTES
-    EOS
   end
 
   def test
