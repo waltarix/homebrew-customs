@@ -2,14 +2,15 @@ require 'formula'
 
 class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
-  url 'http://ftpmirror.gnu.org/emacs/emacs-24.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.2.tar.bz2'
-  sha1 '38e8fbc9573b70a123358b155cf55c274b5a56cf'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz'
+  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.3.tar.gz'
+  sha256 '0098ca3204813d69cd8412045ba33e8701fa2062f4bff56bedafc064979eef41'
 
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah git mirror for HEAD builds"
+  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -17,6 +18,10 @@ class Emacs < Formula
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
 
+  if build.head? or build.include? "cocoa"
+    depends_on :autoconf
+    depends_on :automake
+  end
   depends_on :x11 if build.include? "with-x"
   depends_on :autoconf => :build
 
@@ -26,13 +31,19 @@ class Emacs < Formula
   end
 
   def patches
-    if build.include? "cocoa"
+    if build.include? 'cocoa'
       {
-        # Fullscreen patch, works against 24.2 and HEAD.
-        :p1 => "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716",
-        # IME patch.
-        :p0 => "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=582&root=macemacsjp"
+        :p0 => 'http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp',
       }
+    end
+  end
+
+  # Follow MacPorts and don't install ctags from Emacs. This allows Vim
+  # and Emacs and ctags to play together without violence.
+  def do_not_install_ctags
+    unless build.include? "keep-ctags"
+      (bin/"ctags").unlink
+      (share/man/man1/"ctags.1.gz").unlink
     end
   end
 
@@ -46,9 +57,8 @@ class Emacs < Formula
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
 
+    # See: https://github.com/mxcl/homebrew/issues/4852
     if build.head? and File.exists? "./autogen/copy_autogen"
-      opoo "Using copy_autogen"
-      puts "See https://github.com/mxcl/homebrew/issues/4852"
       system "autogen/copy_autogen"
     end
 
@@ -63,9 +73,12 @@ class Emacs < Formula
 
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
-      system "make bootstrap"
+      system "make"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+
+      # Don't cause ctags clash.
+      do_not_install_ctags
 
       # Replace the symlink with one that avoids starting Cocoa.
       (bin/"emacs").unlink # Kill the existing symlink
@@ -89,6 +102,9 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make install"
+
+      # Don't cause ctags clash.
+      do_not_install_ctags
     end
   end
 
@@ -103,9 +119,9 @@ class Emacs < Formula
            brew linkapps
          or:
            ln -s #{prefix}/Emacs.app /Applications
-         
+
          A command line wrapper for the cocoa app was installed to:
-          #{prefix}/bin/emacs
+          #{bin}/emacs
       EOS
     end
 
@@ -120,6 +136,12 @@ class Emacs < Formula
       http://git.savannah.gnu.org/cgit/emacs.git for the mirror's status. The Emacs
       devs do not provide support for the git mirror, and they might reject bug
       reports filed with git version information. Use it at your own risk.
+
+      Emacs creates an executable `ctags` that stomps on exuberant-ctags. In
+      order to prevent that, we remove `ctags` and its manpage from the emacs
+      build before linking. (Add the flag "--keep-ctags" to keep it.) You can
+      install exuberant-ctags via brew with `brew install ctags`.
+      (exuberant-ctags can provide both vim-style and emacs-style tags.)
     EOS
 
     return s
