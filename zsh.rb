@@ -14,8 +14,8 @@ class Zsh < Formula
 
   def patches
     [
-      'https://raw.github.com/gist/1407905',
-      'https://raw.github.com/gist/1403346'
+      'https://gist.github.com/waltarix/1407905/raw',
+      'https://gist.github.com/waltarix/1403346/raw'
     ]
   end
 
