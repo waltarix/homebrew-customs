@@ -13,18 +13,16 @@ class GrowlnotifyPkgDownloadStrategy < CurlDownloadStrategy
     # extract
     system "cat #{bin_payload} | gzip -d - | cpio -id" # => growlnotify
     system "cat #{man_payload} | gzip -d - | cpio -id" # => growlnotify.1
+
+    chdir
   end
 end
 
 class Growlnotify < Formula
-  url 'http://growl.cachefly.net/GrowlNotify-2.0.zip'
+  url 'http://growl.cachefly.net/GrowlNotify-2.0.zip', :using => GrowlnotifyPkgDownloadStrategy
   sha1 'efd54dec2623f57fcbbba54050206d70bc7746dd'
   version '2.0'
   homepage 'http://growl.info/extras.php'
-
-  def download_strategy
-    GrowlnotifyPkgDownloadStrategy
-  end
 
   def install
     bin.install 'growlnotify'
