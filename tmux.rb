@@ -2,18 +2,19 @@ require 'formula'
 
 class Tmux < Formula
   homepage 'http://tmux.sourceforge.net'
-  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.8/tmux-1.8.tar.gz'
-  sha1 '08677ea914e1973ce605b0008919717184cbd033'
+  url 'https://downloads.sourceforge.net/project/tmux/tmux/tmux-1.9/tmux-1.9a.tar.gz'
+  sha1 '815264268e63c6c85fe8784e06a840883fcfc6a2'
 
-  head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
+  head do
+    url 'git://git.code.sf.net/p/tmux/tmux-code'
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   def patches
     [
@@ -32,11 +33,17 @@ class Tmux < Formula
                           "--sysconfdir=#{etc}"
     system "make install"
 
-    (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
+    bash_completion.install "examples/bash_completion_tmux.sh" => 'tmux'
+    (share/'tmux').install "examples"
   end
 
-  def test
+  def caveats; <<-EOS.undent
+    Example configurations have been installed to:
+      #{share}/tmux/examples
+    EOS
+  end
+
+  test do
     system "#{bin}/tmux", "-V"
   end
 end
-
