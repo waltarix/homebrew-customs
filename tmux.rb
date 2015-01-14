@@ -18,9 +18,9 @@ class Tmux < Formula
 
   def patches
     [
-      'https://gist.github.com/waltarix/1399751/raw/e60e879335bf3b91fef4592b194cc524bcb95388/tmux-ambiguous-width-cjk.patch',
-      'https://gist.github.com/waltarix/1399751/raw/d581fc517db8173581e4518e2025916a5cf5de09/tmux-do-not-combine-utf8.patch',
-      'https://gist.github.com/waltarix/1399751/raw/5914827c8f7fecfdb73c641e02c471acd55eb2af/tmux-pane-border-ascii.patch',
+      'https://gist.githubusercontent.com/waltarix/1399751/raw/e60e879335bf3b91fef4592b194cc524bcb95388/tmux-ambiguous-width-cjk.patch',
+      'https://gist.githubusercontent.com/waltarix/1399751/raw/d581fc517db8173581e4518e2025916a5cf5de09/tmux-do-not-combine-utf8.patch',
+      'https://gist.githubusercontent.com/waltarix/1399751/raw/5914827c8f7fecfdb73c641e02c471acd55eb2af/tmux-pane-border-ascii.patch',
     ]
   end
 

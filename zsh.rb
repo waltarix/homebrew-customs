@@ -14,7 +14,7 @@ class Zsh < Formula
 
   def patches
     [
-      'https://gist.github.com/waltarix/1407905/raw',
+      'https://gist.githubusercontent.com/waltarix/1407905/raw/1987483974248f05c9286bc58d9bc3275610cc16/zsh-ambiguous-width-cjk.patch',
     ]
   end
 
