@@ -6,7 +6,7 @@ class Canything < Formula
   sha1 '0f23889be8d74c586c7f190f7174cba8a067e469'
   version '20130128'
 
-  depends_on 'waltarix/customs/ncurses'
+  depends_on "homebrew/dupes/ncurses"
 
   def install
     inreplace 'Makefile', '-lncursesw', "-I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib -lncursesw"
