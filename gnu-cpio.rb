@@ -8,9 +8,7 @@ class GnuCpio < Formula
 
   option 'default-names', "Do not prepend 'g' to the binary"
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = [

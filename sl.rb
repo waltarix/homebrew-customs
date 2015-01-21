@@ -10,12 +10,12 @@ class Sl < Formula
     build 318
   end
 
-  def patches
-    [
-      'http://www.izumix.org.uk/sl/sl5-1.patch',
-      DATA
-    ]
+  patch :p1 do
+    url "ftp://ftp.hu.debian.org/pub/linux/distributions/gentoo/distfiles/sl5-1.patch"
+    sha256 "4943b6f000f518ed08755b36d9b753291989c4867e55d74bc4cc4502f6e9422f"
   end
+
+  patch :DATA
 
   def install
     system "make -e"
