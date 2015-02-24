@@ -17,7 +17,7 @@ class Less < Formula
   end
 
   depends_on 'pcre'
-  depends_on 'ncurses'
+  depends_on 'homebrew/dupes/ncurses'
 
   def install
     args = ["--prefix=#{prefix}"]

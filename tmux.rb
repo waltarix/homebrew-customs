@@ -27,6 +27,7 @@ class Tmux < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
+  depends_on 'homebrew/dupes/ncurses'
 
   patch :p1 do
     url "https://gist.githubusercontent.com/waltarix/1399751/raw/e60e879335bf3b91fef4592b194cc524bcb95388/tmux-ambiguous-width-cjk.patch"
@@ -46,7 +47,11 @@ class Tmux < Formula
   def install
     system "sh", "autogen.sh" if build.head?
 
+    ncurses = Formula["ncurses"]
+
     ENV.append "LDFLAGS", '-lresolv'
+    ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
+    ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}"

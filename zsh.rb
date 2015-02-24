@@ -28,6 +28,10 @@ class Zsh < Formula
   end
 
   def install
+    ncurses = Formula["ncurses"]
+    ENV.append "LDFLAGS", "-L#{ncurses.lib}"
+    ENV.append "CPPFLAGS", "-I#{ncurses.include}"
+
     args = %W[
       --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
