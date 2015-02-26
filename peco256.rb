@@ -2,7 +2,7 @@ require "language/go"
 
 class Peco256 < Formula
   homepage "https://github.com/waltarix/peco"
-  url "https://github.com/waltarix/peco.git", :revision => "61145ccf9acfa9fb796fe5f87a5cf7b9ada1bc37"
+  url "https://github.com/waltarix/peco.git", :revision => "5b7438950323faef3266b34d818229c5765b2354"
   version "0.2.11"
 
   conflicts_with "peco"
@@ -31,7 +31,7 @@ class Peco256 < Formula
 
   go_resource "github.com/peco/peco" do
     url "https://github.com/waltarix/peco.git",
-      :revision => "61145ccf9acfa9fb796fe5f87a5cf7b9ada1bc37"
+      :revision => "5b7438950323faef3266b34d818229c5765b2354"
   end
 
   depends_on "go" => :build
