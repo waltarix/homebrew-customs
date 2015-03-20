@@ -4,8 +4,8 @@ class Peco256 < Formula
   homepage "https://github.com/waltarix/peco"
   url "https://github.com/waltarix/peco.git",
     :branch   => '256color',
-    :revision => "da84ee21fc30afe32757992d7f3cccbb06cc643c"
-  version "0.2.12"
+    :revision => "c211626359f599224fd048b9e3351eb1b56392d4"
+  version "0.3.0"
 
   conflicts_with "peco"
 
@@ -18,23 +18,28 @@ class Peco256 < Formula
 
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
-      :revision => "15347ef417a300349807983f15af9e65cd2e1b3a"
+      :revision => "8ec9564882e7923e632f012761c81c46dcf5bec1"
   end
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-      :revision => "8adae32de8a26f36cc7acaa53051407d514bb5f0"
+      :revision => "58a0da4ed7b321c9b5dfeffb7e03ee188fae1c60"
   end
 
   go_resource "github.com/nsf/termbox-go" do
     url "https://github.com/nsf/termbox-go.git",
-      :revision => "9e7f2135126fcf13f331e7b24f5d66fd8e8e1690"
+      :revision => "10f14d7408b64a659b7c694a771f5006952d336c"
+  end
+
+  go_resource "github.com/google/btree" do
+    url "https://github.com/google/btree.git",
+      :revision => "0c05920fc3d98100a5e3f7fd339865a6e2aaa671"
   end
 
   go_resource "github.com/peco/peco" do
     url "https://github.com/waltarix/peco.git",
       :branch   => '256color',
-      :revision => "da84ee21fc30afe32757992d7f3cccbb06cc643c"
+      :revision => "c211626359f599224fd048b9e3351eb1b56392d4"
   end
 
   depends_on "go" => :build
