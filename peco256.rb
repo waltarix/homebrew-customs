@@ -4,8 +4,8 @@ class Peco256 < Formula
   homepage "https://github.com/waltarix/peco"
   url "https://github.com/waltarix/peco.git",
     :branch   => '256color',
-    :revision => "c211626359f599224fd048b9e3351eb1b56392d4"
-  version "0.3.0"
+    :revision => "17cfcc983710a2e276d49e1ac2ff2c07aed8e338"
+  version "0.3.2"
 
   conflicts_with "peco"
 
@@ -39,7 +39,7 @@ class Peco256 < Formula
   go_resource "github.com/peco/peco" do
     url "https://github.com/waltarix/peco.git",
       :branch   => '256color',
-      :revision => "c211626359f599224fd048b9e3351eb1b56392d4"
+      :revision => "17cfcc983710a2e276d49e1ac2ff2c07aed8e338"
   end
 
   depends_on "go" => :build
