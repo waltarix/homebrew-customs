@@ -1,19 +1,30 @@
 require "language/go"
 
+class ::Bottle
+  class Filename
+    def prefix
+      "#{name}-#{version}"
+    end
+  end
+end
+
 class Peco256 < Formula
+  PECO_REVISION = "17cfcc983710a2e276d49e1ac2ff2c07aed8e338"
+
   homepage "https://github.com/waltarix/peco"
   url "https://github.com/waltarix/peco.git",
     :branch   => '256color',
-    :revision => "17cfcc983710a2e276d49e1ac2ff2c07aed8e338"
+    :revision => PECO_REVISION
   version "0.3.2"
 
   conflicts_with "peco"
 
   bottle do
     cellar :any
-    sha1 "09dcbdd0a4cc55c36cc4578f237ac19c360651a1" => :yosemite
-    sha1 "eaf5161f6ce66b67a026825a4f3047974d147500" => :mavericks
-    sha1 "61e853d89cd34129cf0e010c36939491c3b11329" => :mountain_lion
+    root_url "https://github.com/waltarix/peco/releases/download/v0.3.2-256color"
+    sha1 "94b230fc6c67c1a4d1e523ab6fca4ee6293d52e4" => :yosemite
+    sha1 "94b230fc6c67c1a4d1e523ab6fca4ee6293d52e4" => :mavericks
+    sha1 "94b230fc6c67c1a4d1e523ab6fca4ee6293d52e4" => :mountain_lion
   end
 
   go_resource "github.com/jessevdk/go-flags" do
@@ -39,14 +50,10 @@ class Peco256 < Formula
   go_resource "github.com/peco/peco" do
     url "https://github.com/waltarix/peco.git",
       :branch   => '256color',
-      :revision => "17cfcc983710a2e276d49e1ac2ff2c07aed8e338"
+      :revision => PECO_REVISION
   end
 
   depends_on "go" => :build
-
-  def pour_bottle?
-    false
-  end
 
   def install
     ENV["GOPATH"] = buildpath
