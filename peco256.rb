@@ -2,8 +2,14 @@ require "language/go"
 
 class ::Bottle
   class Filename
+    alias :prefix_orig :prefix
+
     def prefix
-      "#{name}-#{version}"
+      if name == "peco256"
+        "#{name}-#{version}"
+      else
+        prefix_orig
+      end
     end
   end
 end
