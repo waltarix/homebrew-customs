@@ -47,6 +47,7 @@ class Zsh < Formula
       --with-tcsetpgrp
       --enable-locale
       --with-term-lib=ncursesw
+      zsh_cv_c_broken_wcwidth=yes
     ]
 
     if build.include? 'disable-etcdir'
