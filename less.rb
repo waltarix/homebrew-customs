@@ -1,15 +1,12 @@
-require 'formula'
-
 class Less < Formula
-  homepage 'http://www.greenwoodsoftware.com/less/index.html'
-  url 'http://www.greenwoodsoftware.com/less/less-471.tar.gz'
-  sha1 '0d030b56f3f9c3ed68c6498876a27e0cac430538'
+  homepage "http://www.greenwoodsoftware.com/less/index.html"
+  url "http://www.greenwoodsoftware.com/less/less-481.tar.gz"
+  sha256 "3fa38f2cf5e9e040bb44fffaa6c76a84506e379e47f5a04686ab78102090dda5"
 
   bottle do
-    root_url "https://downloads.sf.net/project/machomebrew/Bottles/dupes"
-    sha1 "39ee5dcbfa07bc32b84fc5b3be03cb571231beb7" => :yosemite
-    sha1 "a3589555443a08e2e9c858a72fe30d0bbf8a4968" => :mavericks
-    sha1 "76de5c62e907e6821309aeec0031ba8185b8ea93" => :mountain_lion
+    sha256 "b38f31c863dff20e1d317ca6c046effbf154b134d24daff1ed4a34feb267d6a8" => :el_capitan
+    sha256 "5295b62edf0ba63b2b67c327e3345f727404975005645328a78826f66445d1a1" => :yosemite
+    sha256 "c12b5ad0d9859e185b7c7f5d33537c248c0463fcbd786290280b6aa5a1be9f98" => :mavericks
   end
 
   def pour_bottle?
@@ -23,7 +20,7 @@ class Less < Formula
     args = ["--prefix=#{prefix}"]
     args << '--with-regex=pcre'
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do
