@@ -1,15 +1,17 @@
-require 'formula'
-
 class Tmux < Formula
-  homepage 'http://tmux.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/tmux/tmux/tmux-2.0/tmux-2.0.tar.gz'
-  sha1 '977871e7433fe054928d86477382bd5f6794dc3d'
+  desc "Terminal multiplexer"
+  homepage "https://tmux.github.io/"
 
-  bottle do
-    cellar :any
-    sha256 "91a14274005416c9a20f64f149f732837b0503c0ddcfdc80f87c0576e99ee3fa" => :yosemite
-    sha256 "d70b62ddf26d2113a108622643550dc50248c98188af27d7e2e76e415f43588d" => :mavericks
-    sha256 "a1468fd6ac69c18c4773a65c11b2811525d542d911f6c6642e87c0e195f6c4c1" => :mountain_lion
+  stable do
+    url "https://github.com/tmux/tmux/releases/download/2.1/tmux-2.1.tar.gz"
+    sha256 "31564e7bf4bcef2defb3cb34b9e596bd43a3937cad9e5438701a81a5a9af6176"
+
+    patch do
+      # This fixes the Tmux 2.1 update that broke the ability to use select-pane [-LDUR]
+      # to switch panes when in a maximized pane https://github.com/tmux/tmux/issues/150#issuecomment-149466158
+      url "https://github.com/tmux/tmux/commit/a05c27a7e1c4d43709817d6746a510f16c960b4b.diff"
+      sha256 "2a60a63f0477f2e3056d9f76207d4ed905de8a9ce0645de6c29cf3f445bace12"
+    end
   end
 
   def pour_bottle?
@@ -17,7 +19,7 @@ class Tmux < Formula
   end
 
   head do
-    url 'git://git.code.sf.net/p/tmux/tmux-code'
+    url "https://github.com/tmux/tmux.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -29,18 +31,18 @@ class Tmux < Formula
   depends_on 'homebrew/dupes/ncurses'
 
   patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1399751/raw/d3c9f57e7c22f3b5303c23520b434dc33313f7a5/tmux-ambiguous-width-cjk.patch"
-    sha256 "f2c47a70734205b3200d47a6dc838717aa19c7d4bcc601aa3c625838e9301ab0"
+    url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-ambiguous-width-cjk.patch"
+    sha256 "943a1d99dc76c3bdde82b24ecca732f0410c3e58dba39396cc7f87c9635bc37c"
   end
 
   patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1399751/raw/c53aff0a0c51f0b1be5c9d46b4e3807fe3560dbb/tmux-do-not-combine-utf8.patch"
-    sha256 "d1fbf914f734ea94641efe28476f428f3bc2d6fb04a0eb43114084f0526b229d"
+    url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-do-not-combine-utf8.patch"
+    sha256 "71f4b983083dfbea1ee104ee9538dd96d979843e4100ffa71b069bfd51d9289c"
   end
 
   patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1399751/raw/289974e9b9e538d6afcd641935a14e108eae69a7/tmux-pane-border-ascii.patch"
-    sha256 "f2838066b2765a19c0d4421beb885302b9e4dba94cb8b9419a58a51da5a781cb"
+    url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-pane-border-ascii.patch"
+    sha256 "50dc763b4933e77591bf2f79cd432613c656725156ad21166d77814dfefd1952"
   end
 
   def install
@@ -54,15 +56,16 @@ class Tmux < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}"
-    system "make install"
 
-    bash_completion.install "examples/bash_completion_tmux.sh" => 'tmux'
-    (share/'tmux').install "examples"
+    system "make", "install"
+
+    bash_completion.install "examples/bash_completion_tmux.sh" => "tmux"
+    pkgshare.install "examples"
   end
 
   def caveats; <<-EOS.undent
     Example configurations have been installed to:
-      #{share}/tmux/examples
+      #{opt_pkgshare}/examples
     EOS
   end
 
