@@ -30,19 +30,38 @@ class Tmux < Formula
   depends_on 'libevent'
   depends_on 'homebrew/dupes/ncurses'
 
-  patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-ambiguous-width-cjk.patch"
-    sha256 "943a1d99dc76c3bdde82b24ecca732f0410c3e58dba39396cc7f87c9635bc37c"
+  stable do
+    patch :p1 do
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-ambiguous-width-cjk.patch"
+      sha256 "943a1d99dc76c3bdde82b24ecca732f0410c3e58dba39396cc7f87c9635bc37c"
+    end
+
+    patch :p1 do
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-do-not-combine-utf8.patch"
+      sha256 "71f4b983083dfbea1ee104ee9538dd96d979843e4100ffa71b069bfd51d9289c"
+    end
+
+    patch :p1 do
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-pane-border-ascii.patch"
+      sha256 "50dc763b4933e77591bf2f79cd432613c656725156ad21166d77814dfefd1952"
+    end
   end
 
-  patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-do-not-combine-utf8.patch"
-    sha256 "71f4b983083dfbea1ee104ee9538dd96d979843e4100ffa71b069bfd51d9289c"
-  end
+  head do
+    patch :p1 do
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/e2c3b43503507c6002d6cb169ddd098b755a427e/tmux-ambiguous-width-cjk.patch"
+      sha256 "70de4069b87c9e6cb0f8420672aa55546ac6ca5290527a1b6576e0db7d0b1b0b"
+    end
 
-  patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1399751/raw/695586fad1664f500df9a22622a6ff52c262c3eb/tmux-pane-border-ascii.patch"
-    sha256 "50dc763b4933e77591bf2f79cd432613c656725156ad21166d77814dfefd1952"
+    patch :p1 do
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/e2c3b43503507c6002d6cb169ddd098b755a427e/tmux-do-not-combine-utf8.patch"
+      sha256 "aa05d74c7078bc622cfba8e16141a01f0c807d5a2708f76d14e40b33ee0afa6e"
+    end
+
+    patch :p1 do
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/e2c3b43503507c6002d6cb169ddd098b755a427e/tmux-pane-border-ascii.patch"
+      sha256 "2d1cde911ae7d29a30eab4ab44b9371283a3418e2706b8c9b13cbe3ae20a473c"
+    end
   end
 
   def install
