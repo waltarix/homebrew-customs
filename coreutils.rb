@@ -1,35 +1,29 @@
 class Coreutils < Formula
+  desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
-  sha256 "ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d"
-  revision 1
+  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.24.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.24.tar.xz"
+  sha256 "a2d75286a4b9ef3a13039c2da3868a61be4ee9f17d8ae380a35a97e506972170"
 
   bottle do
-    revision 1
-    sha1 "380f3f5fbd0da33e69d19edba4ae30b7e7cf899c" => :yosemite
-    sha1 "edf8d1fc1ac7104b570bd72003e10ca3599302f5" => :mavericks
-    sha1 "fe7525c7ef751f07f1f7dd7b37d4f584d2891210" => :mountain_lion
+    sha256 "982576be0136e46016643da0efdb44e3ab201263b2a43433448821c19fb9edd4" => :el_capitan
+    sha256 "142edfec5f84958bdb27866e3a826f9b580a4ae07bfd805c766ab6a9a368e34f" => :yosemite
+    sha256 "851e007f3edaa58fc00d9c67aeed2ab5a8b9a1bad608dc3e5d76732cc35c593f" => :mavericks
+    sha256 "32ef44141d7dff2995ea0a692a3861ee9049a37a1254a3978c7dc8283c258476" => :mountain_lion
   end
 
   def pour_bottle?
     false
   end
 
+  patch :p1 do
+    url "https://gist.githubusercontent.com/waltarix/1408362/raw/b260732f86f24de55a59616e0d3ced7899d2c2f1/coreutils-ls-utf8mac.patch"
+    sha256 "44ef86abba320cb3b348a1a2e2f775e2c8864c5da44b6f24a829f65dae78dc52"
+  end
+
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
-
-  # Patch adapted from upstream commits:
-  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
-  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
-  stable do
-    patch :DATA
-
-    patch :p1 do
-      url "https://gist.githubusercontent.com/waltarix/1408362/raw"
-      sha256 "60d5c474b41bdb1de713397954dcc13d44201d1202388a1c6ee7f20b94a95620"
-    end
-  end
+  conflicts_with "aardvark_shell_utils", :because => "both install `realpath` binaries"
 
   head do
     url "git://git.sv.gnu.org/coreutils"
@@ -40,22 +34,19 @@ class Coreutils < Formula
     depends_on "gettext" => :build
     depends_on "texinfo" => :build
     depends_on "xz" => :build
-
-    resource "gnulib" do
-      url "http://git.savannah.gnu.org/cgit/gnulib.git/snapshot/gnulib-0.1.tar.gz"
-      sha1 "b29e165bf276ce0a0c12ec8ec1128189bd786155"
-    end
+    depends_on "wget" => :build
   end
 
+  depends_on "gmp" => :optional
+
   def install
-    if build.head?
-      resource("gnulib").stage "gnulib"
-      ENV["GNULIB_SRCDIR"] = "gnulib"
-      system "./bootstrap"
-    end
-    system "./configure", "--prefix=#{prefix}",
-                          "--program-prefix=g",
-                          "--without-gmp"
+    system "./bootstrap" if build.head?
+    args = %W[
+      --prefix=#{prefix}
+      --program-prefix=g
+    ]
+    args << "--without-gmp" if build.without? "gmp"
+    system "./configure", *args
     system "make", "install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix
@@ -66,6 +57,10 @@ class Coreutils < Formula
     coreutils_filenames(man1).each do |cmd|
       (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}" => cmd
     end
+
+    # Symlink non-conflicting binaries
+    bin.install_symlink "grealpath" => "realpath"
+    man1.install_symlink "grealpath.1" => "realpath.1"
   end
 
   def caveats; <<-EOS.undent
@@ -99,18 +94,3 @@ class Coreutils < Formula
     system "#{bin}/gsha1sum", "-c", "test.sha1"
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 140a428..bae3163 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -2566,7 +2566,7 @@ pkglibexecdir = @pkglibexecdir@
- # Use 'ginstall' in the definition of PROGRAMS and in dependencies to avoid
- # confusion with the 'install' target.  The install rule transforms 'ginstall'
- # to install before applying any user-specified name transformations.
--transform = s/ginstall/install/; $(program_transform_name)
-+transform = s/ginstall/install/;/libstdbuf/!$(program_transform_name)
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@
