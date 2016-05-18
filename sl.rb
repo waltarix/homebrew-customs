@@ -1,17 +1,17 @@
 require 'formula'
 
 class Sl < Formula
-  homepage 'http://packages.debian.org/source/stable/sl'
-  url 'http://mirrors.kernel.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz'
-  sha1 'd0a8e52ef649cd3bbf02c099e9991dc7cb9b60c3'
+  homepage 'https://packages.debian.org/source/stable/sl'
+  url 'https://mirrors.kernel.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz'
+  mirror 'http://http.debian.net/debian/pool/main/s/sl/sl_3.03.orig.tar.gz'
+  sha256 "5986d9d47ea5e812d0cbd54a0fc20f127a02d13b45469bb51ec63856a5a6d3aa"
 
   fails_with :clang do
     build 318
   end
 
   patch :p1 do
-    url "ftp://ftp.hu.debian.org/pub/linux/distributions/gentoo/distfiles/sl5-1.patch"
+    url "http://distfiles.gentoo.org/distfiles/sl5-1.patch"
     sha256 "4943b6f000f518ed08755b36d9b753291989c4867e55d74bc4cc4502f6e9422f"
   end
 
