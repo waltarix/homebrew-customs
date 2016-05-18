@@ -1,12 +1,13 @@
 class WcwidthCjk < Formula
-  homepage 'https://github.com/fumiyas/wcwidth-cjk'
-  url 'https://github.com/fumiyas/wcwidth-cjk.git',
-    :revision => 'ac3a9ceb020c7499da0b347ec9918b87b253b7a8'
-  version '0.1'
+  desc "CJK-friendly wcwidth(3) to fix ambiguous width chars"
+  homepage "https://github.com/fumiyas/wcwidth-cjk"
+  url "https://github.com/fumiyas/wcwidth-cjk.git",
+    :revision => "ac3a9ceb020c7499da0b347ec9918b87b253b7a8"
+  version "0.1"
 
-  depends_on 'libtool' => :build
-  depends_on 'automake' => :build
-  depends_on 'autoconf' => :build
+  depends_on "libtool" => :build
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
 
   patch :DATA
 
@@ -17,6 +18,13 @@ class WcwidthCjk < Formula
 
     system "make"
     system "make", "install"
+  end
+
+  test do
+    ENV["LC_ALL"] = "en_US.UTF-8"
+    ENV["LANG"] = "en_US.UTF-8"
+    assert_match /^1\s/, shell_output("#{bin}/wcwidth ☆")
+    assert_match /^2\s/, shell_output("#{bin}/wcwidth-cjk #{bin}/wcwidth ☆")
   end
 end
 
