@@ -13,6 +13,7 @@ class W3m < Formula
   depends_on "pkg-config" => :build
   depends_on "bdw-gc"
   depends_on "openssl"
+  depends_on "cmigemo"
   depends_on "homebrew/dupes/ncurses"
 
   fails_with :llvm do
