@@ -21,8 +21,8 @@ class W3m < Formula
   end
 
   patch do
-    sha256 "322f63c059e2f82dd6a76cc6e36c805fdaf86fecede164ebecd6ad1f7ab2acda"
-    url "http://http.debian.net/debian/pool/main/w/w3m/w3m_0.5.3-27.debian.tar.xz"
+    sha256 "7b801e58c751f977de551c7e3c3ae0feb85414246db01f3e0a4791d5db7b2621"
+    url "http://ubuntutym3.u-toyama.ac.jp/ubuntu/pool/universe/w/w3m/w3m_0.5.3-29.debian.tar.xz"
     apply "patches/010_upstream.patch",
           "patches/020_debian.patch"
   end
