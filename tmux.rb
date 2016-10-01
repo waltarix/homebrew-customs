@@ -1,14 +1,14 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
+  url "https://github.com/tmux/tmux/releases/download/2.3/tmux-2.3.tar.gz"
+  sha256 "55313e132f0f42de7e020bf6323a1939ee02ab79c48634aa07475db41573852b"
 
-  stable do
-    url "https://github.com/tmux/tmux/releases/download/2.2/tmux-2.2.tar.gz"
-    sha256 "bc28541b64f99929fe8e3ae7a02291263f3c97730781201824c0f05d7c8e19e4"
-  end
-
-  def pour_bottle?
-    false
+  bottle do
+    cellar :any
+    sha256 "61149e67e9dbbbe9dd88d347582883cfabbaeb314368c53d19dff4fe4d2aeb12" => :sierra
+    sha256 "a0964ec917ea8fe42f82348d1bee599f93ffefba1e1910dd13c101b5155cd203" => :el_capitan
+    sha256 "1705df1d70791c49ab907dab166e573848c435d4c56787be664347dbfa50edcd" => :yosemite
   end
 
   head do
@@ -19,6 +19,10 @@ class Tmux < Formula
     depends_on "libtool" => :build
   end
 
+  def pour_bottle?
+    false
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libevent"
   depends_on "homebrew/dupes/ncurses"
@@ -26,19 +30,14 @@ class Tmux < Formula
 
   stable do
     patch :p1 do
-      url "https://gist.githubusercontent.com/waltarix/1399751/raw/e2c3b43503507c6002d6cb169ddd098b755a427e/tmux-do-not-combine-utf8.patch"
-      sha256 "aa05d74c7078bc622cfba8e16141a01f0c807d5a2708f76d14e40b33ee0afa6e"
-    end
-
-    patch :p1 do
-      url "https://gist.githubusercontent.com/waltarix/1399751/raw/e2c3b43503507c6002d6cb169ddd098b755a427e/tmux-pane-border-ascii.patch"
-      sha256 "2d1cde911ae7d29a30eab4ab44b9371283a3418e2706b8c9b13cbe3ae20a473c"
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/6c8f54ec8e55823fb99b644a8a5603847cb60882/tmux-pane-border-ascii.patch"
+      sha256 "2019e69de97882b11ba0bf0dcbf29d25f4744576a33ad9909a62329609bfdf40"
     end
   end
 
   resource "completion" do
-    url "https://raw.githubusercontent.com/przepompownia/tmux-bash-completion/v0.0.1/completions/tmux"
-    sha256 "a0905c595fec7f0258fba5466315d42d67eca3bd2d3b12f4af8936d7f168b6c6"
+    url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/homebrew_1.0.0/completions/tmux"
+    sha256 "05e79fc1ecb27637dc9d6a52c315b8f207cf010cdcee9928805525076c9020ae"
   end
 
   def install
