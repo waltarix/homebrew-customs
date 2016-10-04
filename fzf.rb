@@ -3,15 +3,15 @@ require "language/go"
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.15.2.tar.gz"
-  sha256 "32bbe680f9830845b73f043212d6dbf57b7335702c791fce3efd86b252d8d125"
+  url "https://github.com/junegunn/fzf/archive/0.15.4.tar.gz"
+  sha256 "9e5a5e4c929df8172afde9dd9cb7bbefdae8f98fc4a24d40696ccb3da1483261"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "293a3fabb1600faab0e1b3bde68934c8fc9d8f985d58da98202f1a3b5c24ab7c" => :sierra
-    sha256 "8ef0dd5a556ba07e91a45929abf9f06c7baa41f347c3d3a7cf24e6006a591dc9" => :el_capitan
-    sha256 "7c7d17c48f8465cf1ab1ddb734f3612513aa39b59c5b819b415ba6305ecdde46" => :yosemite
+    sha256 "ed162fdedea0fb569c461d919e534f788cb1817686e2d9f17e0715e894725fc3" => :sierra
+    sha256 "cf39542431519da33f09efc54e8aa68196a7757c5e4ad7cff333d0c5cef45087" => :el_capitan
+    sha256 "9db881faf4d81dac5e0ffe5bacfbdbec8436c0bd3ab932ec32ced078e15a65a3" => :yosemite
   end
 
   def pour_bottle?
@@ -67,34 +67,46 @@ class Fzf < Formula
 end
 
 __END__
+diff --git a/src/curses/curses.go b/src/curses/curses.go
+index 700e667..806b772 100644
+--- a/src/curses/curses.go
++++ b/src/curses/curses.go
+@@ -24,6 +24,7 @@ import (
+ )
+ 
+ const (
++	Normal    = C.A_NORMAL
+ 	Bold      = C.A_BOLD
+ 	Dim       = C.A_DIM
+ 	Blink     = C.A_BLINK
 diff --git a/src/terminal.go b/src/terminal.go
-index 0e9436a..e75dcac 100644
+index e07eb3c..02ed7bc 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -517,7 +517,7 @@ func (t *Terminal) placeCursor() {
+@@ -530,7 +530,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
- 	t.window.CPrint(C.ColPrompt, true, t.prompt)
--	t.window.CPrint(C.ColNormal, true, string(t.input))
-+	t.window.CPrint(C.ColNormal, false, string(t.input))
+ 	t.window.CPrint(C.ColPrompt, C.Bold, t.prompt)
+-	t.window.CPrint(C.ColNormal, C.Bold, string(t.input))
++	t.window.CPrint(C.ColNormal, C.Normal, string(t.input))
  }
  
  func (t *Terminal) printInfo() {
-@@ -617,7 +617,7 @@ func (t *Terminal) printItem(result *Result, i int, current bool) {
+@@ -630,7 +630,7 @@ func (t *Terminal) printItem(result *Result, i int, current bool) {
  		} else {
- 			t.window.CPrint(C.ColCurrent, true, " ")
+ 			t.window.CPrint(C.ColCurrent, C.Bold, " ")
  		}
--		t.printHighlighted(result, true, C.ColCurrent, C.ColCurrentMatch, true)
-+		t.printHighlighted(result, false, C.ColCurrent, C.ColCurrentMatch, true)
+-		t.printHighlighted(result, C.Bold, C.ColCurrent, C.ColCurrentMatch, true)
++		t.printHighlighted(result, C.Normal, C.ColCurrent, C.ColCurrentMatch, true)
  	} else {
  		if selected {
- 			t.window.CPrint(C.ColSelected, true, ">")
-@@ -705,7 +705,7 @@ func (t *Terminal) printHighlighted(result *Result, bold bool, col1 int, col2 in
+ 			t.window.CPrint(C.ColSelected, C.Bold, ">")
+@@ -718,7 +718,7 @@ func (t *Terminal) printHighlighted(result *Result, attr C.Attr, col1 int, col2
  		maxe = util.Max(maxe, int(offset[1]))
  	}
  
--	offsets := result.colorOffsets(charOffsets, col2, bold, current)
-+	offsets := result.colorOffsets(charOffsets, col2, true, current)
+-	offsets := result.colorOffsets(charOffsets, col2, attr, current)
++	offsets := result.colorOffsets(charOffsets, col2, C.Bold, current)
  	maxWidth := t.window.Width - 3
  	maxe = util.Constrain(maxe+util.Min(maxWidth/2-2, t.hscrollOff), 0, len(text))
  	if overflow(text, maxWidth) {
