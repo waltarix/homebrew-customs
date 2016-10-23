@@ -6,6 +6,7 @@ class Fzf < Formula
   url "https://github.com/junegunn/fzf/archive/0.15.4.tar.gz"
   sha256 "9e5a5e4c929df8172afde9dd9cb7bbefdae8f98fc4a24d40696ccb3da1483261"
   head "https://github.com/junegunn/fzf.git"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -67,6 +68,19 @@ class Fzf < Formula
 end
 
 __END__
+diff --git a/bin/fzf-tmux b/bin/fzf-tmux
+index ff923f0..4f40622 100755
+--- a/bin/fzf-tmux
++++ b/bin/fzf-tmux
+@@ -142,7 +142,7 @@ cleanup() {
+ }
+ trap cleanup EXIT SIGINT SIGTERM
+ 
+-envs="env TERM=$TERM "
++envs="env TERM=${TERM/screen/xterm} "
+ [[ -n "$FZF_DEFAULT_OPTS"    ]] && envs="$envs FZF_DEFAULT_OPTS=$(printf %q "$FZF_DEFAULT_OPTS")"
+ [[ -n "$FZF_DEFAULT_COMMAND" ]] && envs="$envs FZF_DEFAULT_COMMAND=$(printf %q "$FZF_DEFAULT_COMMAND")"
+ 
 diff --git a/src/curses/curses.go b/src/curses/curses.go
 index 700e667..806b772 100644
 --- a/src/curses/curses.go
