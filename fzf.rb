@@ -3,15 +3,15 @@ require "language/go"
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.15.5.tar.gz"
-  sha256 "b9d3f6e56f538079ac1237c4d2ec260cbe6ad0cea1c214588187447ec3e44607"
+  url "https://github.com/junegunn/fzf/archive/0.15.8.tar.gz"
+  sha256 "f02ba45837e8583a3aa4e54a7d0b7d493f5314be6923ca80a639b43d6c0f4a4f"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "18816c5565e187b7df3b1b8fea407398f042a34a9792b1889328ab14d48b3b78" => :sierra
-    sha256 "1106c94fb17b606ff372e4fe105570ae39c7cd8eb84cf94daa3343f2aa5063ed" => :el_capitan
-    sha256 "6ba3b315d3ecf180102138b4863a4386a6968da83ae496a008a9d25770c612e4" => :yosemite
+    sha256 "20cf6612cb96c5028e49c2a29ae046326e6b21e60a6abcf537b8a92fc6851aed" => :sierra
+    sha256 "3e7ce8072c4fe888b085361733f78783a69b3315fd9a81dbf1d05db09361bd2f" => :el_capitan
+    sha256 "9cf69e99ac4f27bf311561bcf790be45ae990027cadefb0071d52ce5a6680181" => :yosemite
   end
 
   def pour_bottle?
@@ -22,14 +22,19 @@ class Fzf < Formula
 
   depends_on "go" => :build
 
-  go_resource "github.com/junegunn/go-shellwords" do
-    url "https://github.com/junegunn/go-shellwords.git",
-        :revision => "35d512af75e283aae4ca1fc3d44b159ed66189a4"
+  go_resource "github.com/junegunn/go-isatty" do
+    url "https://github.com/junegunn/go-isatty.git",
+        :revision => "66b8e73f3f5cda9f96b69efd03dd3d7fc4a5cdb8"
   end
 
   go_resource "github.com/junegunn/go-runewidth" do
     url "https://github.com/junegunn/go-runewidth.git",
         :revision => "63c378b851290989b19ca955468386485f118c65"
+  end
+
+  go_resource "github.com/junegunn/go-shellwords" do
+    url "https://github.com/junegunn/go-shellwords.git",
+        :revision => "35d512af75e283aae4ca1fc3d44b159ed66189a4"
   end
 
   def install
@@ -67,46 +72,34 @@ class Fzf < Formula
 end
 
 __END__
-diff --git a/src/curses/curses.go b/src/curses/curses.go
-index 638a862..724b51b 100644
---- a/src/curses/curses.go
-+++ b/src/curses/curses.go
-@@ -24,6 +24,7 @@ import (
- )
- 
- const (
-+	Normal    = C.A_NORMAL
- 	Bold      = C.A_BOLD
- 	Dim       = C.A_DIM
- 	Blink     = C.A_BLINK
 diff --git a/src/terminal.go b/src/terminal.go
-index 2abe62e..033d328 100644
+index 315d9f1..0a874b0 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -532,7 +532,7 @@ func (t *Terminal) placeCursor() {
+@@ -540,7 +540,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
- 	t.window.CPrint(C.ColPrompt, C.Bold, t.prompt)
--	t.window.CPrint(C.ColNormal, C.Bold, string(t.input))
-+	t.window.CPrint(C.ColNormal, C.Normal, string(t.input))
+ 	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
+-	t.window.CPrint(tui.ColNormal, t.strong, string(t.input))
++	t.window.CPrint(tui.ColNormal, tui.AttrRegular, string(t.input))
  }
  
  func (t *Terminal) printInfo() {
-@@ -632,7 +632,7 @@ func (t *Terminal) printItem(result *Result, i int, current bool) {
+@@ -641,7 +641,7 @@ func (t *Terminal) printItem(result *Result, i int, current bool) {
  		} else {
- 			t.window.CPrint(C.ColCurrent, C.Bold, " ")
+ 			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
--		t.printHighlighted(result, C.Bold, C.ColCurrent, C.ColCurrentMatch, true)
-+		t.printHighlighted(result, C.Normal, C.ColCurrent, C.ColCurrentMatch, true)
+-		t.printHighlighted(result, t.strong, tui.ColCurrent, tui.ColCurrentMatch, true)
++		t.printHighlighted(result, tui.AttrRegular, tui.ColCurrent, tui.ColCurrentMatch, true)
  	} else {
  		if selected {
- 			t.window.CPrint(C.ColSelected, C.Bold, ">")
-@@ -720,7 +720,7 @@ func (t *Terminal) printHighlighted(result *Result, attr C.Attr, col1 int, col2
+ 			t.window.CPrint(tui.ColSelected, t.strong, ">")
+@@ -729,7 +729,7 @@ func (t *Terminal) printHighlighted(result *Result, attr tui.Attr, col1 tui.Colo
  		maxe = util.Max(maxe, int(offset[1]))
  	}
  
 -	offsets := result.colorOffsets(charOffsets, t.theme, col2, attr, current)
-+	offsets := result.colorOffsets(charOffsets, t.theme, col2, C.Bold, current)
++	offsets := result.colorOffsets(charOffsets, t.theme, col2, tui.Bold, current)
  	maxWidth := t.window.Width - 3
  	maxe = util.Constrain(maxe+util.Min(maxWidth/2-2, t.hscrollOff), 0, len(text))
  	if overflow(text, maxWidth) {
