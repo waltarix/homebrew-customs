@@ -3,6 +3,7 @@ class Hiptext < Formula
   homepage "https://github.com/jart/hiptext"
   url 'https://github.com/waltarix/hiptext.git',
     :tag => '0.3'
+  revision 1
 
   depends_on "gflags"
   depends_on "glog"
@@ -40,6 +41,38 @@ class Hiptext < Formula
 end
 
 __END__
+diff --git a/configure.ac b/configure.ac
+index d1c8217..29cce07 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -26,26 +26,10 @@ PKG_CHECK_MODULES(LIBAVCODEC, libavcodec)
+ PKG_CHECK_MODULES(LIBAVFORMAT, libavformat)
+ PKG_CHECK_MODULES(LIBAVUTIL, libavutil)
+ PKG_CHECK_MODULES(LIBGLOG, libglog)
++PKG_CHECK_MODULES(LIBGFLAGS, libgflags)
+ PKG_CHECK_MODULES(LIBPNG, libpng)
+ PKG_CHECK_MODULES(LIBSWSCALE, libswscale)
+ 
+-LIBGFLAGS_CFLAGS=""
+-AC_CHECK_HEADER([gflags/gflags.h], [
+-  AC_CHECK_LIB(gflags_nothreads, main, [
+-    LIBGFLAGS_LIBS="-lgflags_nothreads"
+-  ], [
+-    AC_CHECK_LIB(gflags, main, [
+-      LIBGFLAGS_LIBS="-lgflags"
+-    ], [
+-      AC_MSG_ERROR([error: libgflags_nothreads or libgflags are required])
+-    ])
+-  ])
+-], [
+-  AC_MSG_ERROR([error: libgflags headers are required])
+-])
+-AC_SUBST(LIBGFLAGS_CFLAGS)
+-AC_SUBST(LIBGFLAGS_LIBS)
+-
+ AC_CHECK_PROGS(FREETYPE, freetype-config)
+ if test -z "$FREETYPE"; then
+   AC_MSG_ERROR([error: libfreetype-dev is required])
 diff --git a/src/hiptext.cc b/src/hiptext.cc
 index 2222347..495ca40 100644
 --- a/src/hiptext.cc
