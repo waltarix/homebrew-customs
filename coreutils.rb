@@ -1,15 +1,14 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  url "https://ftpmirror.gnu.org/coreutils/coreutils-8.25.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.25.tar.xz"
-  sha256 "31e67c057a5b32a582f26408c789e11c2e8d676593324849dcf5779296cdce87"
+  url "https://ftpmirror.gnu.org/coreutils/coreutils-8.26.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.26.tar.xz"
+  sha256 "155e94d748f8e2bc327c66e0cbebdb8d6ab265d2f37c3c928f7bf6c3beba9a8e"
 
   bottle do
-    sha256 "1714a4893ba37f9fb1a908e5bd79e45594034daa3ff08d8273713030498d5c1b" => :sierra
-    sha256 "3b278ce91252784e43d2f16fc813e72a7bd04e637627bf2916c9f847ef600d89" => :el_capitan
-    sha256 "dadb2d672a6b412d03b2470459d0ccb229bf7aa1c587b04809e7f19a439a640e" => :yosemite
-    sha256 "1b68974d496006908a2f538a6a7e35b3bee7eba2247afec4e1568b28d0d83c5c" => :mavericks
+    sha256 "9409628a4780999323b47bbc5f7e3d622360766995e5b2d97fabbc9930b6d78d" => :sierra
+    sha256 "c37e171b4969db30c4ac11d6eda9297d0ad7253061569d8a8d849592664c8fd5" => :el_capitan
+    sha256 "fc6fc46b6c96c75424b4c0eeffaf3f493dfc605940960d4c35c17fdb2e598ed5" => :yosemite
   end
 
   def pour_bottle?
@@ -17,13 +16,9 @@ class Coreutils < Formula
   end
 
   patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1408362/raw/b260732f86f24de55a59616e0d3ced7899d2c2f1/coreutils-ls-utf8mac.patch"
-    sha256 "44ef86abba320cb3b348a1a2e2f775e2c8864c5da44b6f24a829f65dae78dc52"
+    url "https://gist.githubusercontent.com/waltarix/1408362/raw/32ca1efa21a211af4c2c76e5e7dfb272d34f6213/coreutils-ls-utf8mac.patch"
+    sha256 "a1e006ccc5139afac2989d2e63b5476c07538af1b8b965ca500e99434581111c"
   end
-
-  conflicts_with "ganglia", :because => "both install `gstat` binaries"
-  conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
-  conflicts_with "aardvark_shell_utils", :because => "both install `realpath` binaries"
 
   head do
     url "git://git.sv.gnu.org/coreutils"
