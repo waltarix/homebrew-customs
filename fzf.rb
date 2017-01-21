@@ -6,6 +6,7 @@ class Fzf < Formula
   url "https://github.com/junegunn/fzf/archive/0.16.1.tar.gz"
   sha256 "f8a05e9e72f6e2b87bec63809843afa77fd89067722407f6f9a86299c6215fce"
   head "https://github.com/junegunn/fzf.git"
+  revision 1
 
   bottle do
     sha256 "6522e26e982f91cadb5b35cffc0e8a7b50f44404ff09f11170ca988ac8c3b573" => :sierra
@@ -76,8 +77,30 @@ class Fzf < Formula
 end
 
 __END__
+diff --git a/src/result.go b/src/result.go
+index 3d79176..fd095ce 100644
+--- a/src/result.go
++++ b/src/result.go
+@@ -99,7 +99,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+ 	if len(itemColors) == 0 {
+ 		var offsets []colorOffset
+ 		for _, off := range matchOffsets {
+-			offsets = append(offsets, colorOffset{offset: [2]int32{off[0], off[1]}, color: color, attr: attr})
++			offsets = append(offsets, colorOffset{offset: [2]int32{off[0], off[1]}, color: color, attr: attr | tui.Bold})
+ 		}
+ 		return offsets
+ 	}
+@@ -143,7 +143,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+ 		if curr != 0 && idx > start {
+ 			if curr == -1 {
+ 				colors = append(colors, colorOffset{
+-					offset: [2]int32{int32(start), int32(idx)}, color: color, attr: attr})
++					offset: [2]int32{int32(start), int32(idx)}, color: color, attr: attr | tui.Bold})
+ 			} else {
+ 				ansi := itemColors[curr-1]
+ 				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 2378984..355a82e 100644
+index 2378984..5c25efe 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
 @@ -584,7 +584,7 @@ func (t *Terminal) placeCursor() {
@@ -98,12 +121,3 @@ index 2378984..355a82e 100644
  	} else {
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
-@@ -792,7 +792,7 @@ func (t *Terminal) printHighlighted(result *Result, attr tui.Attr, col1 tui.Colo
- 		maxe = util.Max(maxe, int(offset[1]))
- 	}
- 
--	offsets := result.colorOffsets(charOffsets, t.theme, col2, attr, current)
-+	offsets := result.colorOffsets(charOffsets, t.theme, col2, tui.Bold, current)
- 	maxWidth := t.window.Width() - 3
- 	maxe = util.Constrain(maxe+util.Min(maxWidth/2-2, t.hscrollOff), 0, len(text))
- 	displayWidth := t.displayWidthWithLimit(text, 0, maxWidth)
