@@ -3,15 +3,14 @@ require "language/go"
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.16.1.tar.gz"
-  sha256 "f8a05e9e72f6e2b87bec63809843afa77fd89067722407f6f9a86299c6215fce"
+  url "https://github.com/junegunn/fzf/archive/0.16.2.tar.gz"
+  sha256 "6d63f82c5fc6c3b658d224e8ebac6afcd237ca30de709f4fc72692fa0b0524b1"
   head "https://github.com/junegunn/fzf.git"
-  revision 1
 
   bottle do
-    sha256 "6522e26e982f91cadb5b35cffc0e8a7b50f44404ff09f11170ca988ac8c3b573" => :sierra
-    sha256 "a75f5ff839206c4c3c3986657f31245821e17d3955014a38187f7867cc8bb3d4" => :el_capitan
-    sha256 "337ba7152491e08358fd12d475f7b328c24a36348bff7275fdb59ad5032240e1" => :yosemite
+    sha256 "f855c27ba301b0fb5adb7e7de6e40d47a754693f43fdd63de5854ef08db211ac" => :sierra
+    sha256 "e5969adfd85569ea768e453bbd0a9c915e4631e31043dfd8bbc5a90b7267509d" => :el_capitan
+    sha256 "c92c66873543480a7157add32307c967732687d7ef22d75e4e81b46a3cdd727e" => :yosemite
   end
 
   def pour_bottle?
@@ -21,6 +20,7 @@ class Fzf < Formula
   patch :DATA
 
   depends_on "go" => :build
+  depends_on "homebrew/dupes/ncurses"
 
   go_resource "github.com/junegunn/go-isatty" do
     url "https://github.com/junegunn/go-isatty.git",
@@ -43,6 +43,8 @@ class Fzf < Formula
   end
 
   def install
+    ENV.append "LDFLAGS", "-L#{Formula["ncurses"].lib}"
+
     ENV["GOPATH"] = buildpath
     mkdir_p buildpath/"src/github.com/junegunn"
     ln_s buildpath, buildpath/"src/github.com/junegunn/fzf"
@@ -100,10 +102,10 @@ index 3d79176..fd095ce 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 2378984..5c25efe 100644
+index d06f752..a7c1edd 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -584,7 +584,7 @@ func (t *Terminal) placeCursor() {
+@@ -600,7 +600,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
@@ -112,7 +114,7 @@ index 2378984..5c25efe 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -704,7 +704,7 @@ func (t *Terminal) printItem(result *Result, line int, i int, current bool) {
+@@ -720,7 +720,7 @@ func (t *Terminal) printItem(result *Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
@@ -121,3 +123,27 @@ index 2378984..5c25efe 100644
  	} else {
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
+diff --git a/src/tui/light.go b/src/tui/light.go
+index b141368..466139a 100644
+--- a/src/tui/light.go
++++ b/src/tui/light.go
+@@ -619,15 +619,15 @@ func (r *LightRenderer) NewWindow(top int, left int, width int, height int, bord
+ 
+ func (w *LightWindow) drawBorder() {
+ 	w.Move(0, 0)
+-	w.CPrint(ColBorder, AttrRegular, "┌"+repeat("─", w.width-2)+"┐")
++	w.CPrint(ColBorder, AttrRegular, "+"+repeat("-", w.width-2)+"+")
+ 	for y := 1; y < w.height-1; y++ {
+ 		w.Move(y, 0)
+-		w.CPrint(ColBorder, AttrRegular, "│")
++		w.CPrint(ColBorder, AttrRegular, "|")
+ 		w.cprint2(colDefault, w.bg, AttrRegular, repeat(" ", w.width-2))
+-		w.CPrint(ColBorder, AttrRegular, "│")
++		w.CPrint(ColBorder, AttrRegular, "|")
+ 	}
+ 	w.Move(w.height-1, 0)
+-	w.CPrint(ColBorder, AttrRegular, "└"+repeat("─", w.width-2)+"┘")
++	w.CPrint(ColBorder, AttrRegular, "+"+repeat("-", w.width-2)+"+")
+ }
+ 
+ func (w *LightWindow) csi(code string) {
