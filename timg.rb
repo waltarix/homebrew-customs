@@ -4,9 +4,9 @@ class Timg < Formula
   url "https://github.com/hzeller/timg.git",
     :revision => "d750dc0f623110108a83bc5e145f8ec4259296b4"
   version "0.9.5-beta1"
+  revision 1
 
-  depends_on "webp"
-  depends_on "graphicsmagick" => :build
+  depends_on "graphicsmagick" => ["with-webp", :build]
 
   patch :DATA
 
