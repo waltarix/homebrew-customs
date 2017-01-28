@@ -6,6 +6,7 @@ class Fzf < Formula
   url "https://github.com/junegunn/fzf/archive/0.16.2.tar.gz"
   sha256 "6d63f82c5fc6c3b658d224e8ebac6afcd237ca30de709f4fc72692fa0b0524b1"
   head "https://github.com/junegunn/fzf.git"
+  revision 1
 
   bottle do
     sha256 "f855c27ba301b0fb5adb7e7de6e40d47a754693f43fdd63de5854ef08db211ac" => :sierra
@@ -49,6 +50,9 @@ class Fzf < Formula
     mkdir_p buildpath/"src/github.com/junegunn"
     ln_s buildpath, buildpath/"src/github.com/junegunn/fzf"
     Language::Go.stage_deps resources, buildpath/"src"
+
+    inreplace buildpath/"src/github.com/junegunn/go-runewidth/runewidth.go",
+      ", {0x2580, 0x258F}", ""
 
     cd buildpath/"src/fzf" do
       system "go", "build"
