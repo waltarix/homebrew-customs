@@ -3,15 +3,15 @@ require "language/go"
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.16.3.tar.gz"
-  sha256 "352c812cb40787c061912c6597a22e1d7edcbb1870a97be9884bcbf3fe6630ab"
+  url "https://github.com/junegunn/fzf/archive/0.16.4.tar.gz"
+  sha256 "294034747b0739d716d88670e830a97080fb73b8d6172b2ae695074316903e8a"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "690f7931aeff4dba07e5ad9ba231b4fb5dc5710eef417cbcc9682c108c3c4c28" => :sierra
-    sha256 "50d649cb1c2d30976c57a1287d126617a9469db6244e573956d67a13cac99c36" => :el_capitan
-    sha256 "f5fc7d9659b17fc22ebc52e8facd32530ccd59c5e7a2ec6078df813f7d6befde" => :yosemite
+    sha256 "89f957bbe88f674b70254dcef6ddf414cf6937f2c458bd411178b719d3d84b49" => :sierra
+    sha256 "bb277992fc803da8fd4ae7a8a68feb0cf62afe9f3572404eda70064b89804fab" => :el_capitan
+    sha256 "4c1250d8317f565131957283ec23f0a5be4fc173b8ea9b9a19da75ffa6380873" => :yosemite
   end
 
   def pour_bottle?
@@ -29,12 +29,12 @@ class Fzf < Formula
 
   go_resource "github.com/junegunn/go-runewidth" do
     url "https://github.com/junegunn/go-runewidth.git",
-        :revision => "63c378b851290989b19ca955468386485f118c65"
+        :revision => "14207d285c6c197daabb5c9793d63e7af9ab2d50"
   end
 
   go_resource "github.com/junegunn/go-shellwords" do
     url "https://github.com/junegunn/go-shellwords.git",
-        :revision => "35d512af75e283aae4ca1fc3d44b159ed66189a4"
+        :revision => "33bd8f1ebe16d6e5eb688cc885749a63059e9167"
   end
 
   go_resource "golang.org/x/crypto" do
@@ -49,7 +49,7 @@ class Fzf < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     inreplace buildpath/"src/github.com/junegunn/go-runewidth/runewidth.go",
-      ", {0x2580, 0x258F}", ""
+      "{0x2580, 0x258F}, ", ""
 
     cd buildpath/"src/fzf" do
       system "go", "build"
@@ -81,10 +81,10 @@ end
 
 __END__
 diff --git a/src/result.go b/src/result.go
-index 3d79176..fd095ce 100644
+index e071a9e..23ef4f8 100644
 --- a/src/result.go
 +++ b/src/result.go
-@@ -99,7 +99,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -101,7 +101,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  	if len(itemColors) == 0 {
  		var offsets []colorOffset
  		for _, off := range matchOffsets {
@@ -93,7 +93,7 @@ index 3d79176..fd095ce 100644
  		}
  		return offsets
  	}
-@@ -143,7 +143,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -145,7 +145,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  		if curr != 0 && idx > start {
  			if curr == -1 {
  				colors = append(colors, colorOffset{
@@ -103,10 +103,10 @@ index 3d79176..fd095ce 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 134462e..59edb4a 100644
+index 5853022..1383053 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -601,7 +601,7 @@ func (t *Terminal) placeCursor() {
+@@ -624,7 +624,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
@@ -115,7 +115,7 @@ index 134462e..59edb4a 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -721,7 +721,7 @@ func (t *Terminal) printItem(result *Result, line int, i int, current bool) {
+@@ -744,7 +744,7 @@ func (t *Terminal) printItem(result *Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
@@ -125,12 +125,21 @@ index 134462e..59edb4a 100644
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
 diff --git a/src/tui/light.go b/src/tui/light.go
-index d5631ec..27cb9b8 100644
+index 9465c49..b0e26a9 100644
 --- a/src/tui/light.go
 +++ b/src/tui/light.go
-@@ -622,15 +622,15 @@ func (r *LightRenderer) NewWindow(top int, left int, width int, height int, bord
+@@ -629,22 +629,22 @@ func (w *LightWindow) drawBorder() {
  
- func (w *LightWindow) drawBorder() {
+ func (w *LightWindow) drawBorderHorizontal() {
+ 	w.Move(0, 0)
+-	w.CPrint(ColBorder, AttrRegular, repeat("─", w.width))
++	w.CPrint(ColBorder, AttrRegular, repeat("-", w.width))
+ 	w.Move(w.height-1, 0)
+-	w.CPrint(ColBorder, AttrRegular, repeat("─", w.width))
++	w.CPrint(ColBorder, AttrRegular, repeat("-", w.width))
+ }
+ 
+ func (w *LightWindow) drawBorderAround() {
  	w.Move(0, 0)
 -	w.CPrint(ColBorder, AttrRegular, "┌"+repeat("─", w.width-2)+"┐")
 +	w.CPrint(ColBorder, AttrRegular, "+"+repeat("-", w.width-2)+"+")
