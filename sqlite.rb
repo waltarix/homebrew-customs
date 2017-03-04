@@ -5,6 +5,7 @@ class Sqlite < Formula
   url "https://sqlite.org/2017/sqlite-autoconf-3170000.tar.gz"
   version "3.17.0"
   sha256 "a4e485ad3a16e054765baf6371826b5000beed07e626510896069c0bf013874c"
+  revision 1
 
   bottle do
     cellar :any
@@ -26,14 +27,15 @@ class Sqlite < Formula
   option "with-dbstat", "Enable the 'dbstat' virtual table"
   option "with-json1", "Enable the JSON1 extension"
   option "with-session", "Enable the session extension"
-  option "with-regexp", "Enable regular expressions for SQL queries"
+  option "with-migemo", "Enable migemo function"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
 
-  if build.with? "regexp"
+  if build.with? "migemo"
     depends_on "pkg-config" => :build
     depends_on "pcre"
+    depends_on "cmigemo"
   end
 
   resource "functions" do
@@ -42,11 +44,11 @@ class Sqlite < Formula
     sha256 "991b40fe8b2799edc215f7260b890f14a833512c9d9896aa080891330ffe4052"
   end
 
-  resource "regexp" do
-    url "https://raw.githubusercontent.com/ralight/sqlite3-pcre/c98da412b431edb4db22d3245c99e6c198d49f7a/pcre.c",
+  resource "migemo" do
+    url "https://gist.githubusercontent.com/waltarix/9735e09cc405bc785d95024360ecb651/raw/211d95279a568e8f3b5287bf5b21386e34096299/migemo.c",
       :using => :nounzip
-    version "2010-02-08"
-    sha256 "3173f4fa57f311c688886479873edce0f776f9567c8a9537a4747e9b4bb2c119"
+    version "2017-03-04"
+    sha256 "b05916c734483156e2f9b6b98c6019f8d34f4da2256abb8fb5261089d5793b5a"
   end
 
   resource "docs" do
@@ -99,17 +101,20 @@ class Sqlite < Formula
       lib.install "libsqlitefunctions.dylib"
     end
 
-    if build.with? "regexp"
-      buildpath.install resource("regexp")
+    if build.with? "migemo"
+      pcre = Formula["pcre"]
+      migemo = Formula["cmigemo"]
+
+      buildpath.install resource("migemo")
       ENV.append_path "PKG_CONFIG_PATH", lib + "pkgconfig"
-      ENV.append "CFLAGS", `pkg-config --cflags sqlite3 libpcre`.chomp.strip
-      ENV.append "LDFLAGS", `pkg-config --libs libpcre`.chomp.strip
+      ENV.append "CFLAGS", "-I#{pcre.include} -I#{migemo.include}"
+      ENV.append "LDFLAGS", "-L#{pcre.lib} -lpcre -L#{migemo.lib} -lmigemo"
       system ENV.cc, "-fno-common",
                      "-dynamiclib",
-                     "pcre.c",
-                     "-o", "libsqliteregexp.dylib",
+                     "migemo.c",
+                     "-o", "libsqlitemigemo.dylib",
                      *(ENV.cflags.split + ENV.ldflags.split)
-      lib.install "libsqliteregexp.dylib"
+      lib.install "libsqlitemigemo.dylib"
     end
 
     doc.install resource("docs") if build.with? "docs"
@@ -117,7 +122,7 @@ class Sqlite < Formula
 
   def caveats
     s = ""
-    if build.with?("functions") || build.with?("regexp")
+    if build.with?("functions") || build.with?("migemo")
       s += <<-EOS.undent
         Usage instructions for applications calling the sqlite3 API functions:
 
