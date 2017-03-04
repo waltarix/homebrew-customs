@@ -5,7 +5,7 @@ class Sqlite < Formula
   url "https://sqlite.org/2017/sqlite-autoconf-3170000.tar.gz"
   version "3.17.0"
   sha256 "a4e485ad3a16e054765baf6371826b5000beed07e626510896069c0bf013874c"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -35,7 +35,7 @@ class Sqlite < Formula
   if build.with? "migemo"
     depends_on "pkg-config" => :build
     depends_on "pcre"
-    depends_on "cmigemo"
+    depends_on "waltarix/customs/cmigemo"
   end
 
   resource "functions" do
