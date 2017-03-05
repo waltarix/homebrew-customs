@@ -1,11 +1,10 @@
-# forked from https://github.com/sorin-ionescu/homebrew-personal/blob/c110adcb6a276b4c4e393e5d7e2b5f49af1f9ba1/sqlite.rb
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
   url "https://sqlite.org/2017/sqlite-autoconf-3170000.tar.gz"
   version "3.17.0"
   sha256 "a4e485ad3a16e054765baf6371826b5000beed07e626510896069c0bf013874c"
-  revision 2
+  revision 3
 
   bottle do
     cellar :any
@@ -27,28 +26,16 @@ class Sqlite < Formula
   option "with-dbstat", "Enable the 'dbstat' virtual table"
   option "with-json1", "Enable the JSON1 extension"
   option "with-session", "Enable the session extension"
-  option "with-migemo", "Enable migemo function"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
-
-  if build.with? "migemo"
-    depends_on "pkg-config" => :build
-    depends_on "pcre"
-    depends_on "waltarix/customs/cmigemo"
-  end
+  depends_on "pcre"
+  depends_on "waltarix/customs/cmigemo"
 
   resource "functions" do
     url "https://sqlite.org/contrib/download/extension-functions.c?get=25", :using => :nounzip
     version "2010-02-06"
     sha256 "991b40fe8b2799edc215f7260b890f14a833512c9d9896aa080891330ffe4052"
-  end
-
-  resource "migemo" do
-    url "https://gist.githubusercontent.com/waltarix/9735e09cc405bc785d95024360ecb651/raw/211d95279a568e8f3b5287bf5b21386e34096299/migemo.c",
-      :using => :nounzip
-    version "2017-03-04"
-    sha256 "b05916c734483156e2f9b6b98c6019f8d34f4da2256abb8fb5261089d5793b5a"
   end
 
   resource "docs" do
@@ -57,7 +44,20 @@ class Sqlite < Formula
     sha256 "3102d9eab879074776216357e4c9e272f63d0cda975a0819ec5baba5e0922ff6"
   end
 
+  def pour_bottle?
+    false
+  end
+
+  patch :DATA
+
   def install
+    pcre = Formula["pcre"]
+    migemo = Formula["cmigemo"]
+    ENV.append "LDFLAGS", "-L#{pcre.lib} -lpcre"
+    ENV.append "LDFLAGS", "-L#{migemo.lib} -lmigemo"
+    ENV.append "CPPFLAGS", "-I#{pcre.include}"
+    ENV.append "CPPFLAGS", "-I#{migemo.include}"
+
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
     # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
     # applications. Set to 250000 (Same value used in Debian and Ubuntu).
@@ -100,29 +100,12 @@ class Sqlite < Formula
                      *ENV.cflags.to_s.split
       lib.install "libsqlitefunctions.dylib"
     end
-
-    if build.with? "migemo"
-      pcre = Formula["pcre"]
-      migemo = Formula["cmigemo"]
-
-      buildpath.install resource("migemo")
-      ENV.append_path "PKG_CONFIG_PATH", lib + "pkgconfig"
-      ENV.append "CFLAGS", "-I#{pcre.include} -I#{migemo.include}"
-      ENV.append "LDFLAGS", "-L#{pcre.lib} -lpcre -L#{migemo.lib} -lmigemo"
-      system ENV.cc, "-fno-common",
-                     "-dynamiclib",
-                     "migemo.c",
-                     "-o", "libsqlitemigemo.dylib",
-                     *(ENV.cflags.split + ENV.ldflags.split)
-      lib.install "libsqlitemigemo.dylib"
-    end
-
     doc.install resource("docs") if build.with? "docs"
   end
 
   def caveats
     s = ""
-    if build.with?("functions") || build.with?("migemo")
+    if build.with? "functions"
       s += <<-EOS.undent
         Usage instructions for applications calling the sqlite3 API functions:
 
@@ -176,3 +159,156 @@ class Sqlite < Formula
     assert_equal %w[Sue Tim Bob], names
   end
 end
+
+__END__
+diff --git a/sqlite3.c b/sqlite3.c
+index dbf4d56..7caf020 100644
+--- a/sqlite3.c
++++ b/sqlite3.c
+@@ -139414,6 +139414,8 @@ SQLITE_PRIVATE int sqlite3Json1Init(sqlite3*);
+ SQLITE_PRIVATE int sqlite3Fts5Init(sqlite3*);
+ #endif
+ 
++SQLITE_PRIVATE int sqlite3MigemoInit(sqlite3*);
++
+ #ifndef SQLITE_AMALGAMATION
+ /* IMPLEMENTATION-OF: R-46656-45156 The sqlite3_version[] string constant
+ ** contains the text of SQLITE_VERSION macro. 
+@@ -142420,6 +142422,10 @@ static int openDatabase(
+   }
+ #endif
+ 
++  if( !db->mallocFailed && rc==SQLITE_OK){
++    rc = sqlite3MigemoInit(db);
++  }
++
+   /* -DSQLITE_DEFAULT_LOCKING_MODE=1 makes EXCLUSIVE the default locking
+   ** mode.  -DSQLITE_DEFAULT_LOCKING_MODE=0 make NORMAL the default locking
+   ** mode.  Doing nothing at all also makes NORMAL the default.
+@@ -180462,6 +180468,126 @@ SQLITE_API int sqlite3_json_init(
+ #endif /* !defined(SQLITE_CORE) || defined(SQLITE_ENABLE_JSON1) */
+ 
+ /************** End of json1.c ***********************************************/
++/************** Begin file migemo.c ********************************************/
++
++#include <pcre.h>
++#include "migemo.h"
++
++SQLITE_EXTENSION_INIT1
++
++typedef struct {
++  char *s;
++  pcre *p;
++  pcre_extra *e;
++} cache_entry;
++
++#ifndef CACHE_SIZE
++#define CACHE_SIZE 16
++#endif
++
++static void func_migemo(sqlite3_context *ctx, int argc, sqlite3_value **argv){
++  const char *re, *str;
++  pcre *p;
++  pcre_extra *e;
++
++  assert(argc == 2);
++
++  re = (const char *) sqlite3_value_text(argv[0]);
++  if (!re) {
++    sqlite3_result_error(ctx, "no word", -1);
++    return;
++  }
++
++  str = (const char *) sqlite3_value_text(argv[1]);
++  if (!str) {
++    str = "";
++  }
++
++  /* simple LRU cache */
++  {
++    int i;
++    int found = 0;
++    cache_entry *cache = sqlite3_user_data(ctx);
++
++    assert(cache);
++
++    for (i = 0; i < CACHE_SIZE && cache[i].s; i++)
++      if (strcmp(re, cache[i].s) == 0) {
++        found = 1;
++        break;
++      }
++    if (found) {
++      if (i > 0) {
++        cache_entry c = cache[i];
++        memmove(cache + 1, cache, i * sizeof(cache_entry));
++        cache[0] = c;
++      }
++    }
++    else {
++      cache_entry c;
++      const char *err;
++      int pos;
++
++      migemo *m;
++      m = migemo_open("/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict");
++      unsigned char *migemo_pattern;
++      migemo_pattern = migemo_query(m, (const unsigned char*)re);
++
++      c.p = pcre_compile((char*)migemo_pattern, 0, &err, &pos, NULL);
++
++      migemo_release(m, migemo_pattern);
++      migemo_close(m);
++
++      if (!c.p) {
++        char *e2 = sqlite3_mprintf("%s: %s (offset %d)", re, err, pos);
++        sqlite3_result_error(ctx, e2, -1);
++        sqlite3_free(e2);
++        return;
++      }
++      c.e = pcre_study(c.p, 0, &err);
++      c.s = strdup(re);
++      if (!c.s) {
++        sqlite3_result_error(ctx, "strdup: ENOMEM", -1);
++        pcre_free(c.p);
++        pcre_free(c.e);
++        return;
++      }
++      i = CACHE_SIZE - 1;
++      if (cache[i].s) {
++        free(cache[i].s);
++        assert(cache[i].p);
++        pcre_free(cache[i].p);
++        pcre_free(cache[i].e);
++      }
++      memmove(cache + 1, cache, i * sizeof(cache_entry));
++      cache[0] = c;
++    }
++    p = cache[0].p;
++    e = cache[0].e;
++  }
++
++  {
++    int rc;
++    assert(p);
++    rc = pcre_exec(p, e, str, strlen(str), 0, 0, NULL, 0);
++    sqlite3_result_int(ctx, rc >= 0);
++    return;
++  }
++}
++
++SQLITE_PRIVATE int sqlite3MigemoInit(sqlite3 *db){
++  cache_entry *cache = calloc(CACHE_SIZE, sizeof(cache_entry));
++  if (!cache) return SQLITE_ERROR;
++  sqlite3_create_function(db, "migemo", 2, SQLITE_UTF8, cache, func_migemo, NULL, NULL);
++  return SQLITE_OK;
++}
++
++SQLITE_API int sqlite3_migemo_init(sqlite3 *db, char **err, const sqlite3_api_routines *api){
++  SQLITE_EXTENSION_INIT2(api)
++  return sqlite3MigemoInit(db);
++}
++
++/************** End of migemo.c ***********************************************/
+ /************** Begin file fts5.c ********************************************/
+ 
+ 
