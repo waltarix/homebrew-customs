@@ -1,27 +1,18 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  url "https://ftpmirror.gnu.org/coreutils/coreutils-8.26.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.26.tar.xz"
-  sha256 "155e94d748f8e2bc327c66e0cbebdb8d6ab265d2f37c3c928f7bf6c3beba9a8e"
+  url "https://ftpmirror.gnu.org/coreutils/coreutils-8.27.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.27.tar.xz"
+  sha256 "8891d349ee87b9ff7870f52b6d9312a9db672d2439d289bc57084771ca21656b"
 
   bottle do
-    sha256 "9409628a4780999323b47bbc5f7e3d622360766995e5b2d97fabbc9930b6d78d" => :sierra
-    sha256 "c37e171b4969db30c4ac11d6eda9297d0ad7253061569d8a8d849592664c8fd5" => :el_capitan
-    sha256 "fc6fc46b6c96c75424b4c0eeffaf3f493dfc605940960d4c35c17fdb2e598ed5" => :yosemite
-  end
-
-  def pour_bottle?
-    false
-  end
-
-  patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1408362/raw/32ca1efa21a211af4c2c76e5e7dfb272d34f6213/coreutils-ls-utf8mac.patch"
-    sha256 "a1e006ccc5139afac2989d2e63b5476c07538af1b8b965ca500e99434581111c"
+    sha256 "a951d21ffbf3407ca84356d369ed6009d248b263587b79f644d9a95300465fa6" => :sierra
+    sha256 "dafd72ff298ed109503928a3d7cf1623327b4bc65318e99b48f3415b7c469ac8" => :el_capitan
+    sha256 "5d636c1ad28b1ef25c140b1486fdb368486bcca563901ad543d62ce1bd5f8b70" => :yosemite
   end
 
   head do
-    url "git://git.sv.gnu.org/coreutils"
+    url "https://git.savannah.gnu.org/git/coreutils.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -37,6 +28,15 @@ class Coreutils < Formula
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
   conflicts_with "aardvark_shell_utils", :because => "both install `realpath` binaries"
+
+  def pour_bottle?
+    false
+  end
+
+  patch :p1 do
+    url "https://gist.githubusercontent.com/waltarix/1408362/raw/0b8c487946b83a106af861b524ff4f42565b2989/coreutils-ls-utf8mac.patch"
+    sha256 "1e9fb1fc5ad65ed38de833b068ad726f23d6d5a9d529030a78bbd7a2e15b7a36"
+  end
 
   def install
     # Work around unremovable, nested dirs bug that affects lots of
