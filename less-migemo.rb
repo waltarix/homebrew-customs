@@ -24,7 +24,7 @@ class LessMigemo < Formula
   patch :DATA
 
   depends_on "pcre"
-  depends_on "homebrew/dupes/ncurses"
+  depends_on "ncurses"
   depends_on "waltarix/customs/cmigemo"
 
   def install

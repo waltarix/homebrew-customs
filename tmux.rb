@@ -25,7 +25,7 @@ class Tmux < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libevent"
-  depends_on "homebrew/dupes/ncurses"
+  depends_on "ncurses"
   depends_on "waltarix/customs/wcwidth-cjk"
 
   stable do
