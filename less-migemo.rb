@@ -1,15 +1,14 @@
 class LessMigemo < Formula
   desc "Pager program similar to more"
   homepage "http://www.greenwoodsoftware.com/less/index.html"
-  url "https://ftpmirror.gnu.org/less/less-481.tar.gz"
-  mirror "http://www.greenwoodsoftware.com/less/less-481.tar.gz"
-  sha256 "3fa38f2cf5e9e040bb44fffaa6c76a84506e379e47f5a04686ab78102090dda5"
+  url "https://ftpmirror.gnu.org/less/less-487.tar.gz"
+  mirror "http://www.greenwoodsoftware.com/less/less-487.tar.gz"
+  sha256 "f3dc8455cb0b2b66e0c6b816c00197a71bf6d1787078adeee0bcf2aea4b12706"
 
   bottle do
-    rebuild 2
-    sha256 "5894668335c7ba7b3bce8d7e3db1fd899e05db8a251e9ac39d33dd0be94b6d88" => :sierra
-    sha256 "b64e1e151c141f2d9bd67529e1c877542e337447c9aae4ab42409a38ee06e80d" => :el_capitan
-    sha256 "1a3f2691a70564b5e4935d01fc6760a97a42b7a4cf372b6feb55f197925bf0d9" => :yosemite
+    sha256 "9ca07bd92196f4fbf122054b3ee394f43f14173b816a5217f05661453c13dd23" => :sierra
+    sha256 "877f32f255528633a67c4ae76dfda423315473a0780f8f066b7d78af4d58bbc8" => :el_capitan
+    sha256 "5be9c4ad7e6eda596a6828d1f49c70612ac02e2df6a65254e99dc1a34ecf1095" => :yosemite
   end
 
   devel do
@@ -46,10 +45,10 @@ end
 
 __END__
 diff --git a/funcs.h b/funcs.h
-index 53550f0..82fc98b 100644
+index ac63c37..c390796 100644
 --- a/funcs.h
 +++ b/funcs.h
-@@ -209,6 +209,7 @@
+@@ -210,6 +210,7 @@
  	public void opt__P ();
  	public void opt_b ();
  	public void opt_i ();
@@ -58,10 +57,10 @@ index 53550f0..82fc98b 100644
  	public void opt_D ();
  	public void opt_x ();
 diff --git a/optfunc.c b/optfunc.c
-index c3bb6b2..9eb9513 100644
+index 44f8e5f..09e25a9 100644
 --- a/optfunc.c
 +++ b/optfunc.c
-@@ -473,6 +473,26 @@ opt_i(type, s)
+@@ -474,6 +474,26 @@ opt_i(type, s)
  }
  
  /*
@@ -89,7 +88,7 @@ index c3bb6b2..9eb9513 100644
   */
  	/*ARGSUSED*/
 diff --git a/opttbl.c b/opttbl.c
-index b896391..8467cec 100644
+index 0383837..ae559b8 100644
 --- a/opttbl.c
 +++ b/opttbl.c
 @@ -53,6 +53,7 @@ public int quit_on_intr;	/* Quit on interrupt */
@@ -124,7 +123,7 @@ index b896391..8467cec 100644
  		BOOL|NO_TOGGLE, OPT_OFF, &no_keypad, NULL,
  		{
 diff --git a/pattern.c b/pattern.c
-index 71141c7..c6458ca 100644
+index 97a73e9..7547863 100644
 --- a/pattern.c
 +++ b/pattern.c
 @@ -13,8 +13,14 @@
@@ -185,11 +184,11 @@ index 71141c7..c6458ca 100644
  #if HAVE_RE_COMP
  	PARG parg;
 diff --git a/search.c b/search.c
-index e824acb..552ec01 100644
+index 750b74a..dac68e8 100644
 --- a/search.c
 +++ b/search.c
-@@ -1036,6 +1036,16 @@ chg_caseless()
- 		clear_pattern(&search_info);
+@@ -358,6 +358,16 @@ undo_search()
+ #endif
  }
  
 +/*
@@ -204,4 +203,4 @@ index e824acb..552ec01 100644
 +
  #if HILITE_SEARCH
  /*
-  * Find matching text which is currently on screen and highlight it.
+  * Clear the hilite list.
