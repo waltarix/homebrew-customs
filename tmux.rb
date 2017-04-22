@@ -3,6 +3,7 @@ class Tmux < Formula
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux/releases/download/2.4/tmux-2.4.tar.gz"
   sha256 "757d6b13231d0d9dd48404968fc114ac09e005d475705ad0cd4b7166f799b349"
+  revision 1
 
   bottle do
     sha256 "d55216b5c284afa3916606af62d7751e87aa091fea87096e4bc8b66d8d0060e1" => :sierra
@@ -33,6 +34,8 @@ class Tmux < Formula
       url "https://gist.githubusercontent.com/waltarix/1399751/raw/fadd3251f09a8f289b0334500106f377cb36cefc/tmux-pane-border-ascii.patch"
       sha256 "5216d7ba6529a71a1eb51642d713d83cfd8c187acfa45413a594f11ab88f1325"
     end
+
+    patch :DATA
   end
 
   resource "completion" do
@@ -76,3 +79,18 @@ class Tmux < Formula
     system "#{bin}/tmux", "-V"
   end
 end
+
+__END__
+diff --git a/input.c b/input.c
+index 0b667390..674d60ba 100644
+--- a/input.c
++++ b/input.c
+@@ -1032,7 +1032,7 @@ input_print(struct input_ctx *ictx)
+ 		ictx->cell.cell.attr &= ~GRID_ATTR_CHARSET;
+ 
+ 	utf8_set(&ictx->cell.cell.data, ictx->ch);
+-	screen_write_collect_add(&ictx->ctx, &ictx->cell.cell);
++	screen_write_cell(&ictx->ctx, &ictx->cell.cell);
+ 
+ 	ictx->cell.cell.attr &= ~GRID_ATTR_CHARSET;
+ 
