@@ -1,14 +1,13 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/releases/download/2.3/tmux-2.3.tar.gz"
-  sha256 "55313e132f0f42de7e020bf6323a1939ee02ab79c48634aa07475db41573852b"
+  url "https://github.com/tmux/tmux/releases/download/2.4/tmux-2.4.tar.gz"
+  sha256 "757d6b13231d0d9dd48404968fc114ac09e005d475705ad0cd4b7166f799b349"
 
   bottle do
-    cellar :any
-    sha256 "61149e67e9dbbbe9dd88d347582883cfabbaeb314368c53d19dff4fe4d2aeb12" => :sierra
-    sha256 "a0964ec917ea8fe42f82348d1bee599f93ffefba1e1910dd13c101b5155cd203" => :el_capitan
-    sha256 "1705df1d70791c49ab907dab166e573848c435d4c56787be664347dbfa50edcd" => :yosemite
+    sha256 "d55216b5c284afa3916606af62d7751e87aa091fea87096e4bc8b66d8d0060e1" => :sierra
+    sha256 "b33e9ad74318bbe2966d439f10613a48257cd4a206d18a18a640d41fd45f4c10" => :el_capitan
+    sha256 "0c73eaa301b97cb422a312beeb2964b1490e3a132ff4e2a56609845393b74c51" => :yosemite
   end
 
   head do
@@ -25,13 +24,14 @@ class Tmux < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libevent"
+  depends_on "utf8proc" => :optional
   depends_on "ncurses"
   depends_on "waltarix/customs/wcwidth-cjk"
 
   stable do
     patch :p1 do
-      url "https://gist.githubusercontent.com/waltarix/1399751/raw/6c8f54ec8e55823fb99b644a8a5603847cb60882/tmux-pane-border-ascii.patch"
-      sha256 "2019e69de97882b11ba0bf0dcbf29d25f4744576a33ad9909a62329609bfdf40"
+      url "https://gist.githubusercontent.com/waltarix/1399751/raw/fadd3251f09a8f289b0334500106f377cb36cefc/tmux-pane-border-ascii.patch"
+      sha256 "5216d7ba6529a71a1eb51642d713d83cfd8c187acfa45413a594f11ab88f1325"
     end
   end
 
@@ -43,16 +43,22 @@ class Tmux < Formula
   def install
     system "sh", "autogen.sh" if build.head?
 
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+    ]
+
+    args << "--enable-utf8proc" if build.with?("utf8proc")
+
     ncurses = Formula["ncurses"]
     wcwidth = Formula["wcwidth-cjk"]
-
-    ENV.append "LDFLAGS", "-lresolv"
+    ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
     ENV.append "LDFLAGS", "-L#{wcwidth.lib} -lwcwidth-cjk"
-    ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
+
+    ENV.append "LDFLAGS", "-lresolv"
+    system "./configure", *args
 
     system "make", "install"
 
