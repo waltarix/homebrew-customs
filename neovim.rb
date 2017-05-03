@@ -1,8 +1,8 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io"
-  url "https://github.com/neovim/neovim/archive/v0.1.7.tar.gz"
-  sha256 "d8f885d019b1ad608f36ae23b8f1b15b7e33585e16f7514666ab6c9809bb4b7e"
+  url "https://github.com/neovim/neovim/archive/v0.2.0.tar.gz"
+  sha256 "72e263f9d23fe60403d53a52d4c95026b0be428c1b9c02b80ab55166ea3f62b5"
   head "https://github.com/neovim/neovim.git", :shallow => false
 
   option "with-dev", "Compile a Dev build. Enables debug information, logging,
@@ -73,6 +73,7 @@ class Neovim < Formula
 
       if OS.mac?
         cmake_args += ["-DJEMALLOC_LIBRARY=#{Formula["jemalloc"].opt_lib}/libjemalloc.a"] if build.with?("jemalloc")
+        cmake_args += ["-DMSGPACK_LIBRARY=#{Formula["msgpack"].opt_lib}/libmsgpackc.2.dylib"]
         cmake_args += ["-DIconv_INCLUDE_DIRS:PATH=/usr/include",
                        "-DIconv_LIBRARIES:PATH=/usr/lib/libiconv.dylib"]
       end
@@ -89,10 +90,8 @@ class Neovim < Formula
       After installing or upgrading, run the "CheckHealth" command:
           :CheckHealth
 
-      To use your existing Vim configuration:
-          ln -s ~/.vim ~/.config/nvim
-          ln -s ~/.vimrc ~/.config/nvim/init.vim
-      See ':help nvim' for more information.
+      See ':help nvim-from-vim' for information about how to use
+      your existing Vim configuration with Neovim.
 
       Breaking changes (if any) are documented at:
           https://github.com/neovim/neovim/wiki/Following-HEAD
