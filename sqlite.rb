@@ -1,18 +1,18 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2017/sqlite-autoconf-3180000.tar.gz"
-  version "3.18.0"
-  sha256 "3757612463976e7d08c5e9f0af3021613fc24bbcfe1c51197d6776b9ece9ac5c"
+  url "https://sqlite.org/2017/sqlite-autoconf-3190200.tar.gz"
+  version "3.19.2"
+  sha256 "ca5361fb01cc3ad63d6fd4eb2cb0b6398e629595896d3558f7e121d37dac2ffc"
 
   bottle do
     cellar :any
-    sha256 "38e50995fa5295ec3873c87e0cb2f8c68cb02109b30f27d5562972d4b28dcfc1" => :sierra
-    sha256 "4f5fd757fbfab9c3576c23086fc2fb9628516227cef4b448041410a90fc49e96" => :el_capitan
-    sha256 "231f85b981fb70cf871297ea7701cf8cd6f1ac00189b0dcbaeb172b001cc58db" => :yosemite
+    sha256 "0b676bdd1bbf66128678a9c50f72c0706b9a33fa2a614dbc04ad404813431201" => :sierra
+    sha256 "507f5277756cae0686a250a7206928505860d26bd071e136f2cef1c119f3ac30" => :el_capitan
+    sha256 "5c6a7591359e9b4017239202535a237fee0aca215be7e12f0b962f9b3da2ea2d" => :yosemite
   end
 
-  keg_only :provided_by_osx, "macOS provides an older sqlite3."
+  keg_only :provided_by_osx, "macOS provides an older sqlite3"
 
   option "with-docs", "Install HTML documentation"
   option "without-rtree", "Disable the R*Tree index module"
@@ -38,9 +38,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://www.sqlite.org/2017/sqlite-doc-3180000.zip"
-    version "3.18.0"
-    sha256 "6f763eba9f51cb1096d1d40fbdd7ff974203060ddb892fc735adb2d7d42f1dad"
+    url "https://www.sqlite.org/2017/sqlite-doc-3190200.zip"
+    version "3.19.2"
+    sha256 "0d136abeea8d045ab7acef64ce84028dacb418584fa5a259e7ab4233ef21ff46"
   end
 
   def pour_bottle?
@@ -160,10 +160,10 @@ end
 
 __END__
 diff --git a/sqlite3.c b/sqlite3.c
-index af83f89..6c1a3c0 100644
+index 657a54e..d1c2fca 100644
 --- a/sqlite3.c
 +++ b/sqlite3.c
-@@ -139935,6 +139935,8 @@ SQLITE_PRIVATE int sqlite3Json1Init(sqlite3*);
+@@ -140494,6 +140494,8 @@ SQLITE_PRIVATE int sqlite3Json1Init(sqlite3*);
  SQLITE_PRIVATE int sqlite3Fts5Init(sqlite3*);
  #endif
  
@@ -172,7 +172,7 @@ index af83f89..6c1a3c0 100644
  #ifndef SQLITE_AMALGAMATION
  /* IMPLEMENTATION-OF: R-46656-45156 The sqlite3_version[] string constant
  ** contains the text of SQLITE_VERSION macro. 
-@@ -142956,6 +142958,10 @@ static int openDatabase(
+@@ -143515,6 +143517,10 @@ static int openDatabase(
    }
  #endif
  
@@ -183,7 +183,7 @@ index af83f89..6c1a3c0 100644
    /* -DSQLITE_DEFAULT_LOCKING_MODE=1 makes EXCLUSIVE the default locking
    ** mode.  -DSQLITE_DEFAULT_LOCKING_MODE=0 make NORMAL the default locking
    ** mode.  Doing nothing at all also makes NORMAL the default.
-@@ -181165,6 +181171,126 @@ SQLITE_API int sqlite3_json_init(
+@@ -181826,6 +181832,126 @@ SQLITE_API int sqlite3_json_init(
  #endif /* !defined(SQLITE_CORE) || defined(SQLITE_ENABLE_JSON1) */
  
  /************** End of json1.c ***********************************************/
