@@ -1,18 +1,20 @@
-require "language/go"
-
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.16.7.tar.gz"
-  sha256 "9676664e02393d19dd0f0a1ae4cf5d20e3fffcba666a0cffc40ff6c590c67760"
+  url "https://github.com/junegunn/fzf/archive/0.16.8.tar.gz"
+  sha256 "daef99f67cff3dad261dbcf2aef995bb78b360bcc7098d7230cb11674e1ee1d4"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2f259ed32511d67e38a21b589ce65f306d9dfca4713fe3363af9808a8c4cdf11" => :sierra
-    sha256 "3a9cf16aeb4cfda77b45fe55057267420e8b39cb5155138dce71bc62106b8ab8" => :el_capitan
-    sha256 "364aecd801beeee28cae20d017b1081e2ef3f15b289c42fda4b71cc30ef34890" => :yosemite
+    rebuild 1
+    sha256 "81ec0a71e0d302ff73d384c10b00aec41f6400a1eff4192dbbba7be390a0206d" => :sierra
+    sha256 "e6b07839476ef71b8e61a6500a5f603399fb816bfb30090d56643da66bd0d432" => :el_capitan
+    sha256 "e7167879c97aac2d9337cce777d6f315b07df7b1c316114d6c4d3362134ffb58" => :yosemite
   end
+
+  depends_on "glide" => :build
+  depends_on "go" => :build
 
   def pour_bottle?
     false
@@ -20,43 +22,17 @@ class Fzf < Formula
 
   patch :DATA
 
-  depends_on "go" => :build
-
-  go_resource "github.com/junegunn/go-isatty" do
-    url "https://github.com/junegunn/go-isatty.git",
-        :revision => "66b8e73f3f5cda9f96b69efd03dd3d7fc4a5cdb8"
-  end
-
-  go_resource "github.com/junegunn/go-runewidth" do
-    url "https://github.com/junegunn/go-runewidth.git",
-        :revision => "14207d285c6c197daabb5c9793d63e7af9ab2d50"
-  end
-
-  go_resource "github.com/junegunn/go-shellwords" do
-    url "https://github.com/junegunn/go-shellwords.git",
-        :revision => "33bd8f1ebe16d6e5eb688cc885749a63059e9167"
-  end
-
-  go_resource "golang.org/x/crypto" do
-    url "https://go.googlesource.com/crypto.git",
-        :revision => "453249f01cfeb54c3d549ddb75ff152ca243f9d8"
-  end
-
   def install
+    ENV["GLIDE_HOME"] = buildpath/"glide_home"
     ENV["GOPATH"] = buildpath
-    mkdir_p buildpath/"src/github.com/junegunn"
+    (buildpath/"src/github.com/junegunn").mkpath
     ln_s buildpath, buildpath/"src/github.com/junegunn/fzf"
-    Language::Go.stage_deps resources, buildpath/"src"
+    system "glide", "install"
 
-    inreplace buildpath/"src/github.com/junegunn/go-runewidth/runewidth.go",
+    inreplace buildpath/"vendor/github.com/mattn/go-runewidth/runewidth.go",
       "{0x2580, 0x258F}, ", ""
 
-    cd buildpath/"src/fzf" do
-      system "go", "build"
-      bin.install "fzf"
-    end
-
-    prefix.install %w[install uninstall LICENSE]
+    system "go", "build", "-o", bin/"fzf", "-ldflags", "-X main.revision=brew"
     (prefix/"shell").install %w[bash zsh fish].map { |s| "shell/key-bindings.#{s}" }
     (prefix/"shell").install %w[bash zsh].map { |s| "shell/completion.#{s}" }
     (prefix/"plugin").install "plugin/fzf.vim"
@@ -81,10 +57,10 @@ end
 
 __END__
 diff --git a/src/result.go b/src/result.go
-index e071a9e..23ef4f8 100644
+index 0b1fbf0..59ce4ee 100644
 --- a/src/result.go
 +++ b/src/result.go
-@@ -101,7 +101,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -100,7 +100,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  	if len(itemColors) == 0 {
  		var offsets []colorOffset
  		for _, off := range matchOffsets {
@@ -93,7 +69,7 @@ index e071a9e..23ef4f8 100644
  		}
  		return offsets
  	}
-@@ -145,7 +145,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -144,7 +144,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  		if curr != 0 && idx > start {
  			if curr == -1 {
  				colors = append(colors, colorOffset{
@@ -103,10 +79,10 @@ index e071a9e..23ef4f8 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 5aab6cd..0f33907 100644
+index fdd3caa..2cea0f3 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -638,7 +638,7 @@ func (t *Terminal) placeCursor() {
+@@ -640,7 +640,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
@@ -115,7 +91,7 @@ index 5aab6cd..0f33907 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -769,7 +769,7 @@ func (t *Terminal) printItem(result *Result, line int, i int, current bool) {
+@@ -771,7 +771,7 @@ func (t *Terminal) printItem(result *Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
@@ -125,10 +101,10 @@ index 5aab6cd..0f33907 100644
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
 diff --git a/src/tui/light.go b/src/tui/light.go
-index be6950c..ba465fa 100644
+index e690ef9..8567878 100644
 --- a/src/tui/light.go
 +++ b/src/tui/light.go
-@@ -640,22 +640,22 @@ func (w *LightWindow) drawBorder() {
+@@ -641,22 +641,22 @@ func (w *LightWindow) drawBorder() {
  
  func (w *LightWindow) drawBorderHorizontal() {
  	w.Move(0, 0)
