@@ -1,16 +1,15 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.16.8.tar.gz"
-  sha256 "daef99f67cff3dad261dbcf2aef995bb78b360bcc7098d7230cb11674e1ee1d4"
-  revision 1
+  url "https://github.com/junegunn/fzf/archive/0.16.9.tar.gz"
+  sha256 "dd9434576c68313481613a5bd52dbf623eee37a5c87f7bb66ca71ac8add5ff94"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6b639612cd777a1e7347a8a89a357ae8cb7f0ee2a65a2f73c70907bf96f63a03" => :sierra
-    sha256 "4eb00250956dd5f1024f8385da7426befcdd3c989a385acb40f2d5004e10dd1d" => :el_capitan
-    sha256 "df146b34ec070efa9a45a598dd745b448f2c26210f7d6300bb5956f236a3cc29" => :yosemite
+    sha256 "695392422e210b0ae14ef29e15b73df12eb2ac0e8dd500925fdd11f4a12081cd" => :sierra
+    sha256 "7758febdcef430654fd0f405fadc817a1f3156ceeb780f629afbc64f25923f2b" => :el_capitan
+    sha256 "72513003e409f0bcf3ff9a07ffbe56dbabc419a426cc4ce1ce4fb6ab9834f0a4" => :yosemite
   end
 
   depends_on "glide" => :build
@@ -52,17 +51,17 @@ class Fzf < Formula
   end
 
   test do
-    (testpath/"list").write %w[hello world].join($/)
+    (testpath/"list").write %w[hello world].join($INPUT_RECORD_SEPARATOR)
     assert_equal "world", shell_output("cat #{testpath}/list | #{bin}/fzf -f wld").chomp
   end
 end
 
 __END__
 diff --git a/src/result.go b/src/result.go
-index 0b1fbf0..59ce4ee 100644
+index 2df101b..038d311 100644
 --- a/src/result.go
 +++ b/src/result.go
-@@ -100,7 +100,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -95,7 +95,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  	if len(itemColors) == 0 {
  		var offsets []colorOffset
  		for _, off := range matchOffsets {
@@ -71,7 +70,7 @@ index 0b1fbf0..59ce4ee 100644
  		}
  		return offsets
  	}
-@@ -144,7 +144,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -139,7 +139,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  		if curr != 0 && idx > start {
  			if curr == -1 {
  				colors = append(colors, colorOffset{
@@ -81,10 +80,10 @@ index 0b1fbf0..59ce4ee 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index fdd3caa..2cea0f3 100644
+index 8d0b6bf..0f4ef4e 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -640,7 +640,7 @@ func (t *Terminal) placeCursor() {
+@@ -645,7 +645,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
@@ -93,7 +92,7 @@ index fdd3caa..2cea0f3 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -771,7 +771,7 @@ func (t *Terminal) printItem(result *Result, line int, i int, current bool) {
+@@ -779,7 +779,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
@@ -103,10 +102,10 @@ index fdd3caa..2cea0f3 100644
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
 diff --git a/src/tui/light.go b/src/tui/light.go
-index e690ef9..8567878 100644
+index 7fc231f..c13a8a3 100644
 --- a/src/tui/light.go
 +++ b/src/tui/light.go
-@@ -641,22 +641,22 @@ func (w *LightWindow) drawBorder() {
+@@ -649,22 +649,22 @@ func (w *LightWindow) drawBorder() {
  
  func (w *LightWindow) drawBorderHorizontal() {
  	w.Move(0, 0)
