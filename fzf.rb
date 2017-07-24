@@ -1,15 +1,15 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.16.9.tar.gz"
-  sha256 "dd9434576c68313481613a5bd52dbf623eee37a5c87f7bb66ca71ac8add5ff94"
+  url "https://github.com/junegunn/fzf/archive/0.16.10.tar.gz"
+  sha256 "a6b9d8abcba4239d30201cc7911e9c305a5cd750081ce5cd389f8e7425f4dc93"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "695392422e210b0ae14ef29e15b73df12eb2ac0e8dd500925fdd11f4a12081cd" => :sierra
-    sha256 "7758febdcef430654fd0f405fadc817a1f3156ceeb780f629afbc64f25923f2b" => :el_capitan
-    sha256 "72513003e409f0bcf3ff9a07ffbe56dbabc419a426cc4ce1ce4fb6ab9834f0a4" => :yosemite
+    sha256 "21870f3a4c2a05bc4d2ea1df7d6a6df7617bd04d9265a7693c926b557ebfab16" => :sierra
+    sha256 "0e85372474f88cbc8fc09972891267c5bb63ccf96392ae15451ba585571de1c0" => :el_capitan
+    sha256 "110922fde8fb9de4adaf4591ce2aa50e8c98691590694af5fc08f18515adc166" => :yosemite
   end
 
   depends_on "glide" => :build
@@ -80,7 +80,7 @@ index 2df101b..038d311 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 8d0b6bf..0f4ef4e 100644
+index d6d2155..cfef7af 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
 @@ -645,7 +645,7 @@ func (t *Terminal) placeCursor() {
@@ -102,7 +102,7 @@ index 8d0b6bf..0f4ef4e 100644
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
 diff --git a/src/tui/light.go b/src/tui/light.go
-index 7fc231f..c13a8a3 100644
+index a7d12f3..72b9428 100644
 --- a/src/tui/light.go
 +++ b/src/tui/light.go
 @@ -649,22 +649,22 @@ func (w *LightWindow) drawBorder() {
