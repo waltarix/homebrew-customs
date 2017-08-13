@@ -1,37 +1,23 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "https://www.zsh.org/"
-  revision 1
+  url "https://www.zsh.org/pub/zsh-5.4.1.tar.xz"
+  mirror "https://downloads.sourceforge.net/project/zsh/zsh/5.4.1/zsh-5.4.1.tar.xz"
+  sha256 "94cbd57508287e8faa081424509738d496f5f41e32ed890e3a5498ce05d3633b"
 
-  stable do
-    url "https://downloads.sourceforge.net/project/zsh/zsh/5.3.1/zsh-5.3.1.tar.xz"
-    mirror "https://www.zsh.org/pub/zsh-5.3.1.tar.xz"
-    sha256 "fc886cb2ade032d006da8322c09a7e92b2309177811428b121192d44832920da"
-
-    # We cannot build HTML doc on HEAD, because yodl which is required for
-    # building zsh.texi is not available.
-    option "with-texi2html", "Build HTML documentation"
-    depends_on "texi2html" => [:build, :optional]
-
-    # Remove for > 5.3.1
-    # Upstream commit from 10 Jan 2017 "40305: fix some problems redisplaying
-    # command line after"
-    # See https://github.com/zsh-users/zsh/commit/34656ec2f00d6669cef56afdbffdd90639d7b465
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/0b7bf62/zsh/fix-autocomplete.patch"
-      sha256 "4f70882293e2d936734c7ddf40e296da7ef5972fa6f43973b9ca68bf028e2c38"
-    end
-  end
-
-  def pour_bottle?
-    false
+  bottle do
+    sha256 "9b02aa96d53e036e3fefe5c529afc8b2bd286a53494286002b1fc05fabe57204" => :sierra
+    sha256 "a9bc3bdff0e13ebec0af772b979881411d75abd95a282ab1a8c12c20aa772dd3" => :el_capitan
+    sha256 "c35759bba5a25a8eebd36d90427a4feacba8d41249ba272055fbfd05d3f92bf4" => :yosemite
   end
 
   head do
     url "https://git.code.sf.net/p/zsh/code.git"
     depends_on "autoconf" => :build
+  end
 
-    option "with-unicode9", "Build with Unicode 9 character width support"
+  def pour_bottle?
+    false
   end
 
   option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
@@ -69,6 +55,7 @@ class Zsh < Formula
       --with-tcsetpgrp
       --enable-locale
       --with-term-lib=ncursesw
+      zsh_cv_c_broken_wcwidth=no
     ]
 
     args << "--enable-unicode9" if build.with? "unicode9"
@@ -92,12 +79,10 @@ class Zsh < Formula
     else
       system "make", "install"
       system "make", "install.info"
-      system "make", "install.html" if build.with? "texi2html"
     end
   end
 
   test do
-    assert_equal "homebrew\n",
-      shell_output("#{bin}/zsh -c 'echo homebrew'")
+    assert_equal "homebrew", shell_output("#{bin}/zsh -c 'echo homebrew'").chomp
   end
 end
