@@ -4,6 +4,7 @@ class LessMigemo < Formula
   url "https://ftpmirror.gnu.org/less/less-487.tar.gz"
   mirror "http://www.greenwoodsoftware.com/less/less-487.tar.gz"
   sha256 "f3dc8455cb0b2b66e0c6b816c00197a71bf6d1787078adeee0bcf2aea4b12706"
+  revision 1
 
   bottle do
     sha256 "9ca07bd92196f4fbf122054b3ee394f43f14173b816a5217f05661453c13dd23" => :sierra
@@ -60,10 +61,11 @@ diff --git a/optfunc.c b/optfunc.c
 index 44f8e5f..09e25a9 100644
 --- a/optfunc.c
 +++ b/optfunc.c
-@@ -474,6 +474,26 @@ opt_i(type, s)
+@@ -473,6 +473,26 @@ opt_i(type, s)
+ 	}
  }
  
- /*
++/*
 + * Handler for the -% option.
 + */
 +	/*ARGSUSED*/
@@ -83,12 +85,11 @@ index 44f8e5f..09e25a9 100644
 +	}
 +}
 +
-+/*
+ /*
   * Handler for the -V option.
   */
- 	/*ARGSUSED*/
 diff --git a/opttbl.c b/opttbl.c
-index 0383837..ae559b8 100644
+index 0383837..4d05df2 100644
 --- a/opttbl.c
 +++ b/opttbl.c
 @@ -53,6 +53,7 @@ public int quit_on_intr;	/* Quit on interrupt */
@@ -112,7 +113,7 @@ index 0383837..ae559b8 100644
  		}
  	},
 +	{ '%', &migemo_optname,
-+		BOOL|HL_REPAINT, OPT_ON, &migemo_search, opt_migemo,
++		BOOL|HL_REPAINT, OPT_OFF, &migemo_search, opt_migemo,
 +		{
 +			"Don't use migemo",
 +			"Use migemo",
