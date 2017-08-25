@@ -10,17 +10,23 @@ class Cmigemo < Formula
   def install
     chmod 0755, "./configure"
     system "./configure", "--prefix=#{prefix}"
-    system "make", "osx"
-    system "make", "osx-dict"
+    system "make", make_target
+    system "make", "#{make_target}-dict"
     system "make", "-C", "dict", "utf-8" if build.stable?
     ENV.deparallelize # Install can fail on multi-core machines unless serialized
-    system "make", "osx-install"
+    system "make", "#{make_target}-install"
   end
 
   def caveats; <<-EOS.undent
     See also https://github.com/emacs-jp/migemo to use cmigemo with Emacs.
     You will have to save as migemo.el and put it in your load-path.
     EOS
+  end
+
+  def make_target
+    return "gcc" if OS.linux?
+
+    "osx"
   end
 end
 
