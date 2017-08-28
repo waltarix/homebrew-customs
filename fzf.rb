@@ -1,15 +1,15 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.16.11.tar.gz"
-  sha256 "e3067d4ad58d7be51eba9a35c06518cd7145c0cc297882796c7e40285f268a99"
+  url "https://github.com/junegunn/fzf/archive/0.17.0.tar.gz"
+  sha256 "23569faf64cd6831c09aad7030c8b4bace0eb7a979c580b33cc4e4f9ff303e29"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f855fcba17352ea5ae7b52ecf4e0a3112f3e8c6988baaa93b317b6c4efd943d6" => :sierra
-    sha256 "19aad16286c891fb9210e96e6394dcf05b4e2891fe32f465d89950bfbc5fadee" => :el_capitan
-    sha256 "9b374ee97ac0044d1a90e19e207475f44db8249f00ab55a5c7ae1408bbabb26f" => :yosemite
+    sha256 "b6be52e173c586f1abbac42f5195c2bb4a5cdeb6fc8463d49c9782e6410d594d" => :sierra
+    sha256 "61d511d1a04844a01e428847be842058a0967ce3f3762c5ff104de7bf6a91574" => :el_capitan
+    sha256 "90783c405a559cdee8f97c9a628cce8a523fd823e3e86f94e676acb6193d1678" => :yosemite
   end
 
   depends_on "glide" => :build
@@ -58,7 +58,7 @@ end
 
 __END__
 diff --git a/src/result.go b/src/result.go
-index 2df101b..038d311 100644
+index 289d83a..6b7a8c5 100644
 --- a/src/result.go
 +++ b/src/result.go
 @@ -95,7 +95,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
@@ -80,10 +80,10 @@ index 2df101b..038d311 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 8c7c1a8..7060236 100644
+index 5c66f44..0d715b9 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -646,7 +646,7 @@ func (t *Terminal) placeCursor() {
+@@ -650,7 +650,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
@@ -92,7 +92,7 @@ index 8c7c1a8..7060236 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -780,7 +780,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
+@@ -784,7 +784,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
@@ -102,10 +102,10 @@ index 8c7c1a8..7060236 100644
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
 diff --git a/src/tui/light.go b/src/tui/light.go
-index f905918..a35b366 100644
+index 15f4e01..ab4e102 100644
 --- a/src/tui/light.go
 +++ b/src/tui/light.go
-@@ -650,22 +650,22 @@ func (w *LightWindow) drawBorder() {
+@@ -652,22 +652,22 @@ func (w *LightWindow) drawBorder() {
  
  func (w *LightWindow) drawBorderHorizontal() {
  	w.Move(0, 0)
