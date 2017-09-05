@@ -1,14 +1,14 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  url "https://ftpmirror.gnu.org/coreutils/coreutils-8.27.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.27.tar.xz"
-  sha256 "8891d349ee87b9ff7870f52b6d9312a9db672d2439d289bc57084771ca21656b"
+  url "https://ftp.gnu.org/gnu/coreutils/coreutils-8.28.tar.xz"
+  mirror "https://ftpmirror.gnu.org/coreutils/coreutils-8.28.tar.xz"
+  sha256 "1117b1a16039ddd84d51a9923948307cfa28c2cea03d1a2438742253df0a0c65"
 
   bottle do
-    sha256 "a951d21ffbf3407ca84356d369ed6009d248b263587b79f644d9a95300465fa6" => :sierra
-    sha256 "dafd72ff298ed109503928a3d7cf1623327b4bc65318e99b48f3415b7c469ac8" => :el_capitan
-    sha256 "5d636c1ad28b1ef25c140b1486fdb368486bcca563901ad543d62ce1bd5f8b70" => :yosemite
+    sha256 "977e0b6ee439c9421ce97ce7fa48f664c1908497bf1a510ffbeecba881caf850" => :sierra
+    sha256 "52e2e39368fa5b4977bd6495ce133a535e4a06feafebd5ad2009f89d9ae4817d" => :el_capitan
+    sha256 "76e424055189d5fb2d13cfbd631a1de32dc7b1affb32b952cc3277a9af432191" => :yosemite
   end
 
   head do
@@ -26,6 +26,7 @@ class Coreutils < Formula
   depends_on "gmp" => :optional
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
+  conflicts_with "gegl", :because => "both install `gcut` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
   conflicts_with "aardvark_shell_utils", :because => "both install `realpath` binaries"
 
@@ -34,8 +35,8 @@ class Coreutils < Formula
   end
 
   patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1408362/raw/0b8c487946b83a106af861b524ff4f42565b2989/coreutils-ls-utf8mac.patch"
-    sha256 "1e9fb1fc5ad65ed38de833b068ad726f23d6d5a9d529030a78bbd7a2e15b7a36"
+    url "https://gist.githubusercontent.com/waltarix/1408362/raw/abe5d3a8fcd741fb9e23dc2a7672c78661a7a4c4/coreutils-ls-utf8mac.patch"
+    sha256 "e237ed60fac288e5605598d8588f629f3e42fc052f8e96384f13ffa3edebc6e5"
   end
 
   def install
@@ -45,11 +46,10 @@ class Coreutils < Formula
     # https://github.com/Homebrew/homebrew/issues/44993
     # This is thought to be an el_capitan bug:
     # https://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
-    if MacOS.version == :el_capitan
-      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
-    end
+    ENV["gl_cv_func_getcwd_abort_bug"] = "no" if MacOS.version == :el_capitan
 
     system "./bootstrap" if build.head?
+
     args = %W[
       --prefix=#{prefix}
       --program-prefix=g
