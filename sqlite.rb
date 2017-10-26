@@ -1,15 +1,15 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2017/sqlite-autoconf-3200100.tar.gz"
-  version "3.20.1"
-  sha256 "ec66595b29bc0798b023a5122021ea646ab4fa9e2f735937c5426feeba950742"
+  url "https://sqlite.org/2017/sqlite-autoconf-3210000.tar.gz"
+  version "3.21.0"
+  sha256 "d7dd516775005ad87a57f428b6f86afd206cb341722927f104d3f0cf65fbbbe3"
 
   bottle do
     cellar :any
-    sha256 "119ca919d8434fd483b4ed86b221211e7e82f0bb2930dbae30ef66ca4d126394" => :sierra
-    sha256 "2043f5f369b2426559b43ce7d044dbe9dff77f1b5e4658115f5cec14b0d6b183" => :el_capitan
-    sha256 "aacc35512504252349a7c11be0e96fdf03a0b440f0a34a7486a284e3abc1855f" => :yosemite
+    sha256 "7d2f6274d626acafed914d37e953cac4e33022eb889c6998af19bf19322703f1" => :high_sierra
+    sha256 "e0d65139195b1df2b75d9eec59c831a14454c723a28b696e4606eae393a866b9" => :sierra
+    sha256 "b0abd2db593aac58a6ab61aa3e24cd3641d2f0f0536bbf076e1221a0efacc35a" => :el_capitan
   end
 
   keg_only :provided_by_osx, "macOS provides an older sqlite3"
@@ -25,6 +25,7 @@ class Sqlite < Formula
   option "with-dbstat", "Enable the 'dbstat' virtual table"
   option "with-json1", "Enable the JSON1 extension"
   option "with-session", "Enable the session extension"
+  option "with-soundex", "Enable the SOUNDEX function"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
@@ -38,9 +39,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://www.sqlite.org/2017/sqlite-doc-3200100.zip"
-    version "3.20.1"
-    sha256 "0caf410e604411fd925c699d5fcb1d846f9297cdf2e18251eceb3e5708301e85"
+    url "https://www.sqlite.org/2017/sqlite-doc-3210000.zip"
+    version "3.21.0"
+    sha256 "78c2fc9b144b168c7df53ff192c84fa7c29bcc44324b48b0f809a13810bc6c36"
   end
 
   def pour_bottle?
@@ -69,6 +70,7 @@ class Sqlite < Formula
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_DBSTAT_VTAB=1" if build.with? "dbstat"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_JSON1=1" if build.with? "json1"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_PREUPDATE_HOOK=1 -DSQLITE_ENABLE_SESSION=1" if build.with? "session"
+    ENV.append "CPPFLAGS", "-DSQLITE_SOUNDEX" if build.with? "soundex"
 
     if build.with? "icu4c"
       icu4c = Formula["icu4c"]
@@ -104,7 +106,7 @@ class Sqlite < Formula
   def caveats
     s = ""
     if build.with? "functions"
-      s += <<-EOS.undent
+      s += <<~EOS
         Usage instructions for applications calling the sqlite3 API functions:
 
           In your application, call sqlite3_enable_load_extension(db,1) to
@@ -127,7 +129,7 @@ class Sqlite < Formula
       user_history = "~/.sqlite_history"
       user_history_path = File.expand_path(user_history)
       if File.exist?(user_history_path) && File.read(user_history_path).include?("\\040")
-        s += <<-EOS.undent
+        s += <<~EOS
           Homebrew has detected an existing SQLite history file that was created
           with the editline library. The current version of this formula is
           built with Readline. To back up and convert your history file so that
@@ -145,7 +147,7 @@ class Sqlite < Formula
 
   test do
     path = testpath/"school.sql"
-    path.write <<-EOS.undent
+    path.write <<~EOS
       create table students (name text, age integer);
       insert into students (name, age) values ('Bob', 14);
       insert into students (name, age) values ('Sue', 12);
@@ -160,10 +162,10 @@ end
 
 __END__
 diff --git a/sqlite3.c b/sqlite3.c
-index ea5ba16..428fbac 100644
+index 320d635..e84249c 100644
 --- a/sqlite3.c
 +++ b/sqlite3.c
-@@ -141629,6 +141629,8 @@ SQLITE_PRIVATE int sqlite3StmtVtabInit(sqlite3*);
+@@ -142013,6 +142013,8 @@ SQLITE_PRIVATE int sqlite3StmtVtabInit(sqlite3*);
  SQLITE_PRIVATE int sqlite3Fts5Init(sqlite3*);
  #endif
  
@@ -172,7 +174,7 @@ index ea5ba16..428fbac 100644
  #ifndef SQLITE_AMALGAMATION
  /* IMPLEMENTATION-OF: R-46656-45156 The sqlite3_version[] string constant
  ** contains the text of SQLITE_VERSION macro. 
-@@ -144665,6 +144667,10 @@ static int openDatabase(
+@@ -145056,6 +145058,10 @@ static int openDatabase(
    }
  #endif
  
@@ -183,7 +185,7 @@ index ea5ba16..428fbac 100644
    /* -DSQLITE_DEFAULT_LOCKING_MODE=1 makes EXCLUSIVE the default locking
    ** mode.  -DSQLITE_DEFAULT_LOCKING_MODE=0 make NORMAL the default locking
    ** mode.  Doing nothing at all also makes NORMAL the default.
-@@ -183034,6 +183040,126 @@ SQLITE_API int sqlite3_json_init(
+@@ -183832,6 +183838,126 @@ SQLITE_API int sqlite3_json_init(
  #endif /* !defined(SQLITE_CORE) || defined(SQLITE_ENABLE_JSON1) */
  
  /************** End of json1.c ***********************************************/
