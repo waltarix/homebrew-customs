@@ -45,12 +45,6 @@ class Zsh < Formula
     ENV.append "LDFLAGS", "-L#{wcwidth.lib} -lwcwidth-cjk"
     ENV.append "CPPFLAGS", "-I#{ncurses.include}"
 
-    # Fix dyld: Symbol not found: _open_memstream
-    if MacOS.version == :sierra && MacOS::Xcode.installed? &&
-       MacOS::Xcode.version >= "9.0"
-      ENV["ac_cv_func_open_memstream"] = "no"
-    end
-
     system "Util/preconfig" if build.head?
 
     args = %W[
