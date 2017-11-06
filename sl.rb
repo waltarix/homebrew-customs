@@ -10,7 +10,7 @@ class Sl < Formula
   end
 
   patch :p1 do
-    url "https://distfiles.gentoo.org/distfiles/sl5-1.patch"
+    url "https://raw.githubusercontent.com/euank/docker-sl/master/sl5-1.patch"
     sha256 "4943b6f000f518ed08755b36d9b753291989c4867e55d74bc4cc4502f6e9422f"
   end
 
@@ -20,5 +20,9 @@ class Sl < Formula
     system "make", "-e"
     bin.install "sl"
     man1.install "sl.1"
+  end
+
+  test do
+    assert_equal "#{bin}/sl", shell_output("which sl").chomp
   end
 end
