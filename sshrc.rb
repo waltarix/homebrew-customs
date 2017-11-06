@@ -16,13 +16,13 @@ class Sshrc < Formula
 
   test do
     touch testpath/".sshrc"
-    (testpath/"ssh").write <<-EOS.undent
+    (testpath/"ssh").write <<~EOS
       #!/bin/sh
       true
     EOS
     chmod 0755, testpath/"ssh"
     ENV.prepend_path "PATH", testpath
-    system "sshrc"
+    system "#{bin}/sshrc"
   end
 end
 
