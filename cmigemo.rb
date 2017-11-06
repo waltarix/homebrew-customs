@@ -28,16 +28,8 @@ class Cmigemo < Formula
 
     "osx"
   end
+
+  test do
+    system "#{bin}/et", "--help"
+  end
 end
-
-__END__
---- a/src/wordbuf.c	2011-08-15 02:57:05.000000000 +0900
-+++ b/src/wordbuf.c	2011-08-15 02:57:17.000000000 +0900
-@@ -9,6 +9,7 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <limits.h>
- #include "wordbuf.h"
-
- #define WORDLEN_DEF 64
