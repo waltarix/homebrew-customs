@@ -1,6 +1,6 @@
 class Ssrc < Formula
   desc "High Quality Audio Sampling Rate Converter"
-  homepage "http://shibatch.sourceforge.net"
+  homepage "https://shibatch.sourceforge.io/"
   url "http://shibatch.sourceforge.net/download/ssrc-1.30.tgz"
   sha256 "088286a2806153c3360a84c160540405b4d07fa6af5991cde4d84e8566ee1faa"
 
