@@ -28,18 +28,14 @@ class Tmux < Formula
   depends_on "ncurses"
   depends_on "waltarix/customs/wcwidth-cjk"
 
-  stable do
-    patch :p1 do
-      url "https://gist.githubusercontent.com/waltarix/1399751/raw/4db15139bcbf2d36993ef700b43a69eb0392aaf2/tmux-pane-border-ascii.patch"
-      sha256 "9256114cd818e7070d27e44a725f28169ae1264587a65fd49f0c8f51233423e2"
-    end
-
-    patch :DATA
-  end
-
   resource "completion" do
     url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/homebrew_1.0.0/completions/tmux"
     sha256 "05e79fc1ecb27637dc9d6a52c315b8f207cf010cdcee9928805525076c9020ae"
+  end
+
+  patch :p1 do
+    url "https://gist.githubusercontent.com/waltarix/1399751/raw/4db15139bcbf2d36993ef700b43a69eb0392aaf2/tmux-pane-border-ascii.patch"
+    sha256 "9256114cd818e7070d27e44a725f28169ae1264587a65fd49f0c8f51233423e2"
   end
 
   def install
@@ -68,7 +64,7 @@ class Tmux < Formula
     bash_completion.install resource("completion")
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<~EOS
     Example configuration has been installed to:
       #{opt_pkgshare}
     EOS
