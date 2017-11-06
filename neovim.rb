@@ -1,7 +1,7 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  revision 1
+  revision 2
 
   stable do
     url "https://github.com/neovim/neovim/archive/v0.2.0.tar.gz"
@@ -17,6 +17,8 @@ class Neovim < Formula
       sha256 "b156fdc92a3850eca3047620087f25a021800b729a3c30fd0164404b2ff7848b"
     end
   end
+
+  patch :DATA
 
   def pour_bottle?
     false
