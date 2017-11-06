@@ -1,8 +1,8 @@
 class GnuCpio < Formula
   desc "GNU cpio copies files into or out of a cpio or tar archive"
   homepage "https://www.gnu.org/software/cpio/"
-  url "https://ftpmirror.gnu.org/cpio/cpio-2.11.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/cpio/cpio-2.11.tar.bz2"
+  url "https://ftp.gnu.org/gnu/cpio/cpio-2.11.tar.bz2"
+  mirror "https://ftpmirror.gnu.org/cpio/cpio-2.11.tar.bz2"
   sha256 "bb820bfd96e74fc6ce43104f06fe733178517e7f5d1cdee553773e8eff7d5bbd"
 
   option "with-default-names", "Do not prepend 'g' to the binary"
