@@ -3,7 +3,7 @@ class Et < Formula
   homepage "https://mistertea.github.io/EternalTCP/"
   url "https://github.com/MisterTea/EternalTCP/archive/et-v4.1.0.tar.gz"
   sha256 "a6a99e425da3354c1845c5b8eb1644ffc0ee96b8644f2b905191e7102703a18b"
-  revision 1
+  revision 2
 
   depends_on "cmake" => :build
 
@@ -35,7 +35,6 @@ class Et < Formula
           <string>#{opt_bin}/etserver</string>
           <string>--cfgfile</string>
           <string>#{etc}/et.cfg</string>
-          <string>--daemon</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
