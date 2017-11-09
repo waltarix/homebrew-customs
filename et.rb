@@ -3,7 +3,7 @@ class Et < Formula
   homepage "https://mistertea.github.io/EternalTCP/"
   url "https://github.com/MisterTea/EternalTCP/archive/et-v4.1.0.tar.gz"
   sha256 "a6a99e425da3354c1845c5b8eb1644ffc0ee96b8644f2b905191e7102703a18b"
-  revision 2
+  revision 3
 
   depends_on "cmake" => :build
 
@@ -123,10 +123,20 @@ index 403ab02..cc4b8c4 100644
 -port = 2022
 +port = 25253
 diff --git a/src/UnixSocketHandler.cpp b/src/UnixSocketHandler.cpp
-index b9acde0..3b95f1f 100644
+index b9acde0..17bfd2e 100644
 --- a/src/UnixSocketHandler.cpp
 +++ b/src/UnixSocketHandler.cpp
-@@ -219,6 +219,9 @@ void UnixSocketHandler::createServerSockets(int port) {
+@@ -98,6 +98,9 @@ int UnixSocketHandler::connect(const std::string &hostname, int port) {
+ 
+   // loop through all the results and connect to the first we can
+   for (p = results; p != NULL; p = p->ai_next) {
++    if (p->ai_family == AF_INET6) {
++      continue;
++    }
+     if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
+       LOG(INFO) << "Error creating socket: " << errno << " " << strerror(errno);
+       continue;
+@@ -219,6 +222,9 @@ void UnixSocketHandler::createServerSockets(int port) {
    set<int> serverSockets;
    // loop through all the results and bind to the first we can
    for (p = servinfo; p != NULL; p = p->ai_next) {
@@ -136,6 +146,33 @@ index b9acde0..3b95f1f 100644
      int sockfd;
      if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
        LOG(INFO) << "Error creating socket " << p->ai_family << "/"
+diff --git a/terminal/SshSetupHandler.cpp b/terminal/SshSetupHandler.cpp
+index 3a482dd..f61c5c5 100644
+--- a/terminal/SshSetupHandler.cpp
++++ b/terminal/SshSetupHandler.cpp
+@@ -61,11 +61,11 @@ string SshSetupHandler::SetupSsh(string user, string host, int port,
+     close(link_client[0]);
+     close(link_client[1]);
+     if (!jumphost.empty()) {
+-      execl("/usr/bin/ssh", "/usr/bin/ssh", "-J",
++      execl("/usr/bin/env", "/usr/bin/env", "ssh", "-J",
+             (SSH_USER_PREFIX + jumphost).c_str(),
+             (SSH_USER_PREFIX + host).c_str(), (SSH_SCRIPT_DST).c_str(), NULL);
+     } else {
+-      execl("/usr/bin/ssh", "/usr/bin/ssh", (SSH_USER_PREFIX + host).c_str(),
++      execl("/usr/bin/env", "/usr/bin/env", "ssh", (SSH_USER_PREFIX + host).c_str(),
+             (SSH_SCRIPT_DST).c_str(), NULL);
+     }
+ 
+@@ -124,7 +124,7 @@ string SshSetupHandler::SetupSsh(string user, string host, int port,
+         cmdoptions +=
+             " --jump --dsthost=" + host + " --dstport=" + to_string(port);
+         string SSH_SCRIPT_JUMP = SSH_SCRIPT_PREFIX + cmdoptions + ";true";
+-        execl("/usr/bin/ssh", "/usr/bin/ssh", jumphost.c_str(),
++        execl("/usr/bin/env", "/usr/bin/env", "ssh", jumphost.c_str(),
+               (SSH_SCRIPT_JUMP).c_str(), NULL);
+       } else {
+         close(link_jump[1]);
 diff --git a/terminal/TerminalClient.cpp b/terminal/TerminalClient.cpp
 index 22c1e00..63cddb1 100644
 --- a/terminal/TerminalClient.cpp
