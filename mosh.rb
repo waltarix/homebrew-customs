@@ -4,6 +4,7 @@ class Mosh < Formula
   url "https://github.com/mobile-shell/mosh.git", :shallow => false
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
   version "1.3.2"
+  revision 3
 
   bottle do
     sha256 "a6978eda44965301af1ca77cec8cdcbda2ccb123ae43959ecb9a143fb745b0cd" => :high_sierra
@@ -26,6 +27,8 @@ class Mosh < Formula
     false
   end
 
+  patch :DATA
+
   def install
     ENV.append "LDFLAGS", "-L#{Formula["wcwidth-cjk"].lib} -lwcwidth-cjk"
 
@@ -43,3 +46,38 @@ class Mosh < Formula
     system bin/"mosh-client", "-c"
   end
 end
+
+__END__
+diff --git a/src/frontend/mosh-server.cc b/src/frontend/mosh-server.cc
+index 7918c74..ae5fca4 100644
+--- a/src/frontend/mosh-server.cc
++++ b/src/frontend/mosh-server.cc
+@@ -552,15 +552,6 @@ static int run_server( const char *desired_ip, const char *desired_port,
+     }
+ #endif /* HAVE_IUTF8 */
+ 
+-    /* set TERM */
+-    const char default_term[] = "xterm";
+-    const char color_term[] = "xterm-256color";
+-
+-    if ( setenv( "TERM", (colors == 256) ? color_term : default_term, true ) < 0 ) {
+-      perror( "setenv" );
+-      exit( 1 );
+-    }
+-
+     /* ask ncurses to send UTF-8 instead of ISO 2022 for line-drawing chars */
+     if ( setenv( "NCURSES_NO_UTF8_ACS", "1", true ) < 0 ) {
+       perror( "setenv" );
+diff --git a/src/terminal/terminaldisplayinit.cc b/src/terminal/terminaldisplayinit.cc
+index 54dfcc9..9720f26 100644
+--- a/src/terminal/terminaldisplayinit.cc
++++ b/src/terminal/terminaldisplayinit.cc
+@@ -115,7 +115,7 @@ Display::Display( bool use_environment )
+        terminal type prefixes.  This is the list from Debian's default
+        screenrc, plus "screen" itself (which also covers tmux). */
+     static const char * const title_term_types[] = {
+-      "xterm", "rxvt", "kterm", "Eterm", "screen"
++      "xterm", "rxvt", "kterm", "Eterm", "screen", "tmux"
+     };
+ 
+     has_title = false;
