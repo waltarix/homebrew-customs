@@ -2,9 +2,9 @@ class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
   url "https://github.com/mobile-shell/mosh.git", :shallow => false
-  sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
   version "1.3.2"
-  revision 3
+  sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
+  revision 4
 
   bottle do
     sha256 "a6978eda44965301af1ca77cec8cdcbda2ccb123ae43959ecb9a143fb745b0cd" => :high_sierra
@@ -22,6 +22,14 @@ class Mosh < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "waltarix/customs/wcwidth-cjk"
+  depends_on "perl" => :build if
+    OS.linux? &&
+    begin
+      system_perl_version = Gem::Version.new(`/usr/bin/perl -e 'printf "%vd", $^V;'`)
+      required_perl_version = Gem::Version.new("5.14.0")
+
+      system_perl_version < required_perl_version
+    end
 
   def pour_bottle?
     false
