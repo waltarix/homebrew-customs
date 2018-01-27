@@ -1,7 +1,7 @@
 class W3m < Formula
   desc "Pager/text based browser"
   homepage "https://w3m.sourceforge.io/"
-  revision 2
+  revision 4
   head "https://github.com/tats/w3m.git"
 
   stable do
@@ -9,25 +9,25 @@ class W3m < Formula
     sha256 "e994d263f2fd2c22febfbe45103526e00145a7674a0fda79c822b97c2770a9e3"
 
     # Upstream is effectively Debian https://github.com/tats/w3m at this point.
-    # The patches fix a pile of CVEs and provides openssl@1.1 compatibility.
+    # The patches fix a pile of CVEs
     patch do
-      url "https://mirrors.ocf.berkeley.edu/debian/pool/main/w/w3m/w3m_0.5.3-34.debian.tar.xz"
-      mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/w/w3m/w3m_0.5.3-34.debian.tar.xz"
-      sha256 "bed288bdc1ba4b8560724fd5dc77d7c95bcabd545ec330c42491cae3e3b09b7e"
+      url "https://mirrors.ocf.berkeley.edu/debian/pool/main/w/w3m/w3m_0.5.3-36.debian.tar.xz"
+      mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/w/w3m/w3m_0.5.3-36.debian.tar.xz"
+      sha256 "e7f41ac222c55830ce121e1c50e67ab04b292837b9bb1ece2eae2689c82147ec"
       apply "patches/010_upstream.patch",
             "patches/020_debian.patch"
     end
   end
 
   bottle do
-    sha256 "2f74b9e77dc894a6fe989f94125e6f85707d33e395c9d6b62fe7018b9639b13a" => :high_sierra
-    sha256 "e83f9f082df3a1650d334feb396f4e4425939dbb43d95b07d5dc10182ea7432e" => :sierra
-    sha256 "3f19792501aace857717543b719827e3a2227ce1bb917c7abb2f20e9db7a4c54" => :el_capitan
+    sha256 "d22255d52e3655ee569eb9f10148c3c252348f0110aebdd9ad4674535a2abb96" => :high_sierra
+    sha256 "253aa174cda21e291fb62936c6df64de6fedfa42c4889b3cde961767d2230c64" => :sierra
+    sha256 "38bbff9a83da585bcceba8a70e69b5abf3dd84ab75b62da090e49f8e6cbad46a" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
   depends_on "bdw-gc"
-  depends_on "openssl@1.1"
+  depends_on "openssl"
   depends_on "ncurses"
   depends_on "waltarix/customs/cmigemo"
 
@@ -43,17 +43,15 @@ class W3m < Formula
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
 
-    system "./configure", "--prefix=#{prefix}", "--disable-image",
-                          "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-image",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}",
                           "--enable-unicode",
                           "--enable-nls",
                           "--enable-m17n",
                           "--with-termlib=ncursesw",
                           "--disable-ipv6",
                           "--with-migemo=#{with_migemo}"
-    # Race condition in build reported in:
-    # https://github.com/Homebrew/homebrew/issues/12854
-    ENV.deparallelize
     system "make", "install"
   end
 
