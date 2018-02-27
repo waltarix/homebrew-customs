@@ -4,6 +4,7 @@ class Fzf < Formula
   url "https://github.com/junegunn/fzf/archive/0.17.3.tar.gz"
   sha256 "e843904417adf926613431e4403fded24fade56269446e92aac6ff1db86af81e"
   head "https://github.com/junegunn/fzf.git"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -101,36 +102,3 @@ index e3caaad..467bd96 100644
  	} else {
  		if selected {
  			t.window.CPrint(tui.ColSelected, t.strong, ">")
-diff --git a/src/tui/light.go b/src/tui/light.go
-index 578961e..1e95dff 100644
---- a/src/tui/light.go
-+++ b/src/tui/light.go
-@@ -654,22 +654,22 @@ func (w *LightWindow) drawBorder() {
- 
- func (w *LightWindow) drawBorderHorizontal() {
- 	w.Move(0, 0)
--	w.CPrint(ColBorder, AttrRegular, repeat("─", w.width))
-+	w.CPrint(ColBorder, AttrRegular, repeat("-", w.width))
- 	w.Move(w.height-1, 0)
--	w.CPrint(ColBorder, AttrRegular, repeat("─", w.width))
-+	w.CPrint(ColBorder, AttrRegular, repeat("-", w.width))
- }
- 
- func (w *LightWindow) drawBorderAround() {
- 	w.Move(0, 0)
--	w.CPrint(ColBorder, AttrRegular, "┌"+repeat("─", w.width-2)+"┐")
-+	w.CPrint(ColBorder, AttrRegular, "+"+repeat("-", w.width-2)+"+")
- 	for y := 1; y < w.height-1; y++ {
- 		w.Move(y, 0)
--		w.CPrint(ColBorder, AttrRegular, "│")
-+		w.CPrint(ColBorder, AttrRegular, "|")
- 		w.cprint2(colDefault, w.bg, AttrRegular, repeat(" ", w.width-2))
--		w.CPrint(ColBorder, AttrRegular, "│")
-+		w.CPrint(ColBorder, AttrRegular, "|")
- 	}
- 	w.Move(w.height-1, 0)
--	w.CPrint(ColBorder, AttrRegular, "└"+repeat("─", w.width-2)+"┘")
-+	w.CPrint(ColBorder, AttrRegular, "+"+repeat("-", w.width-2)+"+")
- }
- 
- func (w *LightWindow) csi(code string) {
