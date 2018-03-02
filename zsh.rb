@@ -4,12 +4,12 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.4.2/zsh-5.4.2.tar.gz"
   mirror "https://www.zsh.org/pub/zsh-5.4.2.tar.gz"
   sha256 "957bcdb2c57f64c02f673693ea5a7518ef24b6557aeb3a4ce222cefa6d74acc9"
-  revision 4
+  revision 5
 
   bottle do
-    sha256 "5bb5aecd8c5341fbb670489f1c1388ce02561bae2c5ba6d3e80f5d3911f81abf" => :high_sierra
-    sha256 "e12f51411a259c9392384f4bc552dac0980ce2004f4f7560d3dfabe6ad36a1eb" => :sierra
-    sha256 "28db7180a903334df90161bc33fd975ae289a13b6102ad1ef228d28dca04e58e" => :el_capitan
+    sha256 "9071f9ae246b1c2d577cf0e2115f38e3612994d456a1925918c9ea25218c202d" => :high_sierra
+    sha256 "daa5e14fd14dd3051ac99e29d3c8ec5954f99e613229c200c1898d8e682549af" => :sierra
+    sha256 "1dbc516e7193753876e2d1648cfb90c0d15fb3f0c6483a929fbcc4b129be0d46" => :el_capitan
   end
 
   head do
@@ -26,11 +26,10 @@ class Zsh < Formula
 
   deprecated_option "disable-etcdir" => "without-etcdir"
 
-  depends_on "gdbm"
   depends_on "pcre"
   depends_on "ncurses"
-  depends_on "waltarix/customs/wcwidth-cjk"
   depends_on "texinfo" => :build if OS.linux?
+  depends_on "gdbm" => :optional
 
   resource "htmldoc" do
     url "https://downloads.sourceforge.net/project/zsh/zsh-doc/5.4.2/zsh-5.4.2-doc.tar.xz"
@@ -40,10 +39,8 @@ class Zsh < Formula
 
   def install
     ncurses = Formula["ncurses"]
-    wcwidth = Formula["wcwidth-cjk"]
 
     ENV.append "LDFLAGS", "-L#{ncurses.lib}"
-    ENV.append "LDFLAGS", "-L#{wcwidth.lib} -lwcwidth-cjk"
     ENV.append "CPPFLAGS", "-I#{ncurses.include}"
 
     system "Util/preconfig" if build.head?
@@ -61,12 +58,11 @@ class Zsh < Formula
       --enable-pcre
       --enable-zsh-secure-free
       --with-tcsetpgrp
-      --enable-locale
       --with-term-lib=ncursesw
-      zsh_cv_c_broken_wcwidth=no
+      --enable-unicode9
     ]
 
-    args << "--enable-unicode9" if build.with? "unicode9"
+    args << "--disable-gdbm" if build.without? "gdbm"
 
     if build.without? "etcdir"
       args << "--disable-etcdir"
@@ -99,3 +95,29 @@ class Zsh < Formula
     system bin/"zsh", "-c", "printf -v hello -- '%s'"
   end
 end
+
+__END__
+diff --git a/Src/wcwidth9.h b/Src/wcwidth9.h
+index 448f548..b436c11 100644
+--- a/Src/wcwidth9.h
++++ b/Src/wcwidth9.h
+@@ -518,9 +518,7 @@ static const struct wcwidth9_interval wcwidth9_ambiguous[] = {
+   {0x22bf, 0x22bf},
+   {0x2312, 0x2312},
+   {0x2460, 0x24e9},
+-  {0x24eb, 0x254b},
+   {0x2550, 0x2573},
+-  {0x2580, 0x258f},
+   {0x2592, 0x2595},
+   {0x25a0, 0x25a1},
+   {0x25a3, 0x25a9},
+@@ -561,7 +559,8 @@ static const struct wcwidth9_interval wcwidth9_ambiguous[] = {
+   {0x2776, 0x277f},
+   {0x2b56, 0x2b59},
+   {0x3248, 0x324f},
+-  {0xe000, 0xf8ff},
++  {0xe000, 0xe09f},
++  {0xe0d8, 0xf8ff},
+   {0xfe00, 0xfe0f},
+   {0xfffd, 0xfffd},
+   {0x1f100, 0x1f10a},
