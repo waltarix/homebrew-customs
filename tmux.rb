@@ -3,6 +3,7 @@ class Tmux < Formula
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz"
   sha256 "b17cd170a94d7b58c0698752e1f4f263ab6dc47425230df7e53a6435cc7cd7e8"
+  revision 1
 
   bottle do
     sha256 "0ca2e76822980dcc009fde38379f7546b6568975d9dc4f2a6a312e32fce186f8" => :high_sierra
@@ -26,16 +27,17 @@ class Tmux < Formula
   depends_on "libevent"
   depends_on "utf8proc" => :optional
   depends_on "ncurses"
-  depends_on "waltarix/customs/wcwidth-cjk"
 
   resource "completion" do
     url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/homebrew_1.0.0/completions/tmux"
     sha256 "05e79fc1ecb27637dc9d6a52c315b8f207cf010cdcee9928805525076c9020ae"
   end
 
-  patch :p1 do
-    url "https://gist.githubusercontent.com/waltarix/1399751/raw/4db15139bcbf2d36993ef700b43a69eb0392aaf2/tmux-pane-border-ascii.patch"
-    sha256 "9256114cd818e7070d27e44a725f28169ae1264587a65fd49f0c8f51233423e2"
+  patch :DATA
+
+  resource "wcwidth9.h" do
+    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/d4a38bc596f798b0344d06e9c831677f194d8148/wcwidth9.h"
+    sha256 "50b5f30757ed9e1f9bece87dec4d70e32eee780f42b558242e4e76b1f9b334c8"
   end
 
   def install
@@ -49,11 +51,11 @@ class Tmux < Formula
 
     args << "--enable-utf8proc" if build.with?("utf8proc")
 
+    buildpath.install resource("wcwidth9.h")
+
     ncurses = Formula["ncurses"]
-    wcwidth = Formula["wcwidth-cjk"]
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
-    ENV.append "LDFLAGS", "-L#{wcwidth.lib} -lwcwidth-cjk"
 
     ENV.append "LDFLAGS", "-lresolv"
     system "./configure", *args
@@ -74,3 +76,27 @@ class Tmux < Formula
     system "#{bin}/tmux", "-V"
   end
 end
+
+__END__
+diff --git a/utf8.c b/utf8.c
+index a91da36..212d1a2 100644
+--- a/utf8.c
++++ b/utf8.c
+@@ -25,6 +25,8 @@
+ 
+ #include "tmux.h"
+ 
++#include "wcwidth9.h"
++
+ static int	utf8_width(wchar_t);
+ 
+ /* Set a single character. */
+@@ -112,7 +114,7 @@ utf8_width(wchar_t wc)
+ #ifdef HAVE_UTF8PROC
+ 	width = utf8proc_wcwidth(wc);
+ #else
+-	width = wcwidth(wc);
++	width = wcwidth9(wc);
+ #endif
+ 	if (width < 0 || width > 0xff) {
+ 		log_debug("Unicode %04lx, wcwidth() %d", (long)wc, width);
