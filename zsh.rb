@@ -4,7 +4,7 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.4.2/zsh-5.4.2.tar.gz"
   mirror "https://www.zsh.org/pub/zsh-5.4.2.tar.gz"
   sha256 "957bcdb2c57f64c02f673693ea5a7518ef24b6557aeb3a4ce222cefa6d74acc9"
-  revision 5
+  revision 6
 
   bottle do
     sha256 "9071f9ae246b1c2d577cf0e2115f38e3612994d456a1925918c9ea25218c202d" => :high_sierra
@@ -21,8 +21,12 @@ class Zsh < Formula
     false
   end
 
+  resource "wcwidth9.h" do
+    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/d4a38bc596f798b0344d06e9c831677f194d8148/wcwidth9.h"
+    sha256 "50b5f30757ed9e1f9bece87dec4d70e32eee780f42b558242e4e76b1f9b334c8"
+  end
+
   option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
-  option "with-unicode9", "Build with Unicode 9 character width support"
 
   deprecated_option "disable-etcdir" => "without-etcdir"
 
@@ -38,6 +42,8 @@ class Zsh < Formula
   end
 
   def install
+    (buildpath/"Src").install resource("wcwidth9.h")
+
     ncurses = Formula["ncurses"]
 
     ENV.append "LDFLAGS", "-L#{ncurses.lib}"
@@ -95,29 +101,3 @@ class Zsh < Formula
     system bin/"zsh", "-c", "printf -v hello -- '%s'"
   end
 end
-
-__END__
-diff --git a/Src/wcwidth9.h b/Src/wcwidth9.h
-index 448f548..b436c11 100644
---- a/Src/wcwidth9.h
-+++ b/Src/wcwidth9.h
-@@ -518,9 +518,7 @@ static const struct wcwidth9_interval wcwidth9_ambiguous[] = {
-   {0x22bf, 0x22bf},
-   {0x2312, 0x2312},
-   {0x2460, 0x24e9},
--  {0x24eb, 0x254b},
-   {0x2550, 0x2573},
--  {0x2580, 0x258f},
-   {0x2592, 0x2595},
-   {0x25a0, 0x25a1},
-   {0x25a3, 0x25a9},
-@@ -561,7 +559,8 @@ static const struct wcwidth9_interval wcwidth9_ambiguous[] = {
-   {0x2776, 0x277f},
-   {0x2b56, 0x2b59},
-   {0x3248, 0x324f},
--  {0xe000, 0xf8ff},
-+  {0xe000, 0xe09f},
-+  {0xe0d8, 0xf8ff},
-   {0xfe00, 0xfe0f},
-   {0xfffd, 0xfffd},
-   {0x1f100, 0x1f10a},
