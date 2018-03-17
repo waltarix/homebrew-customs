@@ -2,8 +2,8 @@ class Timg < Formula
   desc "Terminal Image Viewer"
   homepage "https://github.com/hzeller/timg"
   url "https://github.com/hzeller/timg.git",
-    :revision => "218830b9ca56453a553e9c96a6abdf1d013076b2"
-  version "0.9.5-beta2"
+    :revision => "dcd0c4d3d3d20280726314811ade4b74731b921c"
+  version "0.9.5-beta3"
 
   depends_on "graphicsmagick" => [:build, "with-webp"]
 
@@ -32,7 +32,7 @@ index bd66f93..b5ce20d 100644
  #include <vector>
  
 -#define TIMG_VERSION "0.9.1beta"
-+#define TIMG_VERSION "0.9.5-beta2"
++#define TIMG_VERSION "0.9.5-beta3"
  
  volatile bool interrupt_received = false;
  static void InterruptHandler(int signo) {
