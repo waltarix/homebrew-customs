@@ -1,16 +1,15 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.17.3.tar.gz"
-  sha256 "e843904417adf926613431e4403fded24fade56269446e92aac6ff1db86af81e"
+  url "https://github.com/junegunn/fzf/archive/0.17.4.tar.gz"
+  sha256 "a4b009638266b116f422d159cd1e09df64112e6ae3490964db2cd46636981ff0"
   head "https://github.com/junegunn/fzf.git"
-  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "81658f0f3113ff48873fe7bbc79338f1f50284c5a2f2da456047670d4350221b" => :high_sierra
-    sha256 "f430afe26c931e0d5b210793cd2daa98a24551868fc16501c67209042535c5c2" => :sierra
-    sha256 "c32dd7988d5c606fb790f59fe57f9cca9c40eddf8c187ff7a95c56f81b1c02f8" => :el_capitan
+    sha256 "cbb783a23e8ec9c898aefc90454c1692914a48d692ecb687376600c7b1ad3b17" => :high_sierra
+    sha256 "20d7dc1932212e1878c9171dee04fe00a2ce98da09bd64601b07beca46a2bebd" => :sierra
+    sha256 "eef44aeb48d7fdc99df24d96788780c6b3c8284e4716db002384aa305d701d89" => :el_capitan
   end
 
   depends_on "glide" => :build
@@ -48,7 +47,7 @@ class Fzf < Formula
 
     To use fzf in Vim, add the following line to your .vimrc:
       set rtp+=#{opt_prefix}
-    EOS
+  EOS
   end
 
   test do
@@ -81,10 +80,10 @@ index 289d83a..6b7a8c5 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index e3caaad..467bd96 100644
+index d468504..c942040 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -652,7 +652,7 @@ func (t *Terminal) placeCursor() {
+@@ -675,7 +675,7 @@ func (t *Terminal) placeCursor() {
  func (t *Terminal) printPrompt() {
  	t.move(0, 0, true)
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
@@ -93,7 +92,7 @@ index e3caaad..467bd96 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -789,7 +789,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
+@@ -812,7 +812,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
