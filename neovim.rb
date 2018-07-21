@@ -1,14 +1,14 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.3.0.tar.gz"
-  sha256 "f7acb61b16d3f521907d99c486b7a9f1e505e8b2a18c9ef69a6d7f18f29f74b8"
+  url "https://github.com/neovim/neovim/archive/v0.3.1.tar.gz"
+  sha256 "bc5e392d4c076407906ccecbc283e1a44b7832c2f486cad81aa04cc29973ad22"
   head "https://github.com/neovim/neovim.git"
 
   bottle do
-    sha256 "9ef5628bc9bb852c21a9ab2933f1a9b2a0e8d328574281016037eb51e0af5b90" => :high_sierra
-    sha256 "ba4a51a48aa0695b8e45372af868c4b32df2f8b7a0985b3684d242c07e6f0787" => :sierra
-    sha256 "67cc861b34e6ce3174e9ecba04384d39f95ad052ca58d301866bb540fbce9fba" => :el_capitan
+    sha256 "b0e962fdf6c5dc900780e749e9b252f6cb1ab1026d3743162357d04a432c4c32" => :high_sierra
+    sha256 "6326ba4f98c3c1674b831f60e2542ae54f18c6c06b8cce415150bd27f971e0f4" => :sierra
+    sha256 "05d5b2839a8ebe3d2cc61546bfc7263ee333217770c2834f794161880dc29c4d" => :el_capitan
   end
 
   depends_on "cmake" => :build
@@ -30,7 +30,7 @@ class Neovim < Formula
   end
 
   resource "lpeg" do
-    url "https://luarocks.org/manifests/gvvaughan/lpeg-1.0.1-1.src.rock", :using => :nounzip
+    url "https://luarocks.org/manifests/gvvaughan/lpeg-1.0.1-1.src.rock"
     sha256 "149be31e0155c4694f77ea7264d9b398dd134eca0d00ff03358d91a6cfb2ea9d"
   end
 
@@ -40,17 +40,17 @@ class Neovim < Formula
   end
 
   resource "inspect" do
-    url "https://luarocks.org/manifests/kikito/inspect-3.1.1-0.src.rock", :using => :nounzip
+    url "https://luarocks.org/manifests/kikito/inspect-3.1.1-0.src.rock"
     sha256 "ea1f347663cebb523e88622b1d6fe38126c79436da4dbf442674208aa14a8f4c"
   end
 
   resource "luabitop" do
-    url "https://luarocks.org/luabitop-1.0.2-1.src.rock", :using => :nounzip
+    url "https://luarocks.org/luabitop-1.0.2-1.src.rock"
     sha256 "fc7a8065a57462ee13bed7f95b0ab13f94ecd1bf846108c61ccf2c75548af26e"
   end
 
   resource "luafilesystem" do
-    url "https://luarocks.org/luafilesystem-1.7.0-2.src.rock", :using => :nounzip
+    url "https://luarocks.org/luafilesystem-1.7.0-2.src.rock"
     sha256 "65e6d437e577a1d6cd509b6cd224d2cb9501d58d32a72cafbd4fd3f911681576"
   end
 
@@ -60,7 +60,7 @@ class Neovim < Formula
   end
 
   resource "lua_cliargs" do
-    url "https://luarocks.org/lua_cliargs-3.0-1.src.rock", :using => :nounzip
+    url "https://luarocks.org/lua_cliargs-3.0-1.src.rock"
     sha256 "d165b627b11dc83a11270d7d51760e5b714e3fd2388733c32af53e9b63bf27d4"
   end
 
@@ -70,12 +70,12 @@ class Neovim < Formula
   end
 
   resource "luasystem" do
-    url "https://luarocks.org/luasystem-0.2.1-0.src.rock", :using => :nounzip
+    url "https://luarocks.org/luasystem-0.2.1-0.src.rock"
     sha256 "d1c706d48efc7279d33f5ea123acb4d27e2ee93e364bedbe07f2c9c8d0ad3d24"
   end
 
   resource "dkjson" do
-    url "https://luarocks.org/dkjson-2.5-2.src.rock", :using => :nounzip
+    url "https://luarocks.org/dkjson-2.5-2.src.rock"
     sha256 "0391ebe73cfcee7d6b3d5dd5098e185c2103118e644688484beea665f15fc9e3"
   end
 
@@ -103,18 +103,18 @@ class Neovim < Formula
   end
 
   resource "luacheck" do
-    url "https://luarocks.org/manifests/mpeterv/luacheck-0.21.2-1.src.rock", :using => :nounzip
+    url "https://luarocks.org/manifests/mpeterv/luacheck-0.21.2-1.src.rock"
     version "0.21.2-1"
     sha256 "c9e9b3bf1610e382043c6348417864541327108da92290a3be454c40be439953"
   end
 
   resource "luv" do
-    url "https://luarocks.org/luv-1.9.1-1.src.rock", :using => :nounzip
+    url "https://luarocks.org/luv-1.9.1-1.src.rock"
     sha256 "d72db8321d8b3be925e1c14e6c13081466d1c31420f600154ab5c77fe6974fac"
   end
 
   resource "coxpcall" do
-    url "https://luarocks.org/coxpcall-1.17.0-1.src.rock", :using => :nounzip
+    url "https://luarocks.org/coxpcall-1.17.0-1.src.rock"
     version "1.17.0-1"
     sha256 "11feb07f08927c39b0b93e8c0bbaf15433f86155cba4820a31a09f4754ab3258"
   end
@@ -174,10 +174,10 @@ end
 
 __END__
 diff --git a/unicode/EastAsianWidth.txt b/unicode/EastAsianWidth.txt
-index 0d3129bb0..9dc0067b3 100644
+index cb489c340..80ce60c95 100644
 --- a/unicode/EastAsianWidth.txt
 +++ b/unicode/EastAsianWidth.txt
-@@ -1132,12 +1132,12 @@
+@@ -1140,12 +1140,12 @@
  2460..249B;A     # No    [60] CIRCLED DIGIT ONE..NUMBER TWENTY FULL STOP
  249C..24E9;A     # So    [78] PARENTHESIZED LATIN SMALL LETTER A..CIRCLED LATIN SMALL LETTER Z
  24EA;N           # No         CIRCLED DIGIT ZERO
@@ -193,7 +193,7 @@ index 0d3129bb0..9dc0067b3 100644
  2590..2591;N     # So     [2] RIGHT HALF BLOCK..LIGHT SHADE
  2592..2595;A     # So     [4] MEDIUM SHADE..RIGHT ONE EIGHTH BLOCK
  2596..259F;N     # So    [10] QUADRANT LOWER LEFT..QUADRANT UPPER RIGHT AND LOWER LEFT AND LOWER RIGHT
-@@ -1656,7 +1656,9 @@ D7CB..D7FB;N     # Lo    [49] HANGUL JONGSEONG NIEUN-RIEUL..HANGUL JONGSEONG PHI
+@@ -1662,7 +1662,9 @@ D7CB..D7FB;N     # Lo    [49] HANGUL JONGSEONG NIEUN-RIEUL..HANGUL JONGSEONG PHI
  D800..DB7F;N     # Cs   [896] <surrogate-D800>..<surrogate-DB7F>
  DB80..DBFF;N     # Cs   [128] <surrogate-DB80>..<surrogate-DBFF>
  DC00..DFFF;N     # Cs  [1024] <surrogate-DC00>..<surrogate-DFFF>
