@@ -4,14 +4,17 @@ class Neovim < Formula
   url "https://github.com/neovim/neovim/archive/v0.3.1.tar.gz"
   sha256 "bc5e392d4c076407906ccecbc283e1a44b7832c2f486cad81aa04cc29973ad22"
   head "https://github.com/neovim/neovim.git"
+  revision 1
 
   bottle do
-    sha256 "b0e962fdf6c5dc900780e749e9b252f6cb1ab1026d3743162357d04a432c4c32" => :high_sierra
-    sha256 "6326ba4f98c3c1674b831f60e2542ae54f18c6c06b8cce415150bd27f971e0f4" => :sierra
-    sha256 "05d5b2839a8ebe3d2cc61546bfc7263ee333217770c2834f794161880dc29c4d" => :el_capitan
+    rebuild 1
+    sha256 "315fe4f3aec480fb8d7c4d47b49bf505d35b8b95131190245a743b726d077836" => :high_sierra
+    sha256 "9926409ab57d24213668063e4587d3108dba111523e1aa5884370d4cb177721d" => :sierra
+    sha256 "3e344efabcf387d60ba6913490f42b53d1cf0e31ef709dec4eb5818e4f6b50d3" => :el_capitan
   end
 
   depends_on "cmake" => :build
+  depends_on "luarocks" => :build
   depends_on "lua@5.1" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -132,28 +135,35 @@ class Neovim < Formula
 
     ENV.prepend_path "LUA_PATH", "#{buildpath}/deps-build/share/lua/5.1/?.lua"
     ENV.prepend_path "LUA_CPATH", "#{buildpath}/deps-build/lib/lua/5.1/?.so"
+    lua_path = "--lua-dir=#{Formula["lua@5.1"].opt_prefix}"
 
     cd "deps-build" do
-      system "luarocks-5.1", "build", "build/src/lpeg/lpeg-1.0.1-1.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/mpack/mpack-1.0.7-0.rockspec", "--tree=."
-      system "luarocks-5.1", "build", "build/src/inspect/inspect-3.1.1-0.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/luabitop/luabitop-1.0.2-1.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/luafilesystem/luafilesystem-1.7.0-2.src.rock", "--tree=."
-      cd "build/src/penlight" do
-        system "luarocks-5.1", "make", "--tree=#{buildpath}/deps-build"
+      %w[
+        lpeg/lpeg-1.0.1-1.src.rock
+        mpack/mpack-1.0.7-0.rockspec
+        inspect/inspect-3.1.1-0.src.rock
+        luabitop/luabitop-1.0.2-1.src.rock
+        luafilesystem/luafilesystem-1.7.0-2.src.rock
+        lua_cliargs/lua_cliargs-3.0-1.src.rock
+        lua-term/lua-term-0.7-1.rockspec
+        luasystem/luasystem-0.2.1-0.src.rock
+        dkjson/dkjson-2.5-2.src.rock
+        say/say-1.3-1.rockspec
+        luassert/luassert-1.7.10-0.rockspec
+        mediator_lua/mediator_lua-1.1.2-0.rockspec
+        busted/busted-2.0.rc12-1.rockspec
+        luacheck/luacheck-0.21.2-1.src.rock
+        luv/luv-1.9.1-1.src.rock
+        coxpcall/coxpcall-1.17.0-1.src.rock
+        nvim-client/nvim-client-0.1.0-1.rockspec
+      ].each do |rock|
+        system "luarocks", "build", lua_path, "build/src/#{rock}", "--tree=."
       end
-      system "luarocks-5.1", "build", "build/src/lua_cliargs/lua_cliargs-3.0-1.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/lua-term/lua-term-0.7-1.rockspec", "--tree=."
-      system "luarocks-5.1", "build", "build/src/luasystem/luasystem-0.2.1-0.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/dkjson/dkjson-2.5-2.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/say/say-1.3-1.rockspec", "--tree=."
-      system "luarocks-5.1", "build", "build/src/luassert/luassert-1.7.10-0.rockspec", "--tree=."
-      system "luarocks-5.1", "build", "build/src/mediator_lua/mediator_lua-1.1.2-0.rockspec", "--tree=."
-      system "luarocks-5.1", "build", "build/src/busted/busted-2.0.rc12-1.rockspec", "--tree=."
-      system "luarocks-5.1", "build", "build/src/luacheck/luacheck-0.21.2-1.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/luv/luv-1.9.1-1.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/coxpcall/coxpcall-1.17.0-1.src.rock", "--tree=."
-      system "luarocks-5.1", "build", "build/src/nvim-client/nvim-client-0.1.0-1.rockspec", "--tree=."
+
+      cd "build/src/penlight" do
+        system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"
+      end
+
       system "cmake", "../third-party", "-DUSE_BUNDLED=OFF", *std_cmake_args
       system "make"
     end
