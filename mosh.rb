@@ -4,21 +4,23 @@ class Mosh < Formula
   url "https://github.com/mobile-shell/mosh.git", :shallow => false
   version "1.3.2"
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
-  revision 6
+  revision 7
 
   bottle do
-    sha256 "bc9e1b4d9ff55429b1ea74bd05beaf4ffad81b608430faba57754bc36844f4f6" => :high_sierra
-    sha256 "895bc6be02f94d3a1ec72888c1041e0da6da043c8db0606e99400c5baa995443" => :sierra
-    sha256 "cf167b6469d428c011fe9c00e1a488470895a9fdaed3e804b05adf8e6c280111" => :el_capitan
+    sha256 "5e05a95d972b509c0469ca933de7a522b74b049cc0dccfe5cb1aa6db34b54fc4" => :mojave
+    sha256 "6cff59a934d2d8fda8f40f59c8ec5d0d2b550617478afa6ad56db20b3bb4e4a8" => :high_sierra
+    sha256 "c62e3806458d92a044bd00f5ddf08d6a1d01ee5870f77b67c5527a4a81f44251" => :sierra
+    sha256 "f990bb41dcdcc581c531138e235d58c6d83dfc53afe5203f44a0db7e92de4ead" => :el_capitan
+  end
+
+  def pour_bottle?
+    false
   end
 
   option "with-test", "Run build-time tests"
 
   deprecated_option "without-check" => "without-test"
 
-  depends_on "pkg-config" => :build
-  depends_on "protobuf"
-  depends_on "tmux" => :build if build.with?("test") || build.bottle?
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "perl" => :build if
@@ -29,12 +31,11 @@ class Mosh < Formula
 
       system_perl_version < required_perl_version
     end
+  depends_on "pkg-config" => :build
+  depends_on "tmux" => :build if build.with?("test") || build.bottle?
+  depends_on "protobuf"
 
   needs :cxx11
-
-  def pour_bottle?
-    false
-  end
 
   patch :DATA
 
@@ -65,10 +66,10 @@ end
 
 __END__
 diff --git a/configure.ac b/configure.ac
-index ef18743..65bbd8f 100644
+index e3f5626..ed95505 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -263,7 +263,6 @@ AC_CHECK_FUNCS(m4_normalize([
+@@ -266,7 +266,6 @@ AC_CHECK_FUNCS(m4_normalize([
    strtok
    strerror
    strtol
@@ -77,10 +78,10 @@ index ef18743..65bbd8f 100644
    pselect
    getaddrinfo
 diff --git a/src/frontend/mosh-server.cc b/src/frontend/mosh-server.cc
-index 7918c74..ae5fca4 100644
+index 21057e8..30c8b06 100644
 --- a/src/frontend/mosh-server.cc
 +++ b/src/frontend/mosh-server.cc
-@@ -552,15 +552,6 @@ static int run_server( const char *desired_ip, const char *desired_port,
+@@ -549,15 +549,6 @@ static int run_server( const char *desired_ip, const char *desired_port,
      }
  #endif /* HAVE_IUTF8 */
  
@@ -97,7 +98,7 @@ index 7918c74..ae5fca4 100644
      if ( setenv( "NCURSES_NO_UTF8_ACS", "1", true ) < 0 ) {
        perror( "setenv" );
 diff --git a/src/frontend/terminaloverlay.cc b/src/frontend/terminaloverlay.cc
-index b1c906a..6dcfad9 100644
+index adee673..73a8bc3 100644
 --- a/src/frontend/terminaloverlay.cc
 +++ b/src/frontend/terminaloverlay.cc
 @@ -38,6 +38,8 @@
@@ -107,9 +108,9 @@ index b1c906a..6dcfad9 100644
 +#include "wcwidth9.h"
 +
  using namespace Overlay;
- using std::max;
- using std::mem_fun_ref;
-@@ -264,7 +266,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
+ 
+ void ConditionalOverlayCell::apply( Framebuffer &fb, uint64_t confirmed_epoch, int row, bool flag ) const
+@@ -261,7 +263,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
      }
  
      wchar_t ch = *i;
@@ -118,7 +119,7 @@ index b1c906a..6dcfad9 100644
      Cell *this_cell = 0;
  
      switch ( chwidth ) {
-@@ -300,7 +302,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
+@@ -297,7 +299,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
      case -1: /* unprintable character */
        break;
      default:
@@ -127,7 +128,7 @@ index b1c906a..6dcfad9 100644
      }
    }
  }
-@@ -735,7 +737,7 @@ void PredictionEngine::new_user_byte( char the_byte, const Framebuffer &fb )
+@@ -743,7 +745,7 @@ void PredictionEngine::new_user_byte( char the_byte, const Framebuffer &fb )
  	    }
  	  }
  	}
