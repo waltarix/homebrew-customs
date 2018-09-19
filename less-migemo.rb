@@ -18,8 +18,8 @@ class LessMigemo < Formula
 
   patch :DATA
 
-  depends_on "pcre"
   depends_on "ncurses"
+  depends_on "pcre"
   depends_on "waltarix/customs/cmigemo"
 
   def install

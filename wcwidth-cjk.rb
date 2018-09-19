@@ -5,9 +5,9 @@ class WcwidthCjk < Formula
     :revision => "e4a40fc0ed5977b740171f78b9092f458c71fee8"
   version "0.3"
 
-  depends_on "libtool" => :build
-  depends_on "automake" => :build
   depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   patch :DATA
 

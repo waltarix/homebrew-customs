@@ -20,7 +20,7 @@ class Cmigemo < Formula
   def caveats; <<~EOS
     See also https://github.com/emacs-jp/migemo to use cmigemo with Emacs.
     You will have to save as migemo.el and put it in your load-path.
-    EOS
+  EOS
   end
 
   def make_target

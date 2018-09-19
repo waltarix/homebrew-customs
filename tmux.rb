@@ -24,8 +24,8 @@ class Tmux < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libevent"
-  depends_on "utf8proc" => :optional
   depends_on "ncurses"
+  depends_on "utf8proc" => :optional
 
   resource "completion" do
     url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/homebrew_1.0.0/completions/tmux"
@@ -68,7 +68,7 @@ class Tmux < Formula
   def caveats; <<~EOS
     Example configuration has been installed to:
       #{opt_pkgshare}
-    EOS
+  EOS
   end
 
   test do

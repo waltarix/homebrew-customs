@@ -27,8 +27,8 @@ class W3m < Formula
 
   depends_on "pkg-config" => :build
   depends_on "bdw-gc"
-  depends_on "openssl"
   depends_on "ncurses"
+  depends_on "openssl"
   depends_on "waltarix/customs/cmigemo"
 
   def pour_bottle?

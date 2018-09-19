@@ -3,8 +3,8 @@ class Neovim < Formula
   homepage "https://neovim.io/"
   url "https://github.com/neovim/neovim/archive/v0.3.1.tar.gz"
   sha256 "bc5e392d4c076407906ccecbc283e1a44b7832c2f486cad81aa04cc29973ad22"
-  head "https://github.com/neovim/neovim.git"
   revision 1
+  head "https://github.com/neovim/neovim.git"
 
   bottle do
     rebuild 1
@@ -14,8 +14,8 @@ class Neovim < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "luarocks" => :build
   depends_on "lua@5.1" => :build
+  depends_on "luarocks" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "jemalloc"
