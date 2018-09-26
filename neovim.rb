@@ -26,8 +26,6 @@ class Neovim < Formula
   depends_on "msgpack"
   depends_on "unibilium"
 
-  patch :DATA
-
   def pour_bottle?
     false
   end
@@ -127,6 +125,8 @@ class Neovim < Formula
     version "0.1.0-1"
     sha256 "d2254c70eab7e7b6d7dc07caffe06f1015897fc09fdfa4b33f0b3745e6b0d03c"
   end
+
+  patch :DATA
 
   def install
     resources.each do |r|

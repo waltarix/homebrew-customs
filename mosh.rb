@@ -35,14 +35,14 @@ class Mosh < Formula
   depends_on "tmux" => :build if build.with?("test") || build.bottle?
   depends_on "protobuf"
 
-  needs :cxx11
-
-  patch :DATA
-
   resource "wcwidth9.h" do
     url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/d4a38bc596f798b0344d06e9c831677f194d8148/wcwidth9.h"
     sha256 "50b5f30757ed9e1f9bece87dec4d70e32eee780f42b558242e4e76b1f9b334c8"
   end
+
+  patch :DATA
+
+  needs :cxx11
 
   def install
     ENV.cxx11

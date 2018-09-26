@@ -16,11 +16,11 @@ class LessMigemo < Formula
     false
   end
 
-  patch :DATA
-
   depends_on "ncurses"
   depends_on "pcre"
   depends_on "waltarix/customs/cmigemo"
+
+  patch :DATA
 
   def install
     migemo = Formula["cmigemo"]
