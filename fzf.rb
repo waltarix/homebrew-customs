@@ -1,15 +1,15 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.17.4.tar.gz"
-  sha256 "a4b009638266b116f422d159cd1e09df64112e6ae3490964db2cd46636981ff0"
+  url "https://github.com/junegunn/fzf/archive/0.17.5.tar.gz"
+  sha256 "de3b39758e01b19bbc04ee0d5107e14052d3a32ce8f40d4a63d0ed311394f7ee"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "cbb783a23e8ec9c898aefc90454c1692914a48d692ecb687376600c7b1ad3b17" => :high_sierra
-    sha256 "20d7dc1932212e1878c9171dee04fe00a2ce98da09bd64601b07beca46a2bebd" => :sierra
-    sha256 "eef44aeb48d7fdc99df24d96788780c6b3c8284e4716db002384aa305d701d89" => :el_capitan
+    sha256 "fbef178808dd3cee3b36ea3256579bc759e6516f87c4b8b2be00ad404ce14d4f" => :mojave
+    sha256 "7307a392d1869453b5dbfa86b4b0bb4b1e8e6178d12fd928b82e9f8cfde3926d" => :high_sierra
+    sha256 "490018ace4f9d99a470af3be3a409c793c1551fe72a6be2ad6e766dd594fa282" => :sierra
   end
 
   depends_on "glide" => :build
@@ -80,19 +80,21 @@ index 289d83a..6b7a8c5 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index d468504..c942040 100644
+index cae349d..bb5b88d 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -675,7 +675,7 @@ func (t *Terminal) placeCursor() {
- func (t *Terminal) printPrompt() {
- 	t.move(0, 0, true)
+@@ -703,8 +703,8 @@ func (t *Terminal) printPrompt() {
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
--	t.window.CPrint(tui.ColNormal, t.strong, string(t.input))
-+	t.window.CPrint(tui.ColNormal, tui.AttrRegular, string(t.input))
+ 
+ 	before, after := t.updatePromptOffset()
+-	t.window.CPrint(tui.ColNormal, t.strong, string(before))
+-	t.window.CPrint(tui.ColNormal, t.strong, string(after))
++	t.window.CPrint(tui.ColNormal, tui.AttrRegular, string(before))
++	t.window.CPrint(tui.ColNormal, tui.AttrRegular, string(after))
  }
  
  func (t *Terminal) printInfo() {
-@@ -812,7 +812,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
+@@ -841,7 +841,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrent, t.strong, " ")
  		}
