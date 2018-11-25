@@ -4,12 +4,13 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.6.2/zsh-5.6.2.tar.xz"
   mirror "https://www.zsh.org/pub/zsh-5.6.2.tar.xz"
   sha256 "a50bd66c0557e8eca3b8fa24e85d0de533e775d7a22df042da90488623752e9e"
+  revision 1
 
   bottle do
-    sha256 "443795937f11b04a0bff7047fb183c18f48dabff111d1b9f7f576a9881285f58" => :mojave
-    sha256 "b907030adf23a3a218eca94e4a3d25b55167ab5a3b27ee1eaab75955dfc3eb70" => :high_sierra
-    sha256 "abbb8bd5136e9d550bab6c6d44e36df3246f7f4027fa716a1237e3d8432ebd95" => :sierra
-    sha256 "a5df51c6e413290baa02137530f3834a783f69ce942bf2928d5da77575b524ea" => :el_capitan
+    rebuild 1
+    sha256 "807b44a6f1c3468cbc853383770384630acb32681ef4a2259f2d4224ec7e280e" => :mojave
+    sha256 "7c45d08186d58959039441892909a645c36408966f51ed1051b3f00e3fcda8a0" => :high_sierra
+    sha256 "040db78ee0c3a141f57db8f91c7458f1244c5beb2238a672e792de4304d7a751" => :sierra
   end
 
   head do
@@ -21,14 +22,9 @@ class Zsh < Formula
     false
   end
 
-  option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
-
-  deprecated_option "disable-etcdir" => "without-etcdir"
-
   depends_on "texinfo" => :build if OS.linux?
   depends_on "ncurses"
   depends_on "pcre"
-  depends_on "gdbm" => :optional
 
   resource "wcwidth9.h" do
     url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/d4a38bc596f798b0344d06e9c831677f194d8148/wcwidth9.h"
@@ -51,33 +47,22 @@ class Zsh < Formula
 
     system "Util/preconfig" if build.head?
 
-    args = %W[
-      --prefix=#{prefix}
-      --enable-fndir=#{pkgshare}/functions
-      --enable-scriptdir=#{pkgshare}/scripts
-      --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
-      --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
-      --enable-runhelpdir=#{pkgshare}/help
-      --enable-cap
-      --enable-maildir-support
-      --enable-multibyte
-      --enable-pcre
-      --enable-zsh-secure-free
-      --with-tcsetpgrp
-      --with-term-lib=ncursesw
-      --enable-unicode9
-      DL_EXT=bundle
-    ]
-
-    args << "--disable-gdbm" if build.without? "gdbm"
-
-    if build.without? "etcdir"
-      args << "--disable-etcdir"
-    else
-      args << "--enable-etcdir=/etc"
-    end
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-fndir=#{pkgshare}/functions",
+                          "--enable-scriptdir=#{pkgshare}/scripts",
+                          "--enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions",
+                          "--enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts",
+                          "--enable-runhelpdir=#{pkgshare}/help",
+                          "--enable-cap",
+                          "--enable-maildir-support",
+                          "--enable-multibyte",
+                          "--enable-pcre",
+                          "--enable-zsh-secure-free",
+                          "--enable-unicode9",
+                          "--enable-etcdir=/etc",
+                          "--with-tcsetpgrp",
+                          "--with-term-lib=ncursesw",
+                          "DL_EXT=bundle"
 
     # Do not version installation directories.
     inreplace ["Makefile", "Src/Makefile"],
