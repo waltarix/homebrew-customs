@@ -5,7 +5,7 @@ class Timg < Formula
     :revision => "dcd0c4d3d3d20280726314811ade4b74731b921c"
   version "0.9.5-beta3"
 
-  depends_on "graphicsmagick" => [:build, "with-webp"]
+  depends_on "graphicsmagick" => :build
 
   patch :DATA
 

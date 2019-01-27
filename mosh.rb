@@ -17,10 +17,6 @@ class Mosh < Formula
     false
   end
 
-  option "with-test", "Run build-time tests"
-
-  deprecated_option "without-check" => "without-test"
-
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "perl" => :build if
@@ -32,7 +28,7 @@ class Mosh < Formula
       system_perl_version < required_perl_version
     end
   depends_on "pkg-config" => :build
-  depends_on "tmux" => :build if build.with?("test") || build.bottle?
+  depends_on "tmux" => :build
   depends_on "protobuf"
 
   resource "wcwidth9.h" do
@@ -41,8 +37,6 @@ class Mosh < Formula
   end
 
   patch :DATA
-
-  needs :cxx11
 
   def install
     ENV.cxx11
@@ -55,7 +49,7 @@ class Mosh < Formula
 
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}", "--enable-completion"
-    system "make", "check" if build.with?("test") || build.bottle?
+    system "make", "check"
     system "make", "install"
   end
 
