@@ -30,6 +30,7 @@ class Cmigemo < Formula
   end
 
   test do
-    system "#{bin}/et", "--help"
+    dictionary = share/"migemo/utf-8/migemo-dict"
+    assert_match "ほげ", shell_output("#{bin}/cmigemo -d #{dictionary} -w hoge")
   end
 end
