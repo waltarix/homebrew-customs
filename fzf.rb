@@ -1,18 +1,17 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.17.5.tar.gz"
-  sha256 "de3b39758e01b19bbc04ee0d5107e14052d3a32ce8f40d4a63d0ed311394f7ee"
+  url "https://github.com/junegunn/fzf/archive/0.18.0.tar.gz"
+  sha256 "5406d181785ea17b007544082b972ae004b62fb19cdb41f25e265ea3cc8c2d9d"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fbef178808dd3cee3b36ea3256579bc759e6516f87c4b8b2be00ad404ce14d4f" => :mojave
-    sha256 "7307a392d1869453b5dbfa86b4b0bb4b1e8e6178d12fd928b82e9f8cfde3926d" => :high_sierra
-    sha256 "490018ace4f9d99a470af3be3a409c793c1551fe72a6be2ad6e766dd594fa282" => :sierra
+    sha256 "0f77b9b22f32f76493cdac585106b01502c6583908e0b7b6ea70ab023b5c1c2e" => :mojave
+    sha256 "6f457b819868a5515d2154eae02eb8fdbc154a1815e96729ed62f68395672f38" => :high_sierra
+    sha256 "4e352d29fefafd0c7af1c98ebf97276afbf4df844444aa98e4e1fa32d338e281" => :sierra
   end
 
-  depends_on "glide" => :build
   depends_on "go" => :build
 
   def pour_bottle?
@@ -22,14 +21,12 @@ class Fzf < Formula
   patch :DATA
 
   def install
-    ENV["GLIDE_HOME"] = buildpath/"glide_home"
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/junegunn").mkpath
-    ln_s buildpath, buildpath/"src/github.com/junegunn/fzf"
-    system "glide", "install"
-
-    inreplace buildpath/"vendor/github.com/mattn/go-runewidth/runewidth.go",
-      "{0x2580, 0x258F}, ", ""
+    gopath = buildpath/"go_cache"
+    ENV["GOPATH"] = gopath
+    system "go", "mod", "tidy"
+    runewidth_dir = gopath/"pkg/mod/github.com/mattn/go-runewidth@v0.0.0-20170201023540-14207d285c6c"
+    chmod 0755, runewidth_dir
+    inreplace runewidth_dir/"runewidth.go", "{0x2580, 0x258F}, ", ""
 
     system "go", "build", "-o", bin/"fzf", "-ldflags", "-X main.revision=brew"
 
@@ -80,10 +77,10 @@ index 289d83a..6b7a8c5 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index cae349d..bb5b88d 100644
+index 06623b2..64bce18 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -703,8 +703,8 @@ func (t *Terminal) printPrompt() {
+@@ -707,8 +707,8 @@ func (t *Terminal) printPrompt() {
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
  
  	before, after := t.updatePromptOffset()
@@ -94,12 +91,12 @@ index cae349d..bb5b88d 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -841,7 +841,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
+@@ -845,7 +845,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
  		} else {
- 			t.window.CPrint(tui.ColCurrent, t.strong, " ")
+ 			t.window.CPrint(tui.ColCurrentSelected, t.strong, " ")
  		}
 -		newLine.width = t.printHighlighted(result, t.strong, tui.ColCurrent, tui.ColCurrentMatch, true, true)
 +		newLine.width = t.printHighlighted(result, tui.AttrRegular, tui.ColCurrent, tui.ColCurrentMatch, true, true)
  	} else {
+ 		t.window.CPrint(tui.ColCursor, t.strong, label)
  		if selected {
- 			t.window.CPrint(tui.ColSelected, t.strong, ">")
