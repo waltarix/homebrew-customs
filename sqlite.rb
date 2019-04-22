@@ -1,15 +1,15 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2019/sqlite-autoconf-3270200.tar.gz"
-  version "3.27.2"
-  sha256 "50c39e85ea28b5ecfdb3f9e860afe9ba606381e21836b2849efca6a0bfe6ef6e"
+  url "https://sqlite.org/2019/sqlite-autoconf-3280000.tar.gz"
+  version "3.28.0"
+  sha256 "d61b5286f062adfce5125eaf544d495300656908e61fca143517afcc0a89b7c3"
 
   bottle do
     cellar :any
-    sha256 "92e04d5ec9bc853574c91c6564d56cbe4ab032ab5449d347e004bcada6715c73" => :mojave
-    sha256 "c1f61110f6b98eb2cf21f99ef93d8644643498efe184130e93236777cc789c69" => :high_sierra
-    sha256 "ac9127f5cb35739bc3255a620cd2c10f917c43528ef7a8f74a6cea808baa0292" => :sierra
+    sha256 "e360850758d2104b4ae9eab8ae57903a37b62c550c779ddf32100720f832508d" => :mojave
+    sha256 "564d1b9be6693b32d50c5f6ca18866dd7d27fbdac04ceb5bafad8253460fd997" => :high_sierra
+    sha256 "1ea06999623676c2f7937f9a0c050fa71326c8aad2747de1b8379be78ad57cb1" => :sierra
   end
 
   keg_only :provided_by_macos, "macOS provides an older sqlite3"
@@ -69,10 +69,10 @@ end
 
 __END__
 diff --git a/sqlite3.c b/sqlite3.c
-index 4729f45..b64869b 100644
+index 4404295..7a89417 100644
 --- a/sqlite3.c
 +++ b/sqlite3.c
-@@ -153723,6 +153723,8 @@ SQLITE_PRIVATE int sqlite3StmtVtabInit(sqlite3*);
+@@ -154650,6 +154650,8 @@ SQLITE_PRIVATE int sqlite3StmtVtabInit(sqlite3*);
  SQLITE_PRIVATE int sqlite3Fts5Init(sqlite3*);
  #endif
  
@@ -81,7 +81,7 @@ index 4729f45..b64869b 100644
  #ifndef SQLITE_AMALGAMATION
  /* IMPLEMENTATION-OF: R-46656-45156 The sqlite3_version[] string constant
  ** contains the text of SQLITE_VERSION macro. 
-@@ -156968,6 +156970,10 @@ static int openDatabase(
+@@ -157897,6 +157899,10 @@ static int openDatabase(
    }
  #endif
  
@@ -92,7 +92,7 @@ index 4729f45..b64869b 100644
    /* -DSQLITE_DEFAULT_LOCKING_MODE=1 makes EXCLUSIVE the default locking
    ** mode.  -DSQLITE_DEFAULT_LOCKING_MODE=0 make NORMAL the default locking
    ** mode.  Doing nothing at all also makes NORMAL the default.
-@@ -180212,6 +180218,126 @@ SQLITE_API int sqlite3_json_init(
+@@ -181150,6 +181156,126 @@ SQLITE_API int sqlite3_json_init(
  #endif /* !defined(SQLITE_CORE) || defined(SQLITE_ENABLE_JSON1) */
  
  /************** End of json1.c ***********************************************/
