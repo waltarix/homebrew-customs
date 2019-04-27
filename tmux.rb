@@ -1,13 +1,14 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/releases/download/2.8/tmux-2.8.tar.gz"
-  sha256 "7f6bf335634fafecff878d78de389562ea7f73a7367f268b66d37ea13617a2ba"
+  url "https://github.com/tmux/tmux/releases/download/2.9/tmux-2.9.tar.gz"
+  sha256 "34901232f486fd99f3a39e864575e658b5d49f43289ccc6ee57c365f2e2c2980"
 
   bottle do
-    sha256 "1853b704405374f88dcb00ef4c82c18efbcbac2ce855de681bd7017c3b5e6b36" => :mojave
-    sha256 "b50d0ac39ae8219d84b9fba7ae5f0422143d8a7a9575b9193d7604dc1b3a85f0" => :high_sierra
-    sha256 "d4b259196136dfb9fe4cf68a348d68edc58ac2b6d0954fe60c6694b053826cd3" => :sierra
+    cellar :any
+    sha256 "f0f683a24fcb3148e0299273f83ca25fb90c7773bbca0672d8736cf82e34f997" => :mojave
+    sha256 "d0220b8ad9aa2ffc577b99d7c803198111dc99a0db8d15ca1831a4ef2a6f98c9" => :high_sierra
+    sha256 "3c35948e4c5816e760daac4d73a9f40e2d30b8ec5a4022bb2eced3e386e12178" => :sierra
   end
 
   head do
@@ -25,7 +26,6 @@ class Tmux < Formula
   depends_on "pkg-config" => :build
   depends_on "libevent"
   depends_on "ncurses"
-  depends_on "utf8proc" => :optional
 
   resource "completion" do
     url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/homebrew_1.0.0/completions/tmux"
@@ -47,8 +47,6 @@ class Tmux < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
     ]
-
-    args << "--enable-utf8proc" if build.with?("utf8proc")
 
     buildpath.install resource("wcwidth9.h")
 
