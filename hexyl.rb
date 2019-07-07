@@ -5,21 +5,22 @@ class Hexyl < Formula
   sha256 "9c12bc6377d1efedc4a1731547448f7eb6ed17ee1c267aad9a35995b42091163"
 
   bottle do
+    root_url "https://gist.githubusercontent.com/waltarix/eacc34005669406dca03b51ff6af2617/raw/983a779dc43a4cb55eb322e8766b24515598870e"
     cellar :any_skip_relocation
-    sha256 "2ea951a75e72e97075b3d4db45edbfc6cbb27b67c4655fcd1483ce6ad2c4165d" => :mojave
-    sha256 "52d0981ef2edc478f11e8c66a959f2868c0ee7e20a3178064ec289dfaa71e397" => :high_sierra
-    sha256 "688108b44f0fb529f1085a1e7416d445b6b6c12885a9a941727c950233f8b6eb" => :sierra
+    sha256 "2f7f792960f2ee0cc84bb42f73560452374b3ebcf7949dcb2119d01e12ac025d" => :mojave
+    sha256 "2f7f792960f2ee0cc84bb42f73560452374b3ebcf7949dcb2119d01e12ac025d" => :high_sierra
   end
 
-  depends_on "rust" => :build
-
-  def pour_bottle?
-    false
-  end
+  depends_on "rustup-init" => :build
 
   patch :DATA
 
   def install
+    Pathname.new(`eval echo ~$USER`.chomp).tap do |user_home|
+      ENV.prepend_path "PATH", user_home/".cargo/bin"
+      ENV["RUSTUP_HOME"] = user_home/".rustup"
+    end
+
     system "cargo", "install", "--root", prefix, "--path", "."
   end
 
