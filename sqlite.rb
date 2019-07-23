@@ -1,15 +1,15 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2019/sqlite-autoconf-3280000.tar.gz"
-  version "3.28.0"
-  sha256 "d61b5286f062adfce5125eaf544d495300656908e61fca143517afcc0a89b7c3"
+  url "https://sqlite.org/2019/sqlite-autoconf-3290000.tar.gz"
+  version "3.29.0"
+  sha256 "8e7c1e2950b5b04c5944a981cb31fffbf9d2ddda939d536838ebc854481afd5b"
 
   bottle do
     cellar :any
-    sha256 "e360850758d2104b4ae9eab8ae57903a37b62c550c779ddf32100720f832508d" => :mojave
-    sha256 "564d1b9be6693b32d50c5f6ca18866dd7d27fbdac04ceb5bafad8253460fd997" => :high_sierra
-    sha256 "1ea06999623676c2f7937f9a0c050fa71326c8aad2747de1b8379be78ad57cb1" => :sierra
+    sha256 "5f2f8f36a8d13733b0374ac39bdcd32dea10315e7442b9bb9942465487cb7811" => :mojave
+    sha256 "dcdc548263b6a8611d0e3532da5e216399cbd51e04277bb1ec9130fbb1125994" => :high_sierra
+    sha256 "59e5e8d4abca99d7f3162bf8079be9efadebf459b6b24eaaa8d0effba8bb3fd7" => :sierra
   end
 
   keg_only :provided_by_macos, "macOS provides an older sqlite3"
@@ -46,6 +46,7 @@ class Sqlite < Formula
       --enable-dynamic-extensions
       --enable-readline
       --disable-editline
+      --enable-session
     ]
 
     system "./configure", *args
@@ -69,10 +70,10 @@ end
 
 __END__
 diff --git a/sqlite3.c b/sqlite3.c
-index 4404295..7a89417 100644
+index 61bfdeb..2e82a57 100644
 --- a/sqlite3.c
 +++ b/sqlite3.c
-@@ -154650,6 +154650,8 @@ SQLITE_PRIVATE int sqlite3StmtVtabInit(sqlite3*);
+@@ -155234,6 +155234,8 @@ SQLITE_PRIVATE int sqlite3StmtVtabInit(sqlite3*);
  SQLITE_PRIVATE int sqlite3Fts5Init(sqlite3*);
  #endif
  
@@ -81,7 +82,7 @@ index 4404295..7a89417 100644
  #ifndef SQLITE_AMALGAMATION
  /* IMPLEMENTATION-OF: R-46656-45156 The sqlite3_version[] string constant
  ** contains the text of SQLITE_VERSION macro. 
-@@ -157897,6 +157899,10 @@ static int openDatabase(
+@@ -158505,6 +158507,10 @@ static int openDatabase(
    }
  #endif
  
@@ -92,7 +93,7 @@ index 4404295..7a89417 100644
    /* -DSQLITE_DEFAULT_LOCKING_MODE=1 makes EXCLUSIVE the default locking
    ** mode.  -DSQLITE_DEFAULT_LOCKING_MODE=0 make NORMAL the default locking
    ** mode.  Doing nothing at all also makes NORMAL the default.
-@@ -181150,6 +181156,126 @@ SQLITE_API int sqlite3_json_init(
+@@ -181785,6 +181791,126 @@ SQLITE_API int sqlite3_json_init(
  #endif /* !defined(SQLITE_CORE) || defined(SQLITE_ENABLE_JSON1) */
  
  /************** End of json1.c ***********************************************/
