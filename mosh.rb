@@ -4,7 +4,7 @@ class Mosh < Formula
   url "https://github.com/mobile-shell/mosh.git", :shallow => false
   version "1.3.2"
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
-  revision 7
+  revision 8
 
   bottle do
     sha256 "5e05a95d972b509c0469ca933de7a522b74b049cc0dccfe5cb1aa6db34b54fc4" => :mojave
