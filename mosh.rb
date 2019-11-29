@@ -1,16 +1,15 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/mobile-shell/mosh.git", :shallow => false
-  version "1.3.2"
+  url "https://mosh.org/mosh-1.3.2.tar.gz"
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
-  revision 8
+  revision 10
 
   bottle do
-    sha256 "5e05a95d972b509c0469ca933de7a522b74b049cc0dccfe5cb1aa6db34b54fc4" => :mojave
-    sha256 "6cff59a934d2d8fda8f40f59c8ec5d0d2b550617478afa6ad56db20b3bb4e4a8" => :high_sierra
-    sha256 "c62e3806458d92a044bd00f5ddf08d6a1d01ee5870f77b67c5527a4a81f44251" => :sierra
-    sha256 "f990bb41dcdcc581c531138e235d58c6d83dfc53afe5203f44a0db7e92de4ead" => :el_capitan
+    cellar :any
+    sha256 "1f77a276cbba48a41505658a146853a01fd49e68f5ed39592e95f4b982860fa6" => :catalina
+    sha256 "5489299d991ac0ede82de439b94e6148fc6620b60ab795d8da21c976f09ed6eb" => :mojave
+    sha256 "9994025f67ff132e87310f596539af84f57ba53ce05b71fd9d0bd6069c681e84" => :high_sierra
   end
 
   def pour_bottle?
@@ -24,7 +23,6 @@ class Mosh < Formula
     begin
       system_perl_version = Gem::Version.new(`/usr/bin/perl -e 'printf "%vd", $^V;'`)
       required_perl_version = Gem::Version.new("5.14.0")
-
       system_perl_version < required_perl_version
     end
   depends_on "pkg-config" => :build
@@ -34,6 +32,14 @@ class Mosh < Formula
   resource "wcwidth9.h" do
     url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/d4a38bc596f798b0344d06e9c831677f194d8148/wcwidth9.h"
     sha256 "50b5f30757ed9e1f9bece87dec4d70e32eee780f42b558242e4e76b1f9b334c8"
+  end
+
+  # Fix mojave build.
+  unless build.head?
+    patch do
+      url "https://github.com/mobile-shell/mosh/commit/e5f8a826ef9ff5da4cfce3bb8151f9526ec19db0.patch?full_index=1"
+      sha256 "022bf82de1179b2ceb7dc6ae7b922961dfacd52fbccc30472c527cb7c87c96f0"
+    end
   end
 
   patch :DATA
@@ -60,10 +66,10 @@ end
 
 __END__
 diff --git a/configure.ac b/configure.ac
-index e3f5626..ed95505 100644
+index 3ad983d..ffd3187 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -266,7 +266,6 @@ AC_CHECK_FUNCS(m4_normalize([
+@@ -252,7 +252,6 @@ AC_CHECK_FUNCS(m4_normalize([
    strtok
    strerror
    strtol
@@ -72,10 +78,10 @@ index e3f5626..ed95505 100644
    pselect
    getaddrinfo
 diff --git a/src/frontend/mosh-server.cc b/src/frontend/mosh-server.cc
-index 21057e8..30c8b06 100644
+index b90738f..a6e61fd 100644
 --- a/src/frontend/mosh-server.cc
 +++ b/src/frontend/mosh-server.cc
-@@ -549,15 +549,6 @@ static int run_server( const char *desired_ip, const char *desired_port,
+@@ -530,15 +530,6 @@ static int run_server( const char *desired_ip, const char *desired_port,
      }
  #endif /* HAVE_IUTF8 */
  
@@ -92,7 +98,7 @@ index 21057e8..30c8b06 100644
      if ( setenv( "NCURSES_NO_UTF8_ACS", "1", true ) < 0 ) {
        perror( "setenv" );
 diff --git a/src/frontend/terminaloverlay.cc b/src/frontend/terminaloverlay.cc
-index adee673..73a8bc3 100644
+index 26d81cb..cb118e5 100644
 --- a/src/frontend/terminaloverlay.cc
 +++ b/src/frontend/terminaloverlay.cc
 @@ -38,6 +38,8 @@
@@ -102,9 +108,9 @@ index adee673..73a8bc3 100644
 +#include "wcwidth9.h"
 +
  using namespace Overlay;
- 
- void ConditionalOverlayCell::apply( Framebuffer &fb, uint64_t confirmed_epoch, int row, bool flag ) const
-@@ -261,7 +263,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
+ using std::max;
+ using std::mem_fun_ref;
+@@ -267,7 +269,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
      }
  
      wchar_t ch = *i;
@@ -113,16 +119,15 @@ index adee673..73a8bc3 100644
      Cell *this_cell = 0;
  
      switch ( chwidth ) {
-@@ -297,7 +299,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
-     case -1: /* unprintable character */
+@@ -304,6 +306,7 @@ void NotificationEngine::apply( Framebuffer &fb ) const
        break;
      default:
--      assert( !"unexpected character width from wcwidth()" );
+       assert( false );
 +      assert( !"unexpected character width from wcwidth9()" );
      }
    }
  }
-@@ -743,7 +745,7 @@ void PredictionEngine::new_user_byte( char the_byte, const Framebuffer &fb )
+@@ -727,7 +730,7 @@ void PredictionEngine::new_user_byte( char the_byte, const Framebuffer &fb )
  	    }
  	  }
  	}
@@ -132,7 +137,7 @@ index adee673..73a8bc3 100644
  	become_tentative();
  	//	fprintf( stderr, "Unknown print 0x%x\n", ch );
 diff --git a/src/terminal/terminal.cc b/src/terminal/terminal.cc
-index 057b3d0..66b2e73 100644
+index 2f9119b..537352b 100644
 --- a/src/terminal/terminal.cc
 +++ b/src/terminal/terminal.cc
 @@ -38,6 +38,8 @@
@@ -153,20 +158,19 @@ index 057b3d0..66b2e73 100644
  
    Cell *this_cell = fb.get_mutable_cell();
  
-@@ -142,7 +144,7 @@ void Emulator::print( const Parser::Print *act )
-   case -1: /* unprintable character */
+@@ -144,6 +146,7 @@ void Emulator::print( const Parser::Print *act )
      break;
    default:
--    assert( !"unexpected character width from wcwidth()" );
+     assert( false );
 +    assert( !"unexpected character width from wcwidth9()" );
      break;
    }
  }
 diff --git a/src/terminal/terminaldisplayinit.cc b/src/terminal/terminaldisplayinit.cc
-index 54dfcc9..9720f26 100644
+index 50a0a35..bf4c8cf 100644
 --- a/src/terminal/terminaldisplayinit.cc
 +++ b/src/terminal/terminaldisplayinit.cc
-@@ -115,7 +115,7 @@ Display::Display( bool use_environment )
+@@ -124,7 +124,7 @@ Display::Display( bool use_environment )
         terminal type prefixes.  This is the list from Debian's default
         screenrc, plus "screen" itself (which also covers tmux). */
      static const char * const title_term_types[] = {
