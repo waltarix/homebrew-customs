@@ -1,8 +1,8 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.19.0.tar.gz"
-  sha256 "4d7ee0b621287e64ed450d187e5022d906aa378c5390d8c7c1f843417d2f3422"
+  url "https://github.com/junegunn/fzf/archive/0.20.0.tar.gz"
+  sha256 "fe6a7d07bdf999324a4f90fa97a4d2e8416c89bc92f19c9848c1cbcf365b59dc"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
@@ -55,10 +55,10 @@ end
 
 __END__
 diff --git a/src/result.go b/src/result.go
-index 289d83a..6b7a8c5 100644
+index be325cb..6b06db8 100644
 --- a/src/result.go
 +++ b/src/result.go
-@@ -95,7 +95,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -94,7 +94,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  	if len(itemColors) == 0 {
  		var offsets []colorOffset
  		for _, off := range matchOffsets {
@@ -67,7 +67,7 @@ index 289d83a..6b7a8c5 100644
  		}
  		return offsets
  	}
-@@ -139,7 +139,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
+@@ -138,7 +138,7 @@ func (result *Result) colorOffsets(matchOffsets []Offset, theme *tui.ColorTheme,
  		if curr != 0 && idx > start {
  			if curr == -1 {
  				colors = append(colors, colorOffset{
@@ -77,10 +77,10 @@ index 289d83a..6b7a8c5 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 06623b2..64bce18 100644
+index 9a72d08..32ff592 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -707,8 +707,8 @@ func (t *Terminal) printPrompt() {
+@@ -733,8 +733,8 @@ func (t *Terminal) printPrompt() {
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
  
  	before, after := t.updatePromptOffset()
@@ -91,7 +91,7 @@ index 06623b2..64bce18 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -845,7 +845,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
+@@ -879,7 +879,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
  		} else {
  			t.window.CPrint(tui.ColCurrentSelected, t.strong, " ")
  		}
