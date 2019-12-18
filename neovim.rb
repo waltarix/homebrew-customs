@@ -54,7 +54,7 @@ class Neovim < Formula
     url "https://github.com/luvit/luv/releases/download/1.30.0-0/luv-1.30.0-0.tar.gz"
     sha256 "5cc75a012bfa9a5a1543d0167952676474f31c2d7fd8d450b56d8929dbebb5ef"
   end
- 
+
   patch :DATA
 
   def install
