@@ -4,6 +4,7 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.8/zsh-5.8.tar.xz"
   mirror "https://www.zsh.org/pub/zsh-5.8.tar.xz"
   sha256 "dcc4b54cc5565670a65581760261c163d720991f0d06486da61f8d839b52de27"
+  revision 1
 
   bottle do
     sha256 "209d04a4d62f6162f1b6cf824d2c50b00b52cb812c04c1967e5b376573b5aef0" => :catalina
@@ -25,8 +26,8 @@ class Zsh < Formula
   depends_on "pcre"
 
   resource "wcwidth9.h" do
-    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/d4a38bc596f798b0344d06e9c831677f194d8148/wcwidth9.h"
-    sha256 "50b5f30757ed9e1f9bece87dec4d70e32eee780f42b558242e4e76b1f9b334c8"
+    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/1b1065607bfc722da982d4e16fc10039d5124494/wcwidth9.h"
+    sha256 "be41464e5830e41bf075a394a05f811d515f52e99adc1e01156ba932c58fd124"
   end
 
   resource "htmldoc" do
