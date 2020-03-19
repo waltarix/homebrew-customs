@@ -26,8 +26,8 @@ class Zsh < Formula
   depends_on "pcre"
 
   resource "wcwidth9.h" do
-    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/1b1065607bfc722da982d4e16fc10039d5124494/wcwidth9.h"
-    sha256 "be41464e5830e41bf075a394a05f811d515f52e99adc1e01156ba932c58fd124"
+    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/53c3983f52469c4808714903d3a0597af930432e/wcwidth9.h"
+    sha256 "d886a1e0e95d9a203ea61c6ecba690ac9a3f82d943c5668d646a6200cf1d1a4f"
   end
 
   resource "htmldoc" do
