@@ -1,15 +1,15 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.20.0.tar.gz"
-  sha256 "fe6a7d07bdf999324a4f90fa97a4d2e8416c89bc92f19c9848c1cbcf365b59dc"
+  url "https://github.com/junegunn/fzf/archive/0.21.1.tar.gz"
+  sha256 "47adf138f17c45d390af81958bdff6f92157d41e2c4cb13773df078b905cdaf4"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0be169ab230f6ff7b2322ee3d61fa0cd44e04300b688d207b67e910d948af442" => :catalina
-    sha256 "5b5f429819576c27bab7bb658e3a99ae8043535e19d887fd9eaee954667ee715" => :mojave
-    sha256 "19e9ba86b09129e06530b322f892ba89fb1db3173219ca0228cc0fe2d8281fbc" => :high_sierra
+    sha256 "733f79496c3246979ca05eeb5677a5fd9e8ec532e69e8b2012102cacddba8ae6" => :catalina
+    sha256 "3c03bb9715be153a0f776d06cf4acd436ad4faa4266f7bd875a0d37594291516" => :mojave
+    sha256 "d15a616156eb92071f1cfc50f10366532af92ca1635d309162141ad67f785865" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -23,10 +23,11 @@ class Fzf < Formula
   def install
     gopath = HOMEBREW_CACHE/"go_cache"
     ENV["GOPATH"] = gopath
+    system "go", "clean", "--modcache"
     system "go", "mod", "tidy"
-    runewidth_dir = gopath/"pkg/mod/github.com/mattn/go-runewidth@v0.0.0-20170201023540-14207d285c6c"
+    runewidth_dir = gopath/"pkg/mod/github.com/mattn/go-runewidth@v0.0.8"
     chmod 0755, runewidth_dir
-    inreplace runewidth_dir/"runewidth.go", "{0x2580, 0x258F}, ", ""
+    inreplace runewidth_dir/"runewidth_table.go", "{0x2580, 0x258F}, ", ""
 
     system "go", "build", "-o", bin/"fzf", "-ldflags", "-X main.revision=brew"
 
@@ -38,13 +39,14 @@ class Fzf < Formula
     bin.install "bin/fzf-tmux"
   end
 
-  def caveats; <<~EOS
-    To install useful keybindings and fuzzy completion:
-      #{opt_prefix}/install
+  def caveats
+    <<~EOS
+      To install useful keybindings and fuzzy completion:
+        #{opt_prefix}/install
 
-    To use fzf in Vim, add the following line to your .vimrc:
-      set rtp+=#{opt_prefix}
-  EOS
+      To use fzf in Vim, add the following line to your .vimrc:
+        set rtp+=#{opt_prefix}
+    EOS
   end
 
   test do
@@ -77,10 +79,10 @@ index be325cb..6b06db8 100644
  				ansi := itemColors[curr-1]
  				fg := ansi.color.fg
 diff --git a/src/terminal.go b/src/terminal.go
-index 9a72d08..32ff592 100644
+index cb8f13c..8eed011 100644
 --- a/src/terminal.go
 +++ b/src/terminal.go
-@@ -733,8 +733,8 @@ func (t *Terminal) printPrompt() {
+@@ -765,8 +765,8 @@ func (t *Terminal) printPrompt() {
  	t.window.CPrint(tui.ColPrompt, t.strong, t.prompt)
  
  	before, after := t.updatePromptOffset()
@@ -91,9 +93,9 @@ index 9a72d08..32ff592 100644
  }
  
  func (t *Terminal) printInfo() {
-@@ -879,7 +879,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
+@@ -911,7 +911,7 @@ func (t *Terminal) printItem(result Result, line int, i int, current bool) {
  		} else {
- 			t.window.CPrint(tui.ColCurrentSelected, t.strong, " ")
+ 			t.window.CPrint(tui.ColCurrentSelected, t.strong, t.markerEmpty)
  		}
 -		newLine.width = t.printHighlighted(result, t.strong, tui.ColCurrent, tui.ColCurrentMatch, true, true)
 +		newLine.width = t.printHighlighted(result, tui.AttrRegular, tui.ColCurrent, tui.ColCurrentMatch, true, true)
