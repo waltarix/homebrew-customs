@@ -1,15 +1,14 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/releases/download/3.0a/tmux-3.0a.tar.gz"
-  sha256 "4ad1df28b4afa969e59c08061b45082fdc49ff512f30fc8e43217d7b0e5f8db9"
-  revision 1
+  url "https://github.com/tmux/tmux/releases/download/3.1a/tmux-3.1a.tar.gz"
+  sha256 "10687cbb02082b8b9e076cf122f1b783acc2157be73021b4bedb47e958f4e484"
 
   bottle do
     cellar :any
-    sha256 "3d29caf7e2b87c9f1af575b4ec10af3e29c5de6979a8bd884153d9e8e1b69f20" => :catalina
-    sha256 "6cfd3987dcda2901a3ed423138db7782ea88a993e1409c4ebb9d647b1c007e8a" => :mojave
-    sha256 "c7c42853ca6a3a5ad6ab6544defee14e450643f5ace274b9cf00d348e8525993" => :high_sierra
+    sha256 "ce07fcb82823ad832cf612a5b090a71167530c901b5b492b210ea59dc72dbb77" => :catalina
+    sha256 "2861e30ca8481af9b0c09ab0e5d156b10b0daf3c0aca07da1cb77522c7c796aa" => :mojave
+    sha256 "0c38f3532fd15148d54cb3e1ed13f60fb39dd5e3d4f6a68d8903f7e5ecf9d868" => :high_sierra
   end
 
   head do
@@ -64,10 +63,11 @@ class Tmux < Formula
     bash_completion.install resource("completion")
   end
 
-  def caveats; <<~EOS
-    Example configuration has been installed to:
-      #{opt_pkgshare}
-  EOS
+  def caveats
+    <<~EOS
+      Example configuration has been installed to:
+        #{opt_pkgshare}
+    EOS
   end
 
   test do
@@ -77,7 +77,7 @@ end
 
 __END__
 diff --git a/utf8.c b/utf8.c
-index 224aa482..e5298de2 100644
+index b4e448f7..e0c81d9b 100644
 --- a/utf8.c
 +++ b/utf8.c
 @@ -26,6 +26,8 @@
