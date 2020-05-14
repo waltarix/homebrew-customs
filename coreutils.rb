@@ -1,14 +1,14 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  url "https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz"
-  mirror "https://ftpmirror.gnu.org/coreutils/coreutils-8.31.tar.xz"
-  sha256 "ff7a9c918edce6b4f4b2725e3f9b37b0c4d193531cac49a48b56c4d0d3a9e9fd"
+  url "https://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz"
+  mirror "https://ftpmirror.gnu.org/coreutils/coreutils-8.32.tar.xz"
+  sha256 "4458d8de7849df44ccab15e16b1548b285224dbba5f08fac070c1c0e0bcc4cfa"
 
   bottle do
-    sha256 "f11898e59abf1c9ea9807ab15c7cdfc930bbfe1df14e432e5d2a89f11c405445" => :mojave
-    sha256 "8ceacbb21daeeb2c526d28789fe8d703d437bb72a382a7c3a3c024901f17cae6" => :high_sierra
-    sha256 "3451c10504ed3cc49893e84e6f3e09a0457cd28eb953482489548dfb593d098f" => :sierra
+    sha256 "67a4452d75a1882bd7fb977b384204edfa2758276d66290e595487922368e093" => :catalina
+    sha256 "5da6cb9dbc0a8144480dde2fb78eb0a5a1710490afc3697174f7e261ec69763f" => :mojave
+    sha256 "caa8cd8965727d0e805eccdc3e306cd0599720cdd0d5417cfcca03bead670663" => :high_sierra
   end
 
   head do
@@ -41,20 +41,6 @@ class Coreutils < Formula
   end
 
   def install
-    if MacOS.version == :el_capitan
-      # Work around unremovable, nested dirs bug that affects lots of
-      # GNU projects. See:
-      # https://github.com/Homebrew/homebrew/issues/45273
-      # https://github.com/Homebrew/homebrew/issues/44993
-      # This is thought to be an el_capitan bug:
-      # https://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
-      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
-
-      # renameatx_np and RENAME_EXCL are available at compile time from Xcode 8
-      # (10.12 SDK), but the former is not available at runtime.
-      inreplace "lib/renameat2.c", "defined RENAME_EXCL", "defined UNDEFINED_GIBBERISH"
-    end
-
     system "./bootstrap" if build.head?
 
     args = %W[
@@ -62,6 +48,10 @@ class Coreutils < Formula
       --program-prefix=g
       --without-gmp
     ]
+
+    # Work around a gnulib issue with macOS Catalina
+    args << "gl_cv_func_ftello_works=yes"
+
     system "./configure", *args
     system "make", "install"
 
@@ -86,12 +76,13 @@ class Coreutils < Formula
     end
   end
 
-  def caveats; <<~EOS
-    Commands also provided by macOS have been installed with the prefix "g".
-    If you need to use these commands with their normal names, you
-    can add a "gnubin" directory to your PATH from your bashrc like:
-      PATH="#{opt_libexec}/gnubin:$PATH"
-  EOS
+  def caveats
+    <<~EOS
+      Commands also provided by macOS have been installed with the prefix "g".
+      If you need to use these commands with their normal names, you
+      can add a "gnubin" directory to your PATH from your bashrc like:
+        PATH="#{opt_libexec}/gnubin:$PATH"
+    EOS
   end
 
   def coreutils_filenames(dir)
