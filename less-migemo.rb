@@ -1,15 +1,14 @@
 class LessMigemo < Formula
   desc "Pager program similar to more"
   homepage "http://www.greenwoodsoftware.com/less/index.html"
-  url "https://ftp.gnu.org/gnu/less/less-487.tar.gz"
-  mirror "http://www.greenwoodsoftware.com/less/less-487.tar.gz"
-  sha256 "f3dc8455cb0b2b66e0c6b816c00197a71bf6d1787078adeee0bcf2aea4b12706"
-  revision 1
+  url "http://www.greenwoodsoftware.com/less/less-551.tar.gz"
+  sha256 "ff165275859381a63f19135a8f1f6c5a194d53ec3187f94121ecd8ef0795fe3d"
 
   bottle do
-    sha256 "9ca07bd92196f4fbf122054b3ee394f43f14173b816a5217f05661453c13dd23" => :sierra
-    sha256 "877f32f255528633a67c4ae76dfda423315473a0780f8f066b7d78af4d58bbc8" => :el_capitan
-    sha256 "5be9c4ad7e6eda596a6828d1f49c70612ac02e2df6a65254e99dc1a34ecf1095" => :yosemite
+    cellar :any
+    sha256 "a76b3f1fb43e1e0ab566a70eca5430afa744d6d87430b55e9a5b98160834c8b9" => :catalina
+    sha256 "2ee3f16d15855ab88ad87067085c0f2dd58c90c5b91ae51499ae0548a24693b2" => :mojave
+    sha256 "46cd5ba33b6a1d00cfa3993712ea617bce5b6c9908b016a72413f370eda714be" => :high_sierra
   end
 
   def pour_bottle?
@@ -41,22 +40,22 @@ end
 
 __END__
 diff --git a/funcs.h b/funcs.h
-index ac63c37..c390796 100644
+index 9686df1..5bae752 100644
 --- a/funcs.h
 +++ b/funcs.h
-@@ -210,6 +210,7 @@
- 	public void opt__P ();
- 	public void opt_b ();
- 	public void opt_i ();
-+	public void opt_migemo ();
- 	public void opt__V ();
- 	public void opt_D ();
- 	public void opt_x ();
+@@ -229,6 +229,7 @@ public void opt_p LESSPARAMS ((int type, char *s));
+ public void opt__P LESSPARAMS ((int type, char *s));
+ public void opt_b LESSPARAMS ((int type, char *s));
+ public void opt_i LESSPARAMS ((int type, char *s));
++public void opt_migemo LESSPARAMS ((int type, char *s));
+ public void opt__V LESSPARAMS ((int type, char *s));
+ public void opt_D LESSPARAMS ((int type, char *s));
+ public void opt_x LESSPARAMS ((int type, char *s));
 diff --git a/optfunc.c b/optfunc.c
-index 44f8e5f..09e25a9 100644
+index 7fe947e..8bf90bb 100644
 --- a/optfunc.c
 +++ b/optfunc.c
-@@ -473,6 +473,26 @@ opt_i(type, s)
+@@ -488,6 +488,26 @@ opt_i(type, s)
  	}
  }
  
@@ -84,18 +83,18 @@ index 44f8e5f..09e25a9 100644
   * Handler for the -V option.
   */
 diff --git a/opttbl.c b/opttbl.c
-index 0383837..4d05df2 100644
+index 967761c..6bb02d3 100644
 --- a/opttbl.c
 +++ b/opttbl.c
-@@ -53,6 +53,7 @@ public int quit_on_intr;	/* Quit on interrupt */
- public int follow_mode;		/* F cmd Follows file desc or file name? */
- public int oldbot;		/* Old bottom of screen behavior {{REMOVE}} */
- public int opt_use_backslash;	/* Use backslash escaping in option parsing */
+@@ -59,6 +59,7 @@ public int no_hist_dups;	/* Remove dups from history list */
+ public int mousecap;		/* Allow mouse for scrolling */
+ public int wheel_lines;		/* Number of lines to scroll on mouse wheel scroll */
+ public int perma_marks;		/* Save marks in history file */
 +public int migemo_search;	/* Migemo search */
  #if HILITE_SEARCH
  public int hilite_search;	/* Highlight matched search patterns? */
  #endif
-@@ -113,6 +114,7 @@ static struct optname quote_optname  = { "quotes",               NULL };
+@@ -119,6 +120,7 @@ static struct optname quote_optname  = { "quotes",               NULL };
  static struct optname tilde_optname  = { "tilde",                NULL };
  static struct optname query_optname  = { "help",                 NULL };
  static struct optname pound_optname  = { "shift",                NULL };
@@ -103,7 +102,7 @@ index 0383837..4d05df2 100644
  static struct optname keypad_optname = { "no-keypad",            NULL };
  static struct optname oldbot_optname = { "old-bot",              NULL };
  static struct optname follow_optname = { "follow-name",          NULL };
-@@ -424,6 +426,14 @@ static struct loption option[] =
+@@ -435,6 +437,14 @@ static struct loption option[] =
  			NULL
  		}
  	},
@@ -119,13 +118,13 @@ index 0383837..4d05df2 100644
  		BOOL|NO_TOGGLE, OPT_OFF, &no_keypad, NULL,
  		{
 diff --git a/pattern.c b/pattern.c
-index 97a73e9..7547863 100644
+index da27dc6..a08ba47 100644
 --- a/pattern.c
 +++ b/pattern.c
-@@ -13,8 +13,14 @@
+@@ -12,9 +12,15 @@
+  */
  
  #include "less.h"
- #include "pattern.h"
 +#include "migemo.h"
 +#include <syslog.h>
 +#if HAVE_LOCALE
@@ -133,18 +132,18 @@ index 97a73e9..7547863 100644
 +#endif
  
  extern int caseless;
+ extern int utf_mode;
 +extern int migemo_search;
  
  /*
   * Compile a search pattern, for future use by match_pattern.
-@@ -61,12 +67,28 @@ compile_pattern2(pattern, search_type, comp_pattern, show_error)
- 	*pcomp = comp;
+@@ -64,10 +70,24 @@ compile_pattern2(pattern, search_type, comp_pattern, show_error)
+ 	*comp_pattern = comp;
  #endif
  #if HAVE_PCRE
 +	char **ptr_pattern = &pattern;
 +	migemo *m = NULL;
 +	char *migemo_pattern;
-+
 +	if (migemo_search) {
 +#if HAVE_LOCALE
 +		setlocale(LC_ALL, "C");
@@ -155,35 +154,31 @@ index 97a73e9..7547863 100644
 +#endif
 +		migemo_pattern = (char*)migemo_query(m, (const unsigned char*)pattern);
 +		ptr_pattern = &migemo_pattern;
-+	}
-+
- 	pcre *comp;
- 	pcre **pcomp = (pcre **) comp_pattern;
++   }
  	constant char *errstring;
  	int erroffset;
  	PARG parg;
--	comp = pcre_compile(pattern, 0,
-+	comp = pcre_compile(*ptr_pattern, 0,
+-	pcre *comp = pcre_compile(pattern,
++	pcre *comp = pcre_compile(*ptr_pattern,
+ 			(utf_mode) ? PCRE_UTF8 | PCRE_NO_UTF8_CHECK : 0,
  			&errstring, &erroffset, NULL);
  	if (comp == NULL)
- 	{
-@@ -76,6 +98,11 @@ compile_pattern2(pattern, search_type, comp_pattern, show_error)
+@@ -78,6 +98,10 @@ compile_pattern2(pattern, search_type, comp_pattern, show_error)
  		return (-1);
  	}
- 	*pcomp = comp;
-+
+ 	*comp_pattern = comp;
 +	if (m != NULL) {
 +		migemo_release(m, (unsigned char*)migemo_pattern);
 +		migemo_close(m);
 +	}
  #endif
- #if HAVE_RE_COMP
- 	PARG parg;
+ #if HAVE_PCRE2
+ 	int errcode;
 diff --git a/search.c b/search.c
-index 750b74a..dac68e8 100644
+index e1d0073..0d215e2 100644
 --- a/search.c
 +++ b/search.c
-@@ -358,6 +358,16 @@ undo_search()
+@@ -362,6 +362,16 @@ undo_search(VOID_PARAM)
  #endif
  }
  
