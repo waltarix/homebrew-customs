@@ -1,28 +1,18 @@
 class Hexyl < Formula
   desc "Command-line hex viewer"
   homepage "https://github.com/sharkdp/hexyl"
-  url "https://github.com/sharkdp/hexyl/archive/v0.7.0.tar.gz"
-  sha256 "92aa86fc2b482d2d7abf07565ea3587767a9beb9135a307aadeba61cc84f4b34"
-
-  bottle do
-    root_url "https://gist.githubusercontent.com/waltarix/eacc34005669406dca03b51ff6af2617/raw/64fcae039fa401bd7cb66a1094ae847d7477a78f"
-    cellar :any_skip_relocation
-    sha256 "cb431f80f345c0cc67a29311954fa85f6573830e734c7c372eedd6e30dee0b53" => :catalina
-    sha256 "cb431f80f345c0cc67a29311954fa85f6573830e734c7c372eedd6e30dee0b53" => :mojave
-    sha256 "cb431f80f345c0cc67a29311954fa85f6573830e734c7c372eedd6e30dee0b53" => :high_sierra
+  if OS.linux?
+    url "https://github.com/waltarix/hexyl/releases/download/v0.7.0-custom/hexyl-0.7.0-linux.tar.xz"
+    sha256 "f6f90fadb3b300d2c8d23f2d122f2a9eeb269512193413c2816785ebb038a30c"
+  else
+    url "https://github.com/waltarix/hexyl/releases/download/v0.7.0-custom/hexyl-0.7.0-darwin.tar.xz"
+    sha256 "19db60331c199c5176d1bcfc4cb5fc256fd670730b1a5dfff29cd39cb4fb9660"
   end
 
-  depends_on "rustup-init" => :build
-
-  patch :DATA
+  bottle :unneeded
 
   def install
-    Pathname.new(`eval echo ~$USER`.chomp).tap do |user_home|
-      ENV.prepend_path "PATH", user_home/".cargo/bin"
-      ENV["RUSTUP_HOME"] = user_home/".rustup"
-    end
-
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    bin.install "hexyl"
   end
 
   test do
@@ -31,20 +21,3 @@ class Hexyl < Formula
     assert_match "00000000", output
   end
 end
-
-__END__
-diff --git a/src/lib.rs b/src/lib.rs
-index 08fd4d8..528b153 100644
---- a/src/lib.rs
-+++ b/src/lib.rs
-@@ -65,8 +65,8 @@ impl Byte {
-             AsciiPrintable => self.0 as char,
-             AsciiWhitespace if self.0 == 0x20 => ' ',
-             AsciiWhitespace => '_',
--            AsciiOther => '•',
--            NonAscii => '×',
-+            AsciiOther => '✳',
-+            NonAscii => '✖',
-         }
-     }
- }
