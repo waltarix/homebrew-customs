@@ -3,18 +3,9 @@ class Mosh < Formula
   homepage "https://mosh.org"
   url "https://mosh.org/mosh-1.3.2.tar.gz"
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
-  revision 11
+  revision 12
 
-  bottle do
-    cellar :any
-    sha256 "1f77a276cbba48a41505658a146853a01fd49e68f5ed39592e95f4b982860fa6" => :catalina
-    sha256 "5489299d991ac0ede82de439b94e6148fc6620b60ab795d8da21c976f09ed6eb" => :mojave
-    sha256 "9994025f67ff132e87310f596539af84f57ba53ce05b71fd9d0bd6069c681e84" => :high_sierra
-  end
-
-  def pour_bottle?
-    false
-  end
+  bottle :unneeded
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -30,8 +21,8 @@ class Mosh < Formula
   depends_on "protobuf"
 
   resource "wcwidth9.h" do
-    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/53c3983f52469c4808714903d3a0597af930432e/wcwidth9.h"
-    sha256 "d886a1e0e95d9a203ea61c6ecba690ac9a3f82d943c5668d646a6200cf1d1a4f"
+    url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
+    sha256 "11b39a935edfb094163f91a42ccdc25d46cbfe51cd700823a8573f52d1a80b8d"
   end
 
   # Fix mojave build.
