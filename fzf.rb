@@ -4,16 +4,17 @@ class Fzf < Formula
   url "https://github.com/junegunn/fzf/archive/0.21.1.tar.gz"
   sha256 "47adf138f17c45d390af81958bdff6f92157d41e2c4cb13773df078b905cdaf4"
   head "https://github.com/junegunn/fzf.git"
+  revision 1
 
   bottle :unneeded
 
   resource "binary" do
     if OS.linux?
       url "https://github.com/waltarix/fzf/releases/download/0.21.1-custom/fzf-0.21.1-linux_amd64.tar.xz"
-      sha256 "69ec7ffdf5be3ac22d99aaaa465b22a9073dc2581e1fc363ae2bfd2f3458ec84"
+      sha256 "6609ea83eec7a952154bbf762d2979f32adfa0ae4cc8e823331d50c70c605153"
     else
       url "https://github.com/waltarix/fzf/releases/download/0.21.1-custom/fzf-0.21.1-darwin_amd64.tar.xz"
-      sha256 "60adb610f6ea0ebac8e7abb069825c04e3e7d00b67dcb65e02d7f17e21371b8b"
+      sha256 "16aa136d41b0e36ab7571dc2948545c2bbc839a33198fbb4cce9318dbb077234"
     end
   end
 
