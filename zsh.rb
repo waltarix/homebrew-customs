@@ -4,30 +4,22 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.8/zsh-5.8.tar.xz"
   mirror "https://www.zsh.org/pub/zsh-5.8.tar.xz"
   sha256 "dcc4b54cc5565670a65581760261c163d720991f0d06486da61f8d839b52de27"
-  revision 1
-
-  bottle do
-    sha256 "209d04a4d62f6162f1b6cf824d2c50b00b52cb812c04c1967e5b376573b5aef0" => :catalina
-    sha256 "c5c35657637c97132efbaa0fd8e2add568aaa62adfe66e7d19f961f8e9506da9" => :mojave
-    sha256 "029b8c6922f01bfd832dd0f4f940f99328d2495714c37c1dc7ef326d6fb1459e" => :high_sierra
-  end
+  revision 2
 
   head do
     url "https://git.code.sf.net/p/zsh/code.git"
     depends_on "autoconf" => :build
   end
 
-  def pour_bottle?
-    false
-  end
+  bottle :unneeded
 
   depends_on "texinfo" => :build if OS.linux?
   depends_on "ncurses"
   depends_on "pcre"
 
   resource "wcwidth9.h" do
-    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/53c3983f52469c4808714903d3a0597af930432e/wcwidth9.h"
-    sha256 "d886a1e0e95d9a203ea61c6ecba690ac9a3f82d943c5668d646a6200cf1d1a4f"
+    url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
+    sha256 "11b39a935edfb094163f91a42ccdc25d46cbfe51cd700823a8573f52d1a80b8d"
   end
 
   resource "htmldoc" do
