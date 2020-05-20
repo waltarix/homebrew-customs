@@ -5,8 +5,8 @@ class Timg < Formula
     :revision => "094da0b984f6943c1b52b4c7a81966378709466b"
   version "0.9.9-094da0b"
 
-  depends_on "ffmpeg"
   depends_on "graphicsmagick"
+  depends_on "ffmpeg" => :recommended
 
   def install
     inreplace "src/Makefile", " .FORCE", ""
@@ -15,7 +15,7 @@ class Timg < Formula
     EOS
 
     cd "src" do
-      system "make", "WITH_VIDEO_DECODING=1"
+      system "make", "WITH_VIDEO_DECODING=#{build.with?("ffmpeg") ? 1 : 0}"
 
       bin.install "timg"
     end
