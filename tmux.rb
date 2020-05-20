@@ -3,13 +3,7 @@ class Tmux < Formula
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux/releases/download/3.1b/tmux-3.1b.tar.gz"
   sha256 "d93f351d50af05a75fe6681085670c786d9504a5da2608e481c47cf5e1486db9"
-
-  bottle do
-    cellar :any
-    sha256 "f26bd0c3f5696350dcaf229d0fadaf6ab677c0ebbb550fc499ca0a37da59ab55" => :catalina
-    sha256 "e9995ca765078be9cfdef4f1b6a628bcded0e96e36649e084a7f5480d165547a" => :mojave
-    sha256 "7a04ece8143c0647be18bb14c160a984a5a9f855fa2ee888d21fc19374790ee5" => :high_sierra
-  end
+  revision 1
 
   head do
     url "https://github.com/tmux/tmux.git"
@@ -19,9 +13,7 @@ class Tmux < Formula
     depends_on "libtool" => :build
   end
 
-  def pour_bottle?
-    false
-  end
+  bottle :unneeded
 
   depends_on "pkg-config" => :build
   depends_on "libevent"
@@ -33,8 +25,8 @@ class Tmux < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://gist.githubusercontent.com/waltarix/7a36cc9f234a4a2958a24927696cf87c/raw/53c3983f52469c4808714903d3a0597af930432e/wcwidth9.h"
-    sha256 "d886a1e0e95d9a203ea61c6ecba690ac9a3f82d943c5668d646a6200cf1d1a4f"
+    url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
+    sha256 "11b39a935edfb094163f91a42ccdc25d46cbfe51cd700823a8573f52d1a80b8d"
   end
 
   patch :DATA
