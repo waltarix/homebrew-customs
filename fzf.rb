@@ -11,10 +11,10 @@ class Fzf < Formula
   resource "binary" do
     if OS.linux?
       url "https://github.com/waltarix/fzf/releases/download/0.21.1-custom/fzf-0.21.1-linux_amd64.tar.xz"
-      sha256 "6609ea83eec7a952154bbf762d2979f32adfa0ae4cc8e823331d50c70c605153"
+      sha256 "16fd48ccf7d28b73ac852e2fae2986a00addc34ecfd9662e56ed13a14090cbc4"
     else
       url "https://github.com/waltarix/fzf/releases/download/0.21.1-custom/fzf-0.21.1-darwin_amd64.tar.xz"
-      sha256 "16aa136d41b0e36ab7571dc2948545c2bbc839a33198fbb4cce9318dbb077234"
+      sha256 "dacd910b8a7a66a49a0b6c21b5f25e04ee070e405b16c87fb04083b60ad4a334"
     end
   end
 
