@@ -50,7 +50,7 @@ class Neovim < Formula
 
   resource "unicode" do
     url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/unicode.tar.xz"
-    sha256 "e20502322c1881678c1c8ce914bae22c0b672e8645610cfde8d442486357f8e3"
+    sha256 "d91a815e90cf4885816c8eaa6d26c557a25dc5d223b8db571483441c6734579a"
   end
 
   def install
