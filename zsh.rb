@@ -19,7 +19,7 @@ class Zsh < Formula
 
   resource "wcwidth9.h" do
     url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
-    sha256 "11b39a935edfb094163f91a42ccdc25d46cbfe51cd700823a8573f52d1a80b8d"
+    sha256 "e4cfc677b500877d32c3df2bab39324ea5a8422a93c4e19d3214f547de6a5c22"
   end
 
   resource "htmldoc" do
