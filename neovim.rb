@@ -3,7 +3,7 @@ class Neovim < Formula
   homepage "https://neovim.io/"
   url "https://github.com/neovim/neovim/archive/v0.4.3.tar.gz"
   sha256 "91a0b5d32204a821bf414690e6b48cf69224d1961d37158c2b383f6a6cf854d2"
-  revision 1
+  revision 2
 
   head do
     url "https://github.com/neovim/neovim.git"
@@ -50,7 +50,7 @@ class Neovim < Formula
 
   resource "unicode" do
     url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/unicode.tar.xz"
-    sha256 "d91a815e90cf4885816c8eaa6d26c557a25dc5d223b8db571483441c6734579a"
+    sha256 "63f5cc74598e0b75ef92825c97151573861155ec443c8ee42ccf1a3dcb7de6f0"
   end
 
   def install
