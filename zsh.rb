@@ -4,7 +4,7 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.8/zsh-5.8.tar.xz"
   mirror "https://www.zsh.org/pub/zsh-5.8.tar.xz"
   sha256 "dcc4b54cc5565670a65581760261c163d720991f0d06486da61f8d839b52de27"
-  revision 2
+  revision 3
 
   head do
     url "https://git.code.sf.net/p/zsh/code.git"
@@ -19,7 +19,7 @@ class Zsh < Formula
 
   resource "wcwidth9.h" do
     url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
-    sha256 "e4cfc677b500877d32c3df2bab39324ea5a8422a93c4e19d3214f547de6a5c22"
+    sha256 "6c9ea16106bf634e6966031ea3a279454c0761b545bcf3bb2df9d78d0cafd213"
   end
 
   resource "htmldoc" do
