@@ -1,26 +1,17 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2020/sqlite-autoconf-3310100.tar.gz"
-  version "3.31.1"
-  sha256 "62284efebc05a76f909c580ffa5c008a7d22a1287285d68b7825a2b6b51949ae"
+  url "https://sqlite.org/2020/sqlite-autoconf-3320100.tar.gz"
+  version "3.32.1"
+  sha256 "486748abfb16abd8af664e3a5f03b228e5f124682b0c942e157644bf6fff7d10"
 
-  bottle do
-    cellar :any
-    sha256 "e09e8c96db88178e4f47b0cdab6477c46fa582326900ec9309c3ce1b9f7ff9aa" => :catalina
-    sha256 "db7e3a6498bfdb4b4ceb8e8416020e2ad70de14975437f2e2a027485daeb2202" => :mojave
-    sha256 "c49ef2494ec483a37895a7ba454c90b6e280e8b0a0db52399c9842617c150cab" => :high_sierra
-  end
+  bottle :unneeded
 
-  keg_only :provided_by_macos, "macOS provides an older sqlite3"
+  keg_only :provided_by_macos
 
   depends_on "pcre"
   depends_on "readline"
   depends_on "waltarix/customs/cmigemo"
-
-  def pour_bottle?
-    false
-  end
 
   patch :DATA
 
@@ -70,19 +61,19 @@ end
 
 __END__
 diff --git a/sqlite3.c b/sqlite3.c
-index 55dc686..060c0a6 100644
+index 19c8768..8ea69fb 100644
 --- a/sqlite3.c
 +++ b/sqlite3.c
-@@ -159092,6 +159092,8 @@ SQLITE_PRIVATE int sqlite3StmtVtabInit(sqlite3*);
- SQLITE_PRIVATE int sqlite3Fts5Init(sqlite3*);
+@@ -160262,6 +160262,8 @@ static int (*const sqlite3BuiltinExtensions[])(sqlite3*) = {
  #endif
+ };
  
 +SQLITE_PRIVATE int sqlite3MigemoInit(sqlite3*);
 +
  #ifndef SQLITE_AMALGAMATION
  /* IMPLEMENTATION-OF: R-46656-45156 The sqlite3_version[] string constant
  ** contains the text of SQLITE_VERSION macro. 
-@@ -162423,6 +162425,10 @@ static int openDatabase(
+@@ -163500,6 +163502,10 @@ static int openDatabase(
    db->mDbFlags |= DBFLAG_InternalFunc;
  #endif
  
@@ -93,7 +84,7 @@ index 55dc686..060c0a6 100644
    /* -DSQLITE_DEFAULT_LOCKING_MODE=1 makes EXCLUSIVE the default locking
    ** mode.  -DSQLITE_DEFAULT_LOCKING_MODE=0 make NORMAL the default locking
    ** mode.  Doing nothing at all also makes NORMAL the default.
-@@ -186032,6 +186038,126 @@ SQLITE_API int sqlite3_json_init(
+@@ -187182,6 +187188,126 @@ SQLITE_API int sqlite3_json_init(
  #endif /* !defined(SQLITE_CORE) || defined(SQLITE_ENABLE_JSON1) */
  
  /************** End of json1.c ***********************************************/
