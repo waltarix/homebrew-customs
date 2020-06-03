@@ -1,18 +1,16 @@
 class Cmigemo < Formula
   desc "Migemo is a tool that supports Japanese incremental search with Romaji"
   homepage "https://www.kaoriya.net/software/cmigemo"
-  url "https://github.com/koron/cmigemo.git",
-    :revision => "5c014a885972c77e67d0d17d367d05017c5873f7"
-  version "20150404"
+  url "https://github.com/waltarix/cmigemo.git",
+    :tag => "20150404-custom"
+  version "20150404-custom"
 
   depends_on "nkf" => :build
 
   def install
-    chmod 0755, "./configure"
     system "./configure", "--prefix=#{prefix}"
     system "make", make_target
     system "make", "#{make_target}-dict"
-    system "make", "-C", "dict", "utf-8" if build.stable?
     ENV.deparallelize # Install can fail on multi-core machines unless serialized
     system "make", "#{make_target}-install"
   end
@@ -31,7 +29,6 @@ class Cmigemo < Formula
   end
 
   test do
-    dictionary = share/"migemo/utf-8/migemo-dict"
-    assert_match "ほげ", shell_output("#{bin}/cmigemo -d #{dictionary} -w hoge")
+    assert_match "ほげ", shell_output("#{bin}/cmigemo -w hoge")
   end
 end
