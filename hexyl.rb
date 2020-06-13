@@ -2,11 +2,11 @@ class Hexyl < Formula
   desc "Command-line hex viewer"
   homepage "https://github.com/sharkdp/hexyl"
   if OS.linux?
-    url "https://github.com/waltarix/hexyl/releases/download/v0.7.0-custom/hexyl-0.7.0-linux.tar.xz"
-    sha256 "ef5653af71e0cd95a56babe9feb8fb59171748e75033ded07ded3f07a787554a"
+    url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom/hexyl-0.8.0-linux.tar.xz"
+    sha256 "5ce7467a76ed05785af2f66aa465fe7d7ae05d21fef637099f577442cb6561a1"
   else
-    url "https://github.com/waltarix/hexyl/releases/download/v0.7.0-custom/hexyl-0.7.0-darwin.tar.xz"
-    sha256 "4f90548c251b483498b2e7f242168b9527637eef783702450babfabb29b67b68"
+    url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom/hexyl-0.8.0-darwin.tar.xz"
+    sha256 "2693202c2f72597c8e0769762613ed0c1162ca7eb77d20013635c6ac293d3310"
   end
 
   bottle :unneeded
