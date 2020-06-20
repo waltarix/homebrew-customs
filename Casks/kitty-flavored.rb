@@ -1,8 +1,8 @@
 cask 'kitty-flavored' do
   version '0.17.4'
-  sha256 '396052aa4112000a9e5cac2b358e00c163679d3bf4a729170dd48d02dc67bd21'
+  sha256 '10b8ecfe8ef1aabed2cf64287b4ef13c2cb5dd88530234d855af0570505226c7'
 
-  url "https://github.com/waltarix/kitty/releases/download/v#{version}-custom/kitty-#{version}.dmg"
+  url "https://github.com/waltarix/kitty/releases/download/v#{version}-custom-r1/kitty-#{version}.dmg"
   appcast 'https://github.com/waltarix/kitty/releases.atom'
   name 'kitty flavored'
   homepage 'https://github.com/kovidgoyal/kitty'
