@@ -13,7 +13,6 @@ class Zsh < Formula
 
   bottle :unneeded
 
-  depends_on "texinfo" => :build if OS.linux?
   depends_on "ncurses"
   depends_on "pcre"
 
@@ -65,7 +64,7 @@ class Zsh < Formula
       system "make", "install.bin", "install.modules", "install.fns"
     else
       system "make", "install"
-      system "make", "install.info"
+      system "make", "install.info" unless OS.linux?
 
       resource("htmldoc").stage do
         (pkgshare/"htmldoc").install Dir["Doc/*.html"]
