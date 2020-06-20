@@ -4,7 +4,7 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.8/zsh-5.8.tar.xz"
   mirror "https://www.zsh.org/pub/zsh-5.8.tar.xz"
   sha256 "dcc4b54cc5565670a65581760261c163d720991f0d06486da61f8d839b52de27"
-  revision 3
+  revision 4
 
   head do
     url "https://git.code.sf.net/p/zsh/code.git"
@@ -18,8 +18,8 @@ class Zsh < Formula
   depends_on "pcre"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
-    sha256 "6c9ea16106bf634e6966031ea3a279454c0761b545bcf3bb2df9d78d0cafd213"
+    url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
+    sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
   end
 
   resource "htmldoc" do
