@@ -3,7 +3,7 @@ class Tmux < Formula
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux/releases/download/3.1b/tmux-3.1b.tar.gz"
   sha256 "d93f351d50af05a75fe6681085670c786d9504a5da2608e481c47cf5e1486db9"
-  revision 2
+  revision 3
 
   head do
     url "https://github.com/tmux/tmux.git"
@@ -25,8 +25,8 @@ class Tmux < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
-    sha256 "6c9ea16106bf634e6966031ea3a279454c0761b545bcf3bb2df9d78d0cafd213"
+    url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
+    sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
   end
 
   patch :DATA
