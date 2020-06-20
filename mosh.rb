@@ -3,7 +3,7 @@ class Mosh < Formula
   homepage "https://mosh.org"
   url "https://mosh.org/mosh-1.3.2.tar.gz"
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
-  revision 13
+  revision 14
 
   bottle :unneeded
 
@@ -21,8 +21,8 @@ class Mosh < Formula
   depends_on "protobuf"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/neovim/releases/download/unicode%2F13.0.0/wcwidth9.h"
-    sha256 "6c9ea16106bf634e6966031ea3a279454c0761b545bcf3bb2df9d78d0cafd213"
+    url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
+    sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
   end
 
   # Fix mojave build.
