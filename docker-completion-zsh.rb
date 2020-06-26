@@ -1,9 +1,9 @@
 class DockerCompletionZsh < Formula
   desc "Zsh completion for Docker"
   homepage "https://www.docker.com/"
-  url "https://raw.githubusercontent.com/docker/docker-ce/v19.03.0-rc3/components/cli/contrib/completion/zsh/_docker"
-  version "19.03.0-rc3"
-  sha256 "54fbd8f1d1acaaf36f4d8784f86d8108f38adf4b95632f811ff772806c7a2608"
+  url "https://raw.githubusercontent.com/docker/docker-ce/v19.03.12/components/cli/contrib/completion/zsh/_docker"
+  version "19.03.12"
+  sha256 "cdecf8b89d8fc5e796266782a59fd21adb69340a47513746f15b1ba0cc196725"
 
   bottle :unneeded
 
