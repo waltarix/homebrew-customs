@@ -1,8 +1,8 @@
 class Less < Formula
   desc "Pager program similar to more"
   homepage "http://www.greenwoodsoftware.com/less/index.html"
-  url "https://github.com/waltarix/less/releases/download/v551-custom/less-551.tar.gz"
-  sha256 "5ac661c9530ca7c6922b2ee150b94c3b28389fc485aecf037ff1057bc9a8c459"
+  url "https://github.com/waltarix/less/releases/download/v551-custom-r1/less-551.tar.gz"
+  sha256 "0ec1caa40a9e2bc4eac98d0c44024036ce99b7632494534793974e5154f7b028"
   revision 1
 
   bottle :unneeded
