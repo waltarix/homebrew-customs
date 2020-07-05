@@ -16,8 +16,8 @@ class Sqlite < Formula
   uses_from_macos "zlib"
 
   resource "sqlite3.c" do
-    url "https://github.com/waltarix/sqlite/releases/download/version-3.32.3-migemo/sqlite3.c.xz"
-    sha256 "4e6d2d22b18603a3695753639b6c86739fe1105a446b996a2b8444cadec1a0d7"
+    url "https://github.com/waltarix/sqlite/releases/download/version-3.32.3-migemo-r1/sqlite3.c.xz"
+    sha256 "5b688ad0aed33bdcae6796f401f058762532d73a924bb86422c769ddc65e0f3f"
   end
 
   def install
