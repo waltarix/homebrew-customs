@@ -1,8 +1,8 @@
 class BusyboxManpage < Formula
   desc "Man page for Busybox"
   homepage "https://busybox.net/"
-  url "https://busybox.net/downloads/busybox-1.31.0.tar.bz2"
-  sha256 "0e4925392fd9f3743cc517e031b68b012b24a63b0cf6c1ff03cce7bb3846cc99"
+  url "https://busybox.net/downloads/busybox-1.32.0.tar.bz2"
+  sha256 "c35d87f1d04b2b153d33c275c2632e40d388a88f19a9e71727e0bbbff51fe689"
 
   depends_on "gnu-sed" => :build
 
