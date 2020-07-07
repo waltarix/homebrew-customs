@@ -23,9 +23,6 @@ class Sqlite < Formula
   def install
     resource("sqlite3.c").stage buildpath
 
-    ENV.append "LDFLAGS", "-lmigemo"
-    ENV.append "LDFLAGS", "-lpcre2-8"
-
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
     # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
     # applications. Set to 250000 (Same value used in Debian and Ubuntu).
@@ -33,7 +30,6 @@ class Sqlite < Formula
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE=1"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_JSON1=1"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_MIGEMO=1"
 
     args = %W[
       --prefix=#{prefix}
@@ -42,6 +38,7 @@ class Sqlite < Formula
       --enable-readline
       --disable-editline
       --enable-session
+      --enable-migemo
     ]
 
     system "./configure", *args
