@@ -12,6 +12,6 @@ class SystemdCompletionZsh < Formula
 
   test do
     assert_match "_journalctl is an autoload shell function",
-      shell_output("zsh -c 'source #{zsh_completion}/_journalctl && whence -v _journalctl'")
+      shell_output("zsh -c 'autoload -Uz compinit; compinit; whence -v _journalctl'")
   end
 end
