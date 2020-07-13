@@ -2,13 +2,13 @@ class Dust < Formula
   desc "More intuitive version of du in rust"
   homepage "https://github.com/bootandy/dust"
   if OS.linux?
-    url "https://github.com/waltarix/dust/releases/download/v0.5.1-custom-r2/dust-0.5.1-linux.tar.xz"
-    sha256 "5619c04d83b110252c6b085d12f7a6be9a15adb694691210f37d141908e8d3ed"
+    url "https://github.com/waltarix/dust/releases/download/v0.5.1-custom-r3/dust-0.5.1-linux.tar.xz"
+    sha256 "095d85fe9f73ab3f07c94dffe3c370b4c105980b9e8ebd7246011a9964187a23"
   else
-    url "https://github.com/waltarix/dust/releases/download/v0.5.1-custom-r2/dust-0.5.1-darwin.tar.xz"
-    sha256 "625daf203972135b734113dc6864454f76401f2a012c33ea1b6c2644200005ef"
+    url "https://github.com/waltarix/dust/releases/download/v0.5.1-custom-r3/dust-0.5.1-darwin.tar.xz"
+    sha256 "7b4ecef3b77d2d028262b3df760e60c614ef7919e1c52ca8b3cc096ace643e36"
   end
-  revision 2
+  revision 3
 
   bottle :unneeded
 
