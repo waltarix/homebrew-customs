@@ -1,9 +1,9 @@
 class JxaDaemon < Formula
   desc "Daemon for JXA"
   homepage "https://github.com/waltarix/misc/tree/master/daemons"
-  url "https://raw.githubusercontent.com/waltarix/misc/20200605/daemons/jxa_daemon.rb"
-  version "20200605"
-  sha256 "8c2264717b5a19b7909e140f975f864aeed27db9d910b79fd81f3d78aec1384d"
+  url "https://raw.githubusercontent.com/waltarix/misc/20200720/daemons/jxa_daemon.rb"
+  version "20200720"
+  sha256 "2a10483b59bcbaa84d0e1aea81ee8523c68b499de862c9c5d5195a4c9aeeb537"
 
   bottle :unneeded
 
@@ -11,7 +11,8 @@ class JxaDaemon < Formula
     libexec.install "jxa_daemon.rb" => "jxa-daemon"
 
     ENV["GEM_HOME"] = libexec
-    system "gem", "install", "oj"
+    system "gem", "install", "fast_jsonparser", "-v", "0.3.0", "--",
+                  "--with-cxxflags=-Wno-reserved-user-defined-literal"
 
     chmod 0555, libexec/"jxa-daemon"
     (bin/"jxa-daemon").write_env_script(libexec/"jxa-daemon", :GEM_HOME => libexec)
