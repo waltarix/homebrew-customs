@@ -15,10 +15,10 @@ class JxaDaemon < Formula
                   "--with-cxxflags=-Wno-reserved-user-defined-literal"
 
     chmod 0555, libexec/"jxa-daemon"
-    (bin/"jxa-daemon").write_env_script(libexec/"jxa-daemon", :GEM_HOME => libexec)
+    (bin/"jxa-daemon").write_env_script(libexec/"jxa-daemon", GEM_HOME: libexec)
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/jxa_daemon/bin/jxa-daemon"
+  plist_options manual: "#{HOMEBREW_PREFIX}/opt/jxa_daemon/bin/jxa-daemon"
 
   def plist
     <<~EOS

@@ -3,6 +3,7 @@ class Neovim < Formula
   homepage "https://neovim.io/"
   url "https://github.com/neovim/neovim/archive/v0.4.3.tar.gz"
   sha256 "91a0b5d32204a821bf414690e6b48cf69224d1961d37158c2b383f6a6cf854d2"
+  license "Apache-2.0"
   revision 3
 
   head do

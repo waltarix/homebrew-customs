@@ -4,6 +4,7 @@ class UniversalCtagsUbuntu < Formula
   url "https://deb.debian.org/debian/pool/main/u/universal-ctags/universal-ctags_0+git20181215.orig.tar.gz"
   version "0+git20181215-2"
   sha256 "065b202cb23b406ea581d12620b725ba089529ea7af4c7f433d1f5f2ccc4d75d"
+  license "LGPL-2.0"
 
   if OS.mac?
     depends_on "autoconf" => :build
@@ -16,7 +17,7 @@ class UniversalCtagsUbuntu < Formula
   depends_on "libxml2"
   depends_on "libyaml"
 
-  conflicts_with "ctags", :because => "this formula installs the same executable as the ctags formula"
+  conflicts_with "ctags", because: "this formula installs the same executable as the ctags formula"
 
   patch do
     url "https://deb.debian.org/debian/pool/main/u/universal-ctags/universal-ctags_0+git20181215-2.debian.tar.xz"

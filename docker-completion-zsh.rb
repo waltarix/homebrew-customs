@@ -3,13 +3,14 @@ class DockerCompletionZsh < Formula
   homepage "https://www.docker.com/"
   url "https://raw.githubusercontent.com/docker/docker-ce/v19.03.12/components/cli/contrib/completion/zsh/_docker"
   sha256 "cdecf8b89d8fc5e796266782a59fd21adb69340a47513746f15b1ba0cc196725"
+  license "Apache-2.0"
 
   bottle :unneeded
 
   conflicts_with "docker",
-    :because => "docker already includes this completion script"
+    because: "docker already includes this completion script"
   conflicts_with "docker-completion",
-    :because => "docker-completion already includes this completion script"
+    because: "docker-completion already includes this completion script"
 
   patch :DATA
 

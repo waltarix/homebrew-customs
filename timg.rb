@@ -2,8 +2,9 @@ class Timg < Formula
   desc "Terminal Image Viewer"
   homepage "https://github.com/hzeller/timg"
   url "https://github.com/hzeller/timg.git",
-    :revision => "094da0b984f6943c1b52b4c7a81966378709466b"
+    revision: "094da0b984f6943c1b52b4c7a81966378709466b"
   version "0.9.9-094da0b"
+  license "GPL-2.0"
 
   depends_on "graphicsmagick"
   depends_on "ffmpeg" => :recommended

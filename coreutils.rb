@@ -4,36 +4,18 @@ class Coreutils < Formula
   url "https://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz"
   mirror "https://ftpmirror.gnu.org/coreutils/coreutils-8.32.tar.xz"
   sha256 "4458d8de7849df44ccab15e16b1548b285224dbba5f08fac070c1c0e0bcc4cfa"
+  license "GPL-3.0"
 
-  bottle do
-    sha256 "67a4452d75a1882bd7fb977b384204edfa2758276d66290e595487922368e093" => :catalina
-    sha256 "5da6cb9dbc0a8144480dde2fb78eb0a5a1710490afc3697174f7e261ec69763f" => :mojave
-    sha256 "caa8cd8965727d0e805eccdc3e306cd0599720cdd0d5417cfcca03bead670663" => :high_sierra
-  end
+  bottle :unneeded
 
-  head do
-    url "https://git.savannah.gnu.org/git/coreutils.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "bison" => :build
-    depends_on "gettext" => :build
-    depends_on "texinfo" => :build
-    depends_on "wget" => :build
-    depends_on "xz" => :build
-  end
-
-  conflicts_with "aardvark_shell_utils", :because => "both install `realpath` binaries"
-  conflicts_with "b2sum", :because => "both install `b2sum` binaries"
-  conflicts_with "ganglia", :because => "both install `gstat` binaries"
-  conflicts_with "gegl", :because => "both install `gcut` binaries"
-  conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
-  conflicts_with "md5sha1sum", :because => "both install `md5sum` and `sha1sum` binaries"
-  conflicts_with "truncate", :because => "both install `truncate` binaries"
-
-  def pour_bottle?
-    false
-  end
+  conflicts_with "aardvark_shell_utils", because: "both install `realpath` binaries"
+  conflicts_with "b2sum", because: "both install `b2sum` binaries"
+  conflicts_with "ganglia", because: "both install `gstat` binaries"
+  conflicts_with "gegl", because: "both install `gcut` binaries"
+  conflicts_with "idutils", because: "both install `gid` and `gid.1`"
+  conflicts_with "md5sha1sum", because: "both install `md5sum` and `sha1sum` binaries"
+  conflicts_with "truncate", because: "both install `truncate` binaries"
+  conflicts_with "uutils-coreutils", because: "coreutils and uutils-coreutils install the same binaries"
 
   patch :p1 do
     url "https://gist.githubusercontent.com/waltarix/1408362/raw/b5aa5ee1973dd8732282f51ec4535a55aff530d4/coreutils-ls-utf8mac.patch"
@@ -41,6 +23,9 @@ class Coreutils < Formula
   end
 
   def install
+    # Fix configure: error: you should not run configure as root
+    ENV["FORCE_UNSAFE_CONFIGURE"] = "1" if ENV["CI"]
+
     system "./bootstrap" if build.head?
 
     args = %W[
@@ -70,6 +55,11 @@ class Coreutils < Formula
       b2sum base32 chcon hostid md5sum nproc numfmt pinky ptx realpath runcon
       sha1sum sha224sum sha256sum sha384sum sha512sum shred shuf stdbuf tac timeout truncate
     ]
+    unless OS.mac?
+      no_conflict << "dir"
+      no_conflict << "dircolors"
+      no_conflict << "vdir"
+    end
     no_conflict.each do |cmd|
       bin.install_symlink "g#{cmd}" => cmd
       man1.install_symlink "g#{cmd}.1" => "#{cmd}.1"
@@ -77,8 +67,9 @@ class Coreutils < Formula
   end
 
   def caveats
+    msg = OS.mac? ? "Commands also provided by macOS" : "All commands"
     <<~EOS
-      Commands also provided by macOS have been installed with the prefix "g".
+      #{msg} have been installed with the prefix "g".
       If you need to use these commands with their normal names, you
       can add a "gnubin" directory to your PATH from your bashrc like:
         PATH="#{opt_libexec}/gnubin:$PATH"

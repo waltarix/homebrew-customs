@@ -4,6 +4,7 @@ class Sqlite < Formula
   url "https://sqlite.org/2020/sqlite-autoconf-3320300.tar.gz"
   version "3.32.3"
   sha256 "a31507123c1c2e3a210afec19525fd7b5bb1e19a6a34ae5b998fbd7302568b66"
+  license "blessing"
 
   bottle :unneeded
 
@@ -12,8 +13,7 @@ class Sqlite < Formula
   depends_on "pcre2"
   depends_on "readline"
   depends_on "waltarix/customs/cmigemo"
-
-  uses_from_macos "zlib"
+  depends_on "zlib"
 
   resource "sqlite3.c" do
     url "https://github.com/waltarix/sqlite/releases/download/version-3.32.3-migemo-r1/sqlite3.c.xz"

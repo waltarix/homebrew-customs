@@ -2,7 +2,7 @@ class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux.git",
-    :tag => "3.2-rc"
+    tag: "3.2-rc"
 
   bottle :unneeded
 

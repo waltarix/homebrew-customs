@@ -3,22 +3,20 @@ class Mosh < Formula
   homepage "https://mosh.org"
   url "https://mosh.org/mosh-1.3.2.tar.gz"
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
+  license "GPL-3.0"
   revision 14
 
   bottle :unneeded
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "perl" => :build if
-    OS.linux? &&
-    begin
-      system_perl_version = Gem::Version.new(`/usr/bin/perl -e 'printf "%vd", $^V;'`)
-      required_perl_version = Gem::Version.new("5.14.0")
-      system_perl_version < required_perl_version
-    end
+  if OS.mac?
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
   depends_on "pkg-config" => :build
   depends_on "tmux" => :build
+  depends_on "ncurses"
   depends_on "protobuf"
+  depends_on "openssl@1.1" unless OS.mac?
 
   resource "wcwidth9.h" do
     url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
@@ -46,7 +44,7 @@ class Mosh < Formula
 
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}", "--enable-completion"
-    system "make", "check"
+    system "make", "check" if OS.mac?
     system "make", "install"
   end
 

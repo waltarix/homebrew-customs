@@ -8,6 +8,7 @@ class Hexyl < Formula
     url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom/hexyl-0.8.0-darwin.tar.xz"
     sha256 "2693202c2f72597c8e0769762613ed0c1162ca7eb77d20013635c6ac293d3310"
   end
+  license "Apache-2.0"
 
   bottle :unneeded
 

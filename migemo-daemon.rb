@@ -14,12 +14,12 @@ class MigemoDaemon < Formula
 
     chmod 0555, libexec/"migemo-daemon"
     env = {
-      :PATH => "#{Formula["cmigemo"].opt_bin}:$PATH",
+      PATH: "#{Formula["cmigemo"].opt_bin}:$PATH",
     }
     (bin/"migemo-daemon").write_env_script(libexec/"migemo-daemon", env)
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/migemo_daemon/bin/migemo-daemon"
+  plist_options manual: "#{HOMEBREW_PREFIX}/opt/migemo_daemon/bin/migemo-daemon"
 
   def plist
     <<~EOS

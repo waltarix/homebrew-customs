@@ -8,11 +8,12 @@ class Choose < Formula
     url "https://github.com/waltarix/choose/releases/download/v1.3.0-custom/choose-1.3.0-darwin.tar.xz"
     sha256 "d408ba7f3d9141cc028294a914b801a198e1359245c921a03eb11ce7b0ceab50"
   end
+  license "GPL-3.0"
 
   bottle :unneeded
 
-  conflicts_with "choose-gui", :because => "both install a `choose` binary"
-  conflicts_with "choose-rust", :because => "both install a `choose` binary"
+  conflicts_with "choose-gui", because: "both install a `choose` binary"
+  conflicts_with "choose-rust", because: "both install a `choose` binary"
 
   def install
     bin.install "choose"

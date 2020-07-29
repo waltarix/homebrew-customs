@@ -8,6 +8,7 @@ class Dust < Formula
     url "https://github.com/waltarix/dust/releases/download/v0.5.1-custom-r3/dust-0.5.1-darwin.tar.xz"
     sha256 "7b4ecef3b77d2d028262b3df760e60c614ef7919e1c52ca8b3cc096ace643e36"
   end
+  license "Apache-2.0"
   revision 3
 
   bottle :unneeded
