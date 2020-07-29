@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2020/sqlite-autoconf-3320300.tar.gz"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.32.3-migemo-r2/sqlite-autoconf-3320300.tar.gz"
   version "3.32.3"
-  sha256 "a31507123c1c2e3a210afec19525fd7b5bb1e19a6a34ae5b998fbd7302568b66"
+  sha256 "d44c7a4ff692a4776393f54bc760c79f1f2588bb46a499cc7e331f1da87e9687"
   license "blessing"
 
   bottle :unneeded
@@ -15,14 +15,7 @@ class Sqlite < Formula
   depends_on "waltarix/customs/cmigemo"
   depends_on "zlib"
 
-  resource "sqlite3.c" do
-    url "https://github.com/waltarix/sqlite/releases/download/version-3.32.3-migemo-r1/sqlite3.c.xz"
-    sha256 "5b688ad0aed33bdcae6796f401f058762532d73a924bb86422c769ddc65e0f3f"
-  end
-
   def install
-    resource("sqlite3.c").stage buildpath
-
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
     # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
     # applications. Set to 250000 (Same value used in Debian and Ubuntu).
