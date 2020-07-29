@@ -1,8 +1,8 @@
 cask 'kitty-flavored' do
-  version '0.18.1,r1'
-  sha256 '0bd7ef0b8f5f29207355cda753ffdb79fb9b6c8b29ec12103a0f5ed16bd5f596'
+  version '0.18.2'
+  sha256 '64f3753f284635890c4554cbaecc81616670e58fc97bb3e3a3566a4bffee6d22'
 
-  url "https://github.com/waltarix/kitty/releases/download/v#{version.before_comma}-custom-r1/kitty-#{version.before_comma}.dmg"
+  url "https://github.com/waltarix/kitty/releases/download/v#{version.before_comma}-custom/kitty-#{version.before_comma}.dmg"
   appcast 'https://github.com/waltarix/kitty/releases.atom'
   name 'kitty flavored'
   homepage 'https://github.com/kovidgoyal/kitty'
@@ -10,6 +10,9 @@ cask 'kitty-flavored' do
   conflicts_with cask: 'kitty'
 
   depends_on macos: '>= :sierra'
+  depends_on formula: 'harfbuzz'
+  depends_on formula: 'libpng'
+  depends_on formula: 'python'
 
   app 'kitty.app'
   # shim script (https://github.com/Homebrew/homebrew-cask/issues/18809)
