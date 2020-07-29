@@ -11,12 +11,11 @@ class Mosh < Formula
   if OS.mac?
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "pkg-config" => :build
+    depends_on "protobuf"
   end
-  depends_on "pkg-config" => :build
-  depends_on "tmux" => :build
   depends_on "ncurses"
-  depends_on "protobuf"
-  depends_on "openssl@1.1" unless OS.mac?
+  depends_on "openssl@1.1"
 
   resource "wcwidth9.h" do
     url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
@@ -44,7 +43,6 @@ class Mosh < Formula
 
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}", "--enable-completion"
-    system "make", "check" if OS.mac?
     system "make", "install"
   end
 
