@@ -8,6 +8,7 @@ class Tmux < Formula
 
   if OS.linux?
     depends_on "bison" => :build
+    depends_on "jemalloc"
   else
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -39,6 +40,8 @@ class Tmux < Formula
     ]
 
     buildpath.install resource("wcwidth9.h")
+
+    ENV.append "LIBS", "-ljemalloc" if OS.linux?
 
     ncurses = Formula["ncurses"]
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
