@@ -66,8 +66,21 @@ class Tmux < Formula
 end
 
 __END__
+diff --git a/popup.c b/popup.c
+index 6f2ab101..5afb1082 100644
+--- a/popup.c
++++ b/popup.c
+@@ -192,6 +192,8 @@ popup_draw_cb(struct client *c, __unused struct screen_redraw_ctx *ctx0)
+ 		    &grid_default_cell, NULL);
+ 	}
+ 	c->overlay_check = popup_check_cb;
++
++    screen_free(&s);
+ }
+ 
+ static void
 diff --git a/utf8.c b/utf8.c
-index 5ba41e9a..94603da0 100644
+index e640d845..c165ba17 100644
 --- a/utf8.c
 +++ b/utf8.c
 @@ -26,6 +26,8 @@
