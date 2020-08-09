@@ -70,6 +70,31 @@ class Tmux < Formula
 end
 
 __END__
+diff --git a/log.c b/log.c
+index f87cab92..1686e2fe 100644
+--- a/log.c
++++ b/log.c
+@@ -124,20 +124,6 @@ log_vwrite(const char *msg, va_list ap)
+ 	free(fmt);
+ }
+ 
+-/* Log a debug message. */
+-void
+-log_debug(const char *msg, ...)
+-{
+-	va_list	ap;
+-
+-	if (log_file == NULL)
+-		return;
+-
+-	va_start(ap, msg);
+-	log_vwrite(msg, ap);
+-	va_end(ap);
+-}
+-
+ /* Log a critical error with error string and die. */
+ __dead void
+ fatal(const char *msg, ...)
 diff --git a/popup.c b/popup.c
 index 6f2ab101..5afb1082 100644
 --- a/popup.c
@@ -83,6 +108,19 @@ index 6f2ab101..5afb1082 100644
  }
  
  static void
+diff --git a/tmux.h b/tmux.h
+index 67951215..5e470be4 100644
+--- a/tmux.h
++++ b/tmux.h
+@@ -66,6 +66,8 @@ struct tmuxpeer;
+ struct tmuxproc;
+ struct winlink;
+ 
++#define log_debug(msg, ...)
++
+ /* Client-server protocol version. */
+ #define PROTOCOL_VERSION 8
+ 
 diff --git a/utf8.c b/utf8.c
 index e640d845..c165ba17 100644
 --- a/utf8.c
