@@ -3,6 +3,7 @@ class Tmux < Formula
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux.git",
     tag: "3.2-rc"
+  license "ISC"
 
   bottle :unneeded
 
