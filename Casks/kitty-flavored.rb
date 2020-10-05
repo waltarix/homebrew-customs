@@ -1,10 +1,11 @@
 cask "kitty-flavored" do
-  version "0.18.3"
-  sha256 "c79dd06996f93b86d2e1fd714c6627f487084b36db75595573552573305526cc"
+  version "0.19.0"
+  sha256 "d81150eaac0b16ff4e85bee6ce94ffdbfb4a0512ba1f48dfd4a2ff1d4331cee8"
 
   url "https://github.com/waltarix/kitty/releases/download/v#{version.before_comma}-custom/kitty-#{version.before_comma}.dmg"
   appcast "https://github.com/waltarix/kitty/releases.atom"
   name "kitty flavored"
+  desc "Cross-platform, fast, feature full, GPU based terminal emulator"
   homepage "https://github.com/kovidgoyal/kitty"
 
   conflicts_with cask: "kitty"
@@ -12,6 +13,7 @@ cask "kitty-flavored" do
   depends_on macos: ">= :sierra"
   depends_on formula: "harfbuzz"
   depends_on formula: "libpng"
+  depends_on formula: "little-cms2"
   depends_on formula: "python"
 
   app "kitty.app"
