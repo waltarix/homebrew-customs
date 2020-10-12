@@ -2,11 +2,11 @@ class Choose < Formula
   desc "Human-friendly and fast alternative to cut and (sometimes) awk"
   homepage "https://github.com/theryangeary/choose"
   if OS.linux?
-    url "https://github.com/waltarix/choose/releases/download/v1.3.0-custom/choose-1.3.0-linux.tar.xz"
-    sha256 "45976485e06fdb663d51fd4ac291a960e61f905833ddabb48770e0bce3937b89"
+    url "https://github.com/waltarix/choose/releases/download/v1.3.1-custom/choose-1.3.1-linux.tar.xz"
+    sha256 "7d001996edbec89d21e9102c53f634d7b87b0a1b0c80588cc851d3560c19498e"
   else
-    url "https://github.com/waltarix/choose/releases/download/v1.3.0-custom/choose-1.3.0-darwin.tar.xz"
-    sha256 "d408ba7f3d9141cc028294a914b801a198e1359245c921a03eb11ce7b0ceab50"
+    url "https://github.com/waltarix/choose/releases/download/v1.3.1-custom/choose-1.3.1-darwin.tar.xz"
+    sha256 "60457a5ed109587a4eae4808dfab794abbce7ff581f6f5274172834bd5268f2e"
   end
   license "GPL-3.0"
 
