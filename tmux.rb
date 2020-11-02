@@ -2,8 +2,10 @@ class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux.git",
-    tag: "3.2-rc"
+      revision: "733abfcfc5b05cb3e1f2cf08f00a9325c6f6fa04"
+  version "3.2-rc"
   license "ISC"
+  revision 1
 
   bottle :unneeded
 
@@ -109,7 +111,7 @@ index 6f2ab101..5afb1082 100644
  
  static void
 diff --git a/tmux.h b/tmux.h
-index 67951215..5e470be4 100644
+index a17ae5c6..3514c641 100644
 --- a/tmux.h
 +++ b/tmux.h
 @@ -66,6 +66,8 @@ struct tmuxpeer;
@@ -122,7 +124,7 @@ index 67951215..5e470be4 100644
  #define PROTOCOL_VERSION 8
  
 diff --git a/utf8.c b/utf8.c
-index e640d845..c165ba17 100644
+index 458363b8..1dfd327d 100644
 --- a/utf8.c
 +++ b/utf8.c
 @@ -26,6 +26,8 @@
