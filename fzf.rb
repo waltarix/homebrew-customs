@@ -4,6 +4,7 @@ class Fzf < Formula
   url "https://github.com/junegunn/fzf/archive/0.24.2.tar.gz"
   sha256 "8a07554bade6b3064531689d4da829accc843e28ea1ae3229d3bd6d2ebe4a84e"
   license "MIT"
+  revision 1
   head "https://github.com/junegunn/fzf.git"
 
   bottle :unneeded
@@ -11,10 +12,10 @@ class Fzf < Formula
   resource "binary" do
     if OS.linux?
       url "https://github.com/waltarix/fzf/releases/download/0.24.2-custom/fzf-0.24.2-linux_amd64.tar.xz"
-      sha256 "dbe15aaa78c5911ab07d747d3177279f440b807f168912f1db3f5f41f5f63166"
+      sha256 "5632bade0ef9b74fed535c0d18044453fbeecf4577d529a0f6867b3da7dae917"
     else
       url "https://github.com/waltarix/fzf/releases/download/0.24.2-custom/fzf-0.24.2-darwin_amd64.tar.xz"
-      sha256 "6fb1980e03a6f4254dd8053e2d41a3fe4b7116adaf7250a10b3b7d41b1693e7d"
+      sha256 "6ed82490e4ef6c93888e8ea47d4b3ef552f7e9794eefbdb7a0eee770db56a2d1"
     end
   end
 
