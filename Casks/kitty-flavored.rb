@@ -1,6 +1,6 @@
 cask "kitty-flavored" do
-  version "0.19.1"
-  sha256 "8185c31ea2bc2e5790625090f52cd37cbe43a21626fbc1d320fe65302a0a14b3"
+  version "0.19.2"
+  sha256 "db5af01d7f191f213e576fe33dad7b55a319e45a075698d622883b740a721869"
 
   url "https://github.com/waltarix/kitty/releases/download/v#{version.before_comma}-custom/kitty-#{version.before_comma}.dmg"
   appcast "https://github.com/waltarix/kitty/releases.atom"
