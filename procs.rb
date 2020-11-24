@@ -2,11 +2,11 @@ class Procs < Formula
   desc "Modern replacement for ps written by Rust"
   homepage "https://github.com/dalance/procs"
   if OS.linux?
-    url "https://github.com/waltarix/procs/releases/download/v0.10.7-custom/procs-0.10.7-linux.tar.xz"
-    sha256 "6ef9737057b2ec073e335767e62d8c9255a9b3c8dcf3bd7ee82aa7231786e68d"
+    url "https://github.com/waltarix/procs/releases/download/v0.10.8-custom/procs-0.10.8-linux.tar.xz"
+    sha256 "851a6eb30bb199edc04daab1f9507d3a048a0e0bbc3763dc5bbe988f86322874"
   else
-    url "https://github.com/waltarix/procs/releases/download/v0.10.7-custom/procs-0.10.7-darwin.tar.xz"
-    sha256 "c41b435e5aea0c84f0e712a6ee91ca5869c129781fdc0af1d6c20656d0735c5a"
+    url "https://github.com/waltarix/procs/releases/download/v0.10.8-custom/procs-0.10.8-darwin.tar.xz"
+    sha256 "2ee86495b41b6cb8af799c45bc26e5fd24cfe08f49c4515ade9d54050576b7ad"
   end
   license "MIT"
 
