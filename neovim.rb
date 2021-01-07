@@ -5,12 +5,12 @@ class Neovim < Formula
   sha256 "2f76aac59363677f37592e853ab2c06151cca8830d4b3fe4675b4a52d41fc42c"
   license "Apache-2.0"
 
+  bottle :unneeded
+
   head do
     url "https://github.com/neovim/neovim.git"
-    depends_on "utf8proc"
+    depends_on "tree-sitter"
   end
-
-  bottle :unneeded
 
   depends_on "cmake" => :build
   depends_on "luarocks" => :build
@@ -22,9 +22,11 @@ class Neovim < Formula
   depends_on "luajit"
   depends_on "msgpack"
   depends_on "unibilium"
-  unless OS.mac?
-    depends_on "unzip" => :build
-    depends_on "gperf"
+
+  uses_from_macos "gperf" => :build
+  uses_from_macos "unzip" => :build
+
+  on_linux do
     depends_on "libnsl"
   end
 
@@ -75,10 +77,11 @@ class Neovim < Formula
     ENV.prepend_path "LUA_CPATH", "#{buildpath}/deps-build/lib/lua/5.1/?.so"
     lua_path = "--lua-dir=#{Formula["luajit"].opt_prefix}"
 
-    cmake_compiler_args = %w[
-      -DCMAKE_C_COMPILER=/usr/bin/clang
-      -DCMAKE_CXX_COMPILER=/usr/bin/clang++
-    ]
+    cmake_compiler_args = []
+    on_macos do
+      cmake_compiler_args << "-DCMAKE_C_COMPILER=/usr/bin/clang"
+      cmake_compiler_args << "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"
+    end
 
     cd "deps-build" do
       %w[
@@ -98,7 +101,7 @@ class Neovim < Formula
 
       cd "build/src/luv" do
         cmake_args = std_cmake_args.reject { |s| s["CMAKE_INSTALL_PREFIX"] }
-        cmake_args += cmake_compiler_args if OS.mac?
+        cmake_args += cmake_compiler_args
         cmake_args += %W[
           -DCMAKE_INSTALL_PREFIX=#{buildpath}/deps-build
           -DLUA_BUILD_TYPE=System
@@ -114,7 +117,7 @@ class Neovim < Formula
 
     mkdir "build" do
       cmake_args = std_cmake_args
-      cmake_args += cmake_compiler_args if OS.mac?
+      cmake_args += cmake_compiler_args
       cmake_args += %W[
         -DLIBLUV_INCLUDE_DIR=#{buildpath}/deps-build/include
         -DLIBLUV_LIBRARY=#{buildpath}/deps-build/lib/libluv.a
