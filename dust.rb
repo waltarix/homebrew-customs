@@ -2,11 +2,11 @@ class Dust < Formula
   desc "More intuitive version of du in rust"
   homepage "https://github.com/bootandy/dust"
   if OS.linux?
-    url "https://github.com/waltarix/dust/releases/download/v0.5.3-custom/dust-0.5.3-linux.tar.xz"
-    sha256 "5ae8136d6e9cbe30b12b59ac4a724c379ab6df5c1896f217244ebe9d1f7297f0"
+    url "https://github.com/waltarix/dust/releases/download/v0.5.4-custom/dust-0.5.4-linux.tar.xz"
+    sha256 "9564362bd0f7f04deac2abb12d46242ac75d489aeffab94f1ae5b4978b4dd98b"
   else
-    url "https://github.com/waltarix/dust/releases/download/v0.5.3-custom/dust-0.5.3-darwin.tar.xz"
-    sha256 "e6156a7b0f1682545d5ac463009068fe65c2ee5c7c5e2ef7c973b153fa69b2a0"
+    url "https://github.com/waltarix/dust/releases/download/v0.5.4-custom/dust-0.5.4-darwin.tar.xz"
+    sha256 "817bc534330da270541cc1fda87215b4ab3817b264c4d92ed9e99de5029d0482"
   end
   license "Apache-2.0"
   head "https://github.com/bootandy/dust.git"
@@ -23,6 +23,6 @@ class Dust < Formula
   end
 
   test do
-    assert_match(/\d+.+?\./, shell_output("#{bin}/dust -n 1"))
+    assert_match /\d+.+?\./, shell_output("#{bin}/dust -n 1")
   end
 end
