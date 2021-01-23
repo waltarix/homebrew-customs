@@ -1,10 +1,15 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.34.0-migemo/sqlite-autoconf-3340000.tar.gz"
-  version "3.34.0"
-  sha256 "db0a30bf4454764e4918df9fbd55cb8e79095be7b59ea987b31401db09242be5"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.34.1-migemo/sqlite-autoconf-3340100.tar.gz"
+  version "3.34.1"
+  sha256 "72e67918b1f42dd721e1bf46b63d2bfee5db2bafa5109c8030731db37ab30a8a"
   license "blessing"
+
+  livecheck do
+    url "https://sqlite.org/news.html"
+    regex(%r{v?(\d+(?:\.\d+)+)</h3>}i)
+  end
 
   bottle :unneeded
 
