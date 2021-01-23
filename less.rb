@@ -1,10 +1,10 @@
 class Less < Formula
   desc "Pager program similar to more"
   homepage "http://www.greenwoodsoftware.com/less/index.html"
-  url "https://github.com/waltarix/less/releases/download/v563-custom-r1/less-563.tar.gz"
-  sha256 "b88b2198bb099eefdbbaf0ed9707ce4e8f09353898677ecadb03aa7b02b11b64"
+  url "https://github.com/waltarix/less/releases/download/v563-custom-r2/less-563.tar.gz"
+  sha256 "96dd131f08d375ba44db79bec54e8d5c1315043e012b19be9b02b31eac543f25"
   license "GPL-3.0-or-later"
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -13,17 +13,9 @@ class Less < Formula
 
   bottle :unneeded
 
-  depends_on "pcre"
-
-  uses_from_macos "ncurses"
-
   depends_on "ncurses"
   depends_on "pcre2"
   depends_on "waltarix/customs/cmigemo"
-
-  # Fix build with Xcode 12 as it no longer allows implicit function declarations
-  # See https://github.com/gwsw/less/issues/91
-  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}", "--with-regex=pcre2"
@@ -34,21 +26,3 @@ class Less < Formula
     system "#{bin}/lesskey", "-V"
   end
 end
-__END__
-diff --git a/configure b/configure
-index 0ce6db1..eac7ca0 100755
---- a/configure
-+++ b/configure
-@@ -4104,11 +4104,11 @@ if test "x$TERMLIBS" = x; then
-     TERMLIBS="-lncurses"
-     SAVE_LIBS=$LIBS
-     LIBS="$LIBS $TERMLIBS"
-     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
- /* end confdefs.h.  */
--
-+#include <termcap.h>
- int
- main ()
- {
- tgetent(0,0); tgetflag(0); tgetnum(0); tgetstr(0,0);
-   ;
