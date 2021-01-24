@@ -1,21 +1,32 @@
 class JxaDaemon < Formula
   desc "Daemon for JXA"
   homepage "https://github.com/waltarix/misc/tree/master/daemons"
-  url "https://raw.githubusercontent.com/waltarix/misc/20200720/daemons/jxa_daemon.rb"
-  version "20200720"
-  sha256 "2a10483b59bcbaa84d0e1aea81ee8523c68b499de862c9c5d5195a4c9aeeb537"
+  url "https://raw.githubusercontent.com/waltarix/misc/20210124/daemons/jxa_daemon.rb"
+  version "20210124"
+  sha256 "8c2264717b5a19b7909e140f975f864aeed27db9d910b79fd81f3d78aec1384d"
 
   bottle :unneeded
 
+  depends_on "ruby"
+
+  resource "fast_jsonparser" do
+    url "https://rubygems.org/downloads/oj-3.11.0.gem"
+    sha256 "470d6ac425efd19c526ecea1cabb0219dd8bbcbdeeec57bd45a803b5e082ab5b"
+  end
+
   def install
-    libexec.install "jxa_daemon.rb" => "jxa-daemon"
-
     ENV["GEM_HOME"] = libexec
-    system "gem", "install", "fast_jsonparser", "-v", "0.3.0", "--",
-                  "--with-cxxflags=-Wno-reserved-user-defined-literal"
+    resources.each do |r|
+      r.fetch
+      system "gem", "install", r.cached_download, "--no-document",
+                    "--install-dir", libexec
+    end
 
-    chmod 0555, libexec/"jxa-daemon"
-    (bin/"jxa-daemon").write_env_script(libexec/"jxa-daemon", GEM_HOME: libexec)
+    libexec.install "jxa_daemon.rb" => "jxa-daemon"
+    jxa_daemon = libexec/"jxa-daemon"
+    chmod 0555, jxa_daemon
+    ruby = Formula["ruby"].opt_bin/"ruby"
+    (bin/"jxa-daemon").write_env_script(ruby, jxa_daemon, GEM_HOME: ENV["GEM_HOME"])
   end
 
   plist_options manual: "#{HOMEBREW_PREFIX}/opt/jxa_daemon/bin/jxa-daemon"
@@ -32,8 +43,7 @@ class JxaDaemon < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/bin/ruby</string>
-          <string>#{libexec}/jxa-daemon</string>
+          <string>#{opt_bin}/jxa-daemon</string>
         </array>
         <key>EnvironmentVariables</key>
         <dict>
