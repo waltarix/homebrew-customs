@@ -2,11 +2,16 @@ class Hexyl < Formula
   desc "Command-line hex viewer"
   homepage "https://github.com/sharkdp/hexyl"
   if OS.linux?
-    url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom/hexyl-0.8.0-linux.tar.xz"
-    sha256 "5ce7467a76ed05785af2f66aa465fe7d7ae05d21fef637099f577442cb6561a1"
+    url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom-r1/hexyl-0.8.0-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "ab081c1fc0a7b6e8323c66af4f73c6ac08014cd6967eca9c791bbffbe47f5546"
   else
-    url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom/hexyl-0.8.0-darwin.tar.xz"
-    sha256 "2693202c2f72597c8e0769762613ed0c1162ca7eb77d20013635c6ac293d3310"
+    if Hardware::CPU.arm?
+      url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom-r1/hexyl-0.8.0-aarch64-apple-darwin.tar.xz"
+      sha256 "9f7b2e2e4cc989f6bec2979dc3ccbcf412941e695d38bda4368dcd2588ec1f3f"
+    else
+      url "https://github.com/waltarix/hexyl/releases/download/v0.8.0-custom-r1/hexyl-0.8.0-x86_64-apple-darwin.tar.xz"
+      sha256 "4f1be2764de89f4a17e4193d80240059c960bbfef094c3fbcce6be140200ebe7"
+    end
   end
   license "Apache-2.0"
 
