@@ -10,11 +10,16 @@ class Fzf < Formula
 
   resource "binary" do
     if OS.linux?
-      url "https://github.com/waltarix/fzf/releases/download/0.25.0-custom/fzf-0.25.0-linux_amd64.tar.xz"
-      sha256 "56dc4171244315f8bdf7b9d9c6885138625a2638179650666a13089da12257a9"
+      url "https://github.com/waltarix/fzf/releases/download/0.25.0-custom-r1/fzf-0.25.0-linux_amd64.tar.xz"
+      sha256 "c3fea60a740d352818eef0c253a1566759872b251c93ce75a9b0dd462f6429dc"
     else
-      url "https://github.com/waltarix/fzf/releases/download/0.25.0-custom/fzf-0.25.0-darwin_amd64.tar.xz"
-      sha256 "82cb888f25fe123d8a524a66e0749712e4803edb151dcdd94a329cff5feb45f3"
+      if Hardware::CPU.arm?
+        url "https://github.com/waltarix/fzf/releases/download/0.25.0-custom-r1/fzf-0.25.0-darwin_arm64.tar.xz"
+        sha256 "e4af3996afe0b4d6a4996004e329e72436da721449f7d9344b6107067e18c3e2"
+      else
+        url "https://github.com/waltarix/fzf/releases/download/0.25.0-custom-r1/fzf-0.25.0-darwin_amd64.tar.xz"
+        sha256 "abdf9fca5b1394280360963fc2958e1e47a349d17e910070944ca1c20b44d24c"
+      end
     end
   end
 
