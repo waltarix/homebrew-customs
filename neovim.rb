@@ -1,17 +1,19 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.4.4.tar.gz"
-  sha256 "2f76aac59363677f37592e853ab2c06151cca8830d4b3fe4675b4a52d41fc42c"
+  url "https://github.com/neovim/neovim/archive/1607dd071fe1685cf42b0182b8d1d72152af2c40.tar.gz"
+  sha256 "99ae798675f18a86cd47d1455bf628799210557acf3fa675195e17943f967383"
+  version "0.5.0-dev+1041-g1607dd071"
   license "Apache-2.0"
 
   bottle :unneeded
 
-  head do
-    url "https://github.com/neovim/neovim.git"
+  if OS.linux?
+    depends_on "waltarix/customs/libtree-sitter"
+    depends_on "libnsl"
+  else
     depends_on "tree-sitter"
   end
-
   depends_on "cmake" => :build
   depends_on "luarocks" => :build
   depends_on "pkg-config" => :build
@@ -25,10 +27,6 @@ class Neovim < Formula
 
   uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
-
-  on_linux do
-    depends_on "libnsl"
-  end
 
   # Keep resources updated according to:
   # https://github.com/neovim/neovim/blob/v#{version}/third-party/CMakeLists.txt
@@ -77,7 +75,7 @@ class Neovim < Formula
     ENV.prepend_path "LUA_CPATH", "#{buildpath}/deps-build/lib/lua/5.1/?.so"
     lua_path = "--lua-dir=#{Formula["luajit"].opt_prefix}"
 
-    cmake_compiler_args = []
+    cmake_compiler_args = ["-DNVIM_VERSION_MEDIUM=v#{version}"]
     on_macos do
       cmake_compiler_args << "-DCMAKE_C_COMPILER=/usr/bin/clang"
       cmake_compiler_args << "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"
@@ -137,7 +135,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index 5f38d0589..0a4164ff0 100755
+index 12474d3c1..0a4164ff0 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -5,7 +5,8 @@ data_files="UnicodeData.txt CaseFolding.txt EastAsianWidth.txt"
@@ -163,7 +161,7 @@ index 5f38d0589..0a4164ff0 100755
  done
  
  for filename in $emoji_files ; do
--  curl -L -o "$UNIDIR/$filename" "$DOWNLOAD_URL_BASE/emoji/latest/$filename"
+-  curl -L -o "$UNIDIR/$filename" "$DOWNLOAD_URL_BASE/UNIDATA/emoji/$filename"
 -  (
 -    cd "$UNIDIR"
 -    git add $filename
@@ -176,7 +174,7 @@ index 5f38d0589..0a4164ff0 100755
 -  git commit -m "Update unicode files" -- $files
 -)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 85e6697bf..b536cb448 100644
+index ec4f4cbc2..4def85fea 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -73,6 +73,8 @@ struct interval {
@@ -188,7 +186,7 @@ index 85e6697bf..b536cb448 100644
  char_u e_loadlib[] = "E370: Could not load library %s";
  char_u e_loadfunc[] = "E448: Could not load library function %s";
  
-@@ -467,12 +469,11 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+@@ -469,12 +471,11 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  int utf_char2cells(int c)
  {
    if (c >= 0x100) {
@@ -202,7 +200,7 @@ index 85e6697bf..b536cb448 100644
  
      if (n < 0) {
        return 6;                 // unprintable, displays <xxxx>
-@@ -480,27 +481,11 @@ int utf_char2cells(int c)
+@@ -482,27 +483,11 @@ int utf_char2cells(int c)
      if (n > 1) {
        return n;
      }
@@ -230,7 +228,7 @@ index 85e6697bf..b536cb448 100644
    return 1;
  }
  
-@@ -1033,12 +1018,6 @@ bool utf_iscomposing(int c)
+@@ -1035,12 +1020,6 @@ bool utf_iscomposing(int c)
   */
  bool utf_printable(int c)
  {
@@ -243,7 +241,7 @@ index 85e6697bf..b536cb448 100644
    /* Sorted list of non-overlapping intervals.
     * 0xd800-0xdfff is reserved for UTF-16, actually illegal. */
    static struct interval nonprint[] =
-@@ -1049,7 +1028,6 @@ bool utf_printable(int c)
+@@ -1051,7 +1030,6 @@ bool utf_printable(int c)
    };
  
    return !intable(nonprint, ARRAY_SIZE(nonprint), c);
