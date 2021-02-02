@@ -2,10 +2,15 @@ class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
   url "https://github.com/tmux/tmux.git",
-      revision: "733abfcfc5b05cb3e1f2cf08f00a9325c6f6fa04"
-  version "3.2-rc"
+      revision: "5306bb0db79b4cc0b8e620bfe52e8fed446a101c"
+  version "3.2-rc3"
   license "ISC"
-  revision 1
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+[a-z]?)["' >]}i)
+  end
 
   bottle :unneeded
 
@@ -22,8 +27,8 @@ class Tmux < Formula
   depends_on "ncurses"
 
   resource "completion" do
-    url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/homebrew_1.0.0/completions/tmux"
-    sha256 "05e79fc1ecb27637dc9d6a52c315b8f207cf010cdcee9928805525076c9020ae"
+    url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/f5d53239f7658f8e8fbaf02535cc369009c436d6/completions/tmux"
+    sha256 "b5f7bbd78f9790026bbff16fc6e3fe4070d067f58f943e156bd1a8c3c99f6a6f"
   end
 
   resource "wcwidth9.h" do
@@ -44,7 +49,9 @@ class Tmux < Formula
 
     buildpath.install resource("wcwidth9.h")
 
-    ENV.append "LIBS", "-ljemalloc" if OS.linux?
+    on_linux do
+      ENV.append "LIBS", "-ljemalloc"
+    end
 
     ncurses = Formula["ncurses"]
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
@@ -98,7 +105,7 @@ index f87cab92..1686e2fe 100644
  __dead void
  fatal(const char *msg, ...)
 diff --git a/popup.c b/popup.c
-index 6f2ab101..5afb1082 100644
+index 0ad20c5f..1f77482a 100644
 --- a/popup.c
 +++ b/popup.c
 @@ -192,6 +192,8 @@ popup_draw_cb(struct client *c, __unused struct screen_redraw_ctx *ctx0)
@@ -111,7 +118,7 @@ index 6f2ab101..5afb1082 100644
  
  static void
 diff --git a/tmux.h b/tmux.h
-index a17ae5c6..3514c641 100644
+index 44ba53f5..e01056e2 100644
 --- a/tmux.h
 +++ b/tmux.h
 @@ -66,6 +66,8 @@ struct tmuxpeer;
@@ -123,6 +130,43 @@ index a17ae5c6..3514c641 100644
  /* Client-server protocol version. */
  #define PROTOCOL_VERSION 8
  
+diff --git a/tty-acs.c b/tty-acs.c
+index 63eccb93..da9205c9 100644
+--- a/tty-acs.c
++++ b/tty-acs.c
+@@ -44,10 +44,10 @@ static const struct tty_acs_entry tty_acs_table[] = {
+ 	{ 'g', "\302\261" },		/* plus/minus */
+ 	{ 'h', "\342\220\244" },
+ 	{ 'i', "\342\220\213" },
+-	{ 'j', "\342\224\230" },	/* lower right corner */
+-	{ 'k', "\342\224\220" },	/* upper right corner */
+-	{ 'l', "\342\224\214" },	/* upper left corner */
+-	{ 'm', "\342\224\224" },	/* lower left corner */
++	{ 'j', "\342\225\257" },	/* lower right corner */
++	{ 'k', "\342\225\256" },	/* upper right corner */
++	{ 'l', "\342\225\255" },	/* upper left corner */
++	{ 'm', "\342\225\260" },	/* lower left corner */
+ 	{ 'n', "\342\224\274" },	/* large plus or crossover */
+ 	{ 'o', "\342\216\272" },	/* scan line 1 */
+ 	{ 'p', "\342\216\273" },	/* scan line 3 */
+@@ -80,13 +80,13 @@ static const struct tty_acs_reverse_entry tty_acs_reverse3[] = {
+ 	{ "\342\224\201", 'q' },
+ 	{ "\342\224\202", 'x' },
+ 	{ "\342\224\203", 'x' },
+-	{ "\342\224\214", 'l' },
++	{ "\342\225\255", 'l' },
+ 	{ "\342\224\217", 'k' },
+-	{ "\342\224\220", 'k' },
++	{ "\342\225\256", 'k' },
+ 	{ "\342\224\223", 'l' },
+-	{ "\342\224\224", 'm' },
++	{ "\342\225\260", 'm' },
+ 	{ "\342\224\227", 'm' },
+-	{ "\342\224\230", 'j' },
++	{ "\342\225\257", 'j' },
+ 	{ "\342\224\233", 'j' },
+ 	{ "\342\224\234", 't' },
+ 	{ "\342\224\243", 't' },
 diff --git a/utf8.c b/utf8.c
 index 458363b8..1dfd327d 100644
 --- a/utf8.c
