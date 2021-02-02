@@ -1,9 +1,9 @@
 class W3m < Formula
   desc "Pager/text based browser"
   homepage "https://w3m.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/w3m/w3m/w3m-0.5.3/w3m-0.5.3.tar.gz"
-  version "0.5.3-38"
-  sha256 "e994d263f2fd2c22febfbe45103526e00145a7674a0fda79c822b97c2770a9e3"
+  url "http://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20210102.orig.tar.xz"
+  version "0.5.3+git20210102-2"
+  sha256 "32fcf47999a4fab59021382d382add86fe87159d9e3a95bddafda246ae12f5f9"
 
   bottle :unneeded
 
@@ -13,30 +13,28 @@ class W3m < Formula
   depends_on "openssl@1.1"
   depends_on "waltarix/customs/cmigemo"
   depends_on "zlib"
-  unless OS.mac?
-    depends_on "libbsd"
+  on_linux do
     depends_on "gettext"
+    depends_on "libbsd"
   end
 
-  # Upstream is effectively Debian https://github.com/tats/w3m at this point.
-  # The patches fix a pile of CVEs
   patch do
-    url "https://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3-38.debian.tar.xz"
-    sha256 "227dd8d27946f21186d74ac6b7bcf148c37d97066c7ccded16495d9e22520792"
-    apply "patches/010_upstream.patch",
-          "patches/020_debian.patch"
+    url "http://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20210102-2.debian.tar.xz"
+    sha256 "ac9a1035bb354387dd618c3610ce98ab4d3e43163ea3561643fa613e781e3244"
+    apply "patches/010_section.patch"
   end
 
   def install
+    # Work around configure issues with Xcode 12
+    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-image",
-                          "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
-                          "--enable-m17n",
-                          "--enable-nls",
-                          "--enable-unicode",
                           "--with-gc",
+                          "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
                           "--with-termlib=ncursesw",
-                          "--with-migemo='cmigemo -c -q'"
+                          "--with-migemo='cmigemo -c -q'",
+                          "--disable-image",
+                          "--enable-m17n", "--enable-unicode", "--enable-nls"
     system "make", "install"
   end
 
