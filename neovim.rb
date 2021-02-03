@@ -5,6 +5,7 @@ class Neovim < Formula
   sha256 "99ae798675f18a86cd47d1455bf628799210557acf3fa675195e17943f967383"
   version "0.5.0-dev+1041-g1607dd071"
   license "Apache-2.0"
+  revision 1
 
   bottle :unneeded
 
@@ -21,7 +22,7 @@ class Neovim < Formula
   depends_on "libtermkey"
   depends_on "libuv"
   depends_on "libvterm"
-  depends_on "luajit"
+  depends_on "luajit-openresty"
   depends_on "msgpack"
   depends_on "unibilium"
 
@@ -73,7 +74,7 @@ class Neovim < Formula
 
     ENV.prepend_path "LUA_PATH", "#{buildpath}/deps-build/share/lua/5.1/?.lua"
     ENV.prepend_path "LUA_CPATH", "#{buildpath}/deps-build/lib/lua/5.1/?.so"
-    lua_path = "--lua-dir=#{Formula["luajit"].opt_prefix}"
+    lua_path = "--lua-dir=#{Formula["luajit-openresty"].opt_prefix}"
 
     cmake_compiler_args = ["-DNVIM_VERSION_MEDIUM=v#{version}"]
     on_macos do
