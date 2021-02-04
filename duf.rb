@@ -13,6 +13,7 @@ class Duf < Formula
       sha256 "780b5dbf75a1b9d583df3dda765f5282de62d356d13d9a6fe174ae9a9096f7b2"
     end
   end
+  version "0.5.0"
   license "MIT"
 
   bottle :unneeded
