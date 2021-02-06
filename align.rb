@@ -21,7 +21,9 @@ class Align < Formula
     sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
   end
 
-  uses_from_macos "perl"
+  on_macos do
+    uses_from_macos "perl"
+  end
 
   def install
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
@@ -30,6 +32,11 @@ class Align < Formula
     resource("Text::CharWidth").stage(buildpath/"text_charwidth")
     (buildpath/"text_charwidth").install resource("wcwidth9.h")
     cd "text_charwidth" do
+      on_linux do
+        perl_archlib = Utils.safe_popen_read("perl", "-MConfig", "-e", "print $Config{archlib}")
+        ENV["C_INCLUDE_PATH"] = "#{perl_archlib}/CORE"
+      end
+
       system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
       system "make", "install"
     end
