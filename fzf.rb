@@ -5,20 +5,21 @@ class Fzf < Formula
   sha256 "b97cf9ab528391a49dfa45b459c767fb2626ade9f3a3f99d0108d7274f2eca8b"
   license "MIT"
   head "https://github.com/junegunn/fzf.git"
+  revision 1
 
   bottle :unneeded
 
   resource "binary" do
     if OS.linux?
-      url "https://github.com/waltarix/fzf/releases/download/0.25.1-custom/fzf-0.25.1-linux_amd64.tar.xz"
-      sha256 "8be293adaa7c14c50263c8ebd267f58d7a4680d2a79e3227c724ab82e4090ef7"
+      url "https://github.com/waltarix/fzf/releases/download/0.25.1-custom-r1/fzf-0.25.1-linux_amd64.tar.xz"
+      sha256 "5893c9e235f988a7c453488299f52a53ff5ef769e61d3e2cf096aaa7474bdb51"
     else
       if Hardware::CPU.arm?
-        url "https://github.com/waltarix/fzf/releases/download/0.25.1-custom/fzf-0.25.1-darwin_arm64.tar.xz"
-        sha256 "4d3e268c2ff86446d7039ac0786fc397664e583889fcd5883c68f9a962de619b"
+        url "https://github.com/waltarix/fzf/releases/download/0.25.1-custom-r1/fzf-0.25.1-darwin_arm64.tar.xz"
+        sha256 "c382dcdd4acbc82aa08f590b3044890ac01cda1dd2d7a1989ebfd5606e1d65c2"
       else
-        url "https://github.com/waltarix/fzf/releases/download/0.25.1-custom/fzf-0.25.1-darwin_amd64.tar.xz"
-        sha256 "20ba112635823d41accd13f184ce7b886136833c5f16f373a9a316a5f2755a6f"
+        url "https://github.com/waltarix/fzf/releases/download/0.25.1-custom-r1/fzf-0.25.1-darwin_amd64.tar.xz"
+        sha256 "98e0140cf36d982898995132dfbb01a9a858a673dd21d934a296bdc6697d6f05"
       end
     end
   end
