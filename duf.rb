@@ -2,20 +2,19 @@ class Duf < Formula
   desc "Disk Usage/Free Utility - a better 'df' alternative"
   homepage "https://github.com/muesli/duf"
   if OS.linux?
-    url "https://github.com/waltarix/duf/releases/download/v0.5.0-custom-r1/duf-0.5.0-linux_amd64.tar.xz"
-    sha256 "9691b8092d86d4a6493e40089f416eea3619b6f6c5673f36b18a1cda521de4e8"
+    url "https://github.com/waltarix/duf/releases/download/v0.6.0-custom/duf-0.6.0-linux_amd64.tar.xz"
+    sha256 "de81ccb81a4749f6f106bf01c5cfe89eefed9e14ca8baecaa1e76f656e7e2b20"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/duf/releases/download/v0.5.0-custom-r1/duf-0.5.0-darwin_arm64.tar.xz"
-      sha256 "b5795c2bf57a5bf874b301d0461aa5a3635e83d4472b791d70e10385767a71b3"
+      url "https://github.com/waltarix/duf/releases/download/v0.6.0-custom/duf-0.6.0-darwin_arm64.tar.xz"
+      sha256 "67dc1659def79a6420f5442f1a674e1db3bad591bacbe771e9f5f40b69680bd0"
     else
-      url "https://github.com/waltarix/duf/releases/download/v0.5.0-custom-r1/duf-0.5.0-darwin_amd64.tar.xz"
-      sha256 "51dd6a60a7840550999aac3a140da712bc0df15c9708dca6ac31dc4126650802"
+      url "https://github.com/waltarix/duf/releases/download/v0.6.0-custom/duf-0.6.0-darwin_amd64.tar.xz"
+      sha256 "6b73b2c40e403fbeff66c98817b7399525c21ff528eea1eca015eb8ca263c229"
     end
   end
-  version "0.5.0"
+  version "0.6.0"
   license "MIT"
-  revision 1
 
   bottle :unneeded
 
