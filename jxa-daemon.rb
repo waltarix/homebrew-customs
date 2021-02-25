@@ -1,9 +1,9 @@
 class JxaDaemon < Formula
   desc "Daemon for JXA"
   homepage "https://github.com/waltarix/misc/tree/master/daemons"
-  url "https://raw.githubusercontent.com/waltarix/misc/20210124/daemons/jxa_daemon.rb"
-  version "20210124"
-  sha256 "8c2264717b5a19b7909e140f975f864aeed27db9d910b79fd81f3d78aec1384d"
+  url "https://raw.githubusercontent.com/waltarix/misc/20210225/daemons/jxa_daemon.rb"
+  version "20210225"
+  sha256 "d5a88de6ddfd53a91ea541ab0c89beb87c087c11c11df6901ce5fc68fb9f79eb"
 
   bottle :unneeded
 
