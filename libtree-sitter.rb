@@ -1,8 +1,8 @@
 class LibtreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/v0.19.3.tar.gz"
-  sha256 "cb01e1832758efe2fd3456e0a6eb0e5aba0e1e11b652c945db70793c2c4f7c2b"
+  url "https://github.com/tree-sitter/tree-sitter/archive/v0.19.4.tar.gz"
+  sha256 "98e6b7f77d277235ef43023a8eee37745d1bc315c138481ed1b054cff158e817"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git"
 
