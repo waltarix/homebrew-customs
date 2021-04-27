@@ -2,24 +2,19 @@ class SpotifyTui < Formula
   desc "Terminal-based client for Spotify"
   homepage "https://github.com/Rigellute/spotify-tui"
   if OS.linux?
-    url "https://github.com/waltarix/spotify-tui/releases/download/v0.23.0-custom-r1/spotify-tui-0.23.0-x86_64-unknown-linux-gnu.tar.xz"
-    sha256 "4760c6982a170e93bf286020cf1834acad435e96d37b7afb6e6a2083b54f1283"
+    url "https://github.com/waltarix/spotify-tui/releases/download/v0.24.0-custom/spotify-tui-0.24.0-x86_64-unknown-linux-gnu.tar.xz"
+    sha256 "2bd1959a07cb4b53fbb048bdfa9274acb34603721a82577b5772d115e5aa3dfb"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/spotify-tui/releases/download/v0.23.0-custom-r1/spotify-tui-0.23.0-aarch64-apple-darwin.tar.xz"
-      sha256 "33e65acd493a5ba4f907d9892816637cc948df9d511691dafebeef27a55c7869"
+      url "https://github.com/waltarix/spotify-tui/releases/download/v0.24.0-custom/spotify-tui-0.24.0-aarch64-apple-darwin.tar.xz"
+      sha256 "70d95fab1a0ffa14c68a3903a81872829a1704db7c8fe60b56bbd84d00f7cfbd"
     else
-      url "https://github.com/waltarix/spotify-tui/releases/download/v0.23.0-custom-r1/spotify-tui-0.23.0-x86_64-apple-darwin.tar.xz"
-      sha256 "c39b8c96c21d23381b54db5b8ceae71b43a08b46dea84e33a8e1578ad56c4654"
+      url "https://github.com/waltarix/spotify-tui/releases/download/v0.24.0-custom/spotify-tui-0.24.0-x86_64-apple-darwin.tar.xz"
+      sha256 "7e36fb383eafcdfab9694417a0f73904c008b335586d4adbe633b610083a5c56"
     end
   end
   license "MIT"
-  revision 1
   head "https://github.com/Rigellute/spotify-tui.git"
-
-  livecheck do
-    url :stable
-  end
 
   bottle :unneeded
 
@@ -29,8 +24,10 @@ class SpotifyTui < Formula
 
   test do
     pid = fork { exec "#{bin}/spt -c #{testpath/"client.yml"} 2>&1 > output" }
-    sleep 2
+    sleep 10
+    assert_match "Enter your Client ID", File.read("output")
+  ensure
     Process.kill "TERM", pid
-    assert_match /Enter your Client ID/, File.read("output")
+    quiet_system "pkill", "-9", "-f", "spt"
   end
 end
