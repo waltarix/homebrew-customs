@@ -10,8 +10,8 @@ class Fzf < Formula
 
   resource "binary" do
     if OS.linux?
-      url "https://github.com/waltarix/fzf/releases/download/0.27.1-custom/fzf-0.27.0-linux_amd64.tar.xz"
-      sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+      url "https://github.com/waltarix/fzf/releases/download/0.27.1-custom/fzf-0.27.1-linux_amd64.tar.xz"
+      sha256 "e612183b014232f924ccfb5db834d396e2bc9b06823ae0e556edbdf7f5bbe940"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/fzf/releases/download/0.27.1-custom/fzf-0.27.1-darwin_arm64.tar.xz"
