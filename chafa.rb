@@ -2,11 +2,11 @@ class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
   if OS.mac?
-    url "https://hpjansson.org/chafa/releases/chafa-1.6.0.tar.xz"
-    sha256 "0706e101a6e0e806335aeb57445e2f6beffe0be29a761f561979e81691c2c681"
+    url "https://hpjansson.org/chafa/releases/chafa-1.6.1.tar.xz"
+    sha256 "76c98930e99b3e5fadb986148b99d65636e9e9619124e568ff13d364ede89fa5"
   else
-    url "https://hpjansson.org/chafa/releases/static/chafa-1.6.0-1-x86_64-linux-gnu.tar.gz"
-    sha256 "3ba5a60e244dc6c2b928c2f75fe16fb4c094098699cfba6a6b1faebb73a5c4f4"
+    url "https://hpjansson.org/chafa/releases/static/chafa-1.6.1-1-x86_64-linux-gnu.tar.gz"
+    sha256 "f2ec5ef0f15ef527966a1017e749aa08f96aa3dd6799c7c2d4cb1ce7a8ec7a09"
   end
   license "LGPL-3.0-or-later"
 
