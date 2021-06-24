@@ -1,9 +1,9 @@
 class SystemdCompletionZsh < Formula
   desc "System and service manager"
   homepage "https://wiki.freedesktop.org/www/Software/systemd/"
-  url "https://github.com/systemd/systemd/archive/v245.tar.gz"
-  sha256 "f34f1dc52b2dc60563c2deb6db86d78f6a97bceb29aa0511436844b2fc618040"
-  license "LGPL-2.0"
+  url "https://github.com/systemd/systemd/archive/v246.tar.gz"
+  sha256 "4268bd88037806c61c5cd1c78d869f7f20bf7e7368c63916d47b5d1c3411bd6f"
+  license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
 
   bottle :unneeded
 
