@@ -1,14 +1,17 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
-  homepage "https://sqlite.org/"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.35.5-migemo/sqlite-autoconf-3350500.tar.gz"
-  version "3.35.5"
-  sha256 "575bb095665f1ed12d98a2b0f61d2fefb9ad176430759b964a833de9bb50813c"
+  homepage "https://sqlite.org/index.html"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.36.0-migemo/sqlite-autoconf-3360000.tar.gz"
+  version "3.36.0"
+  sha256 "05977b2c06b2d4741a99022936a43ef194b5e98e124bf79302388e16b8fd4e7c"
   license "blessing"
 
   livecheck do
-    url "https://sqlite.org/news.html"
-    regex(%r{v?(\d+(?:\.\d+)+)</h3>}i)
+    url :homepage
+    regex(%r{href=.*?releaselog/v?(\d+(?:[._]\d+)+)\.html}i)
+    strategy :page_match do |page, regex|
+      page.scan(regex).map { |match| match&.first&.gsub("_", ".") }
+    end
   end
 
   bottle :unneeded
