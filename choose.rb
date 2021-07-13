@@ -2,15 +2,15 @@ class Choose < Formula
   desc "Human-friendly and fast alternative to cut and (sometimes) awk"
   homepage "https://github.com/theryangeary/choose"
   if OS.linux?
-    url "https://github.com/waltarix/choose/releases/download/v1.3.1-custom-r1/choose-1.3.1-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "ab1bfb229b54b76b0bbf17af269ef20b4f9df556edcc1d8055cf62a82a673209"
+    url "https://github.com/waltarix/choose/releases/download/v1.3.2-custom/choose-1.3.2-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "daa18d6134ada6697a204081e98d89a1cc1910c16f4b2e7113f9b62ee8ae16d7"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/choose/releases/download/v1.3.1-custom-r1/choose-1.3.1-aarch64-apple-darwin.tar.xz"
-      sha256 "1bd14f2b01d6d790ac74f770c7b49a38a941067f11f44d3a4dae8f03f534ba4b"
+      url "https://github.com/waltarix/choose/releases/download/v1.3.2-custom/choose-1.3.2-aarch64-apple-darwin.tar.xz"
+      sha256 "0b895597caa24636080f40839359a2e9e72105e6dd60fda333f955fa40e915db"
     else
-      url "https://github.com/waltarix/choose/releases/download/v1.3.1-custom-r1/choose-1.3.1-x86_64-apple-darwin.tar.xz"
-      sha256 "20c9c3a90324a12f39a5954fe5c704ed579096c8db7920d398ae48b9717b7111"
+      url "https://github.com/waltarix/choose/releases/download/v1.3.2-custom/choose-1.3.2-x86_64-apple-darwin.tar.xz"
+      sha256 "3cd2bda969f8331847be52df81c834373dfd6546563459e885e13f439287efe1"
     end
   end
   license "GPL-3.0-or-later"
