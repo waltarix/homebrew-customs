@@ -1,11 +1,20 @@
 class Align < Formula
   desc "Text column alignment filter"
-  homepage "https://legacy.cs.indiana.edu/~kinzler/align/"
-  url "https://www.cs.indiana.edu/~kinzler/align/align-1.7.5.tgz"
+  homepage "https://kinzler.com/me/align/"
+  url "https://kinzler.com/me/align/align-1.7.5.tgz"
   sha256 "cc692fb9dee0cc288757e708fc1a3b6b56ca1210ca181053a371cb11746969dd"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?align[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle :unneeded
+
+  on_macos do
+    uses_from_macos "perl"
+  end
 
   conflicts_with "speech-tools", because: "both install `align` binaries"
 
@@ -19,10 +28,6 @@ class Align < Formula
   resource "wcwidth9.h" do
     url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
     sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
-  end
-
-  on_macos do
-    uses_from_macos "perl"
   end
 
   def install
