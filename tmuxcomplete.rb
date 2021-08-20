@@ -1,8 +1,9 @@
 class Tmuxcomplete < Formula
   desc "Completion of words in adjacent tmux panes"
   homepage "https://github.com/wellle/tmux-complete.vim"
-  url "https://raw.githubusercontent.com/wellle/tmux-complete.vim/v0.1.4/sh/tmuxcomplete"
-  sha256 "1406e7a695680ad72aa9f250b34cedf2a1662737e9ab3627333b7dd9143afc92"
+  url "https://raw.githubusercontent.com/waltarix/tmux-complete.vim/custom/sh/tmuxcomplete"
+  sha256 "8f40b2ce60e0b96d28413eebc1fac72ad6733309fe302f5e063a4cba0a23895d"
+  version "0.1.4"
   license "MIT"
 
   bottle :unneeded
