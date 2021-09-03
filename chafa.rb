@@ -2,11 +2,11 @@ class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
   if OS.mac?
-    url "https://hpjansson.org/chafa/releases/chafa-1.6.1.tar.xz"
-    sha256 "76c98930e99b3e5fadb986148b99d65636e9e9619124e568ff13d364ede89fa5"
+    url "https://hpjansson.org/chafa/releases/chafa-1.8.0.tar.xz"
+    sha256 "21ff652d836ba207098c40c459652b2f1de6c8a64fbffc62e7c6319ced32286b"
   else
-    url "https://hpjansson.org/chafa/releases/static/chafa-1.6.1-1-x86_64-linux-gnu.tar.gz"
-    sha256 "f2ec5ef0f15ef527966a1017e749aa08f96aa3dd6799c7c2d4cb1ce7a8ec7a09"
+    url "https://hpjansson.org/chafa/releases/static/chafa-1.8.0-1-x86_64-linux-gnu.tar.gz"
+    sha256 "a981e8a99e1993b799bd24afb93880e2a02d4c395868223c48f648cccc642168"
   end
   license "LGPL-3.0-or-later"
 
@@ -17,16 +17,12 @@ class Chafa < Formula
 
   if OS.mac?
     bottle do
-      sha256 cellar: :any, arm64_big_sur: "5bf09f7be13771c9e22b9e35db7837d6ba236ec92af1a95917f4c0610c805088"
-      sha256 cellar: :any, big_sur:       "42420443f24f392f4b8f9318942ca4ee9838a516df05b6449c7cf9737e4a3c40"
-      sha256 cellar: :any, catalina:      "6aa83c7ff29421d202351ebfc8f311d1e298ea7cded16609d0e07a52f0f76694"
-      sha256 cellar: :any, mojave:        "1d8600db4b8fd0245678e831fb97ef592f1a5d5031a1b1a1dff4f0f910df846d"
+      sha256 cellar: :any, arm64_big_sur: "ec3e9511b3a0ce9c08156e0129bc1b6b457bb872633ffad80e3dc75500ebd665"
+      sha256 cellar: :any, big_sur:       "978b79d0ad33901c14156632e34a1b8eba5a0256c92662dde6b9ec2cff0600f8"
+      sha256 cellar: :any, catalina:      "8603c4aea080189a148ca7097146edfd5c79fd0ddcc52ffca94eb5d8709ecff5"
+      sha256 cellar: :any, mojave:        "3b2b88dae2564f4f2d83f10f55d16866e50a1e8294a409562633d48d618252f3"
     end
-  else
-    bottle :unneeded
-  end
 
-  if OS.mac?
     depends_on "pkg-config" => :build
     depends_on "glib"
     depends_on "imagemagick"
@@ -40,7 +36,7 @@ class Chafa < Formula
                             "--prefix=#{prefix}"
       system "make", "install"
     else
-      bin.install "chafa"
+      bin.install "chafa-linux-x86_64" => "chafa"
     end
   end
 
