@@ -37,6 +37,10 @@ class Tmux < Formula
       --sysconfdir=#{etc}
     ]
 
+    on_macos do
+      args << "--disable-utf8proc"
+    end
+
     on_linux do
       ENV.append "LIBS", "-ljemalloc"
     end
