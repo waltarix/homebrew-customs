@@ -1,8 +1,8 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.2a-custom/tmux-3.2a.tar.xz"
-  sha256 "4cb92cad26c094fad914ad312caf1e7022927c3aafd873b38eebe2c9675c6759"
+  url "https://github.com/waltarix/tmux/releases/download/3.3-rc-custom-r1/tmux-3.3-rc.tar.xz"
+  sha256 "d623d9f621a7037f335f999359e69eb3438cdab772993e3a9ccfd3ed936a18bb"
   license "ISC"
 
   livecheck do
@@ -62,6 +62,16 @@ class Tmux < Formula
   end
 
   test do
-    system "#{bin}/tmux", "-V"
+    system bin/"tmux", "-V"
+
+    require "pty"
+
+    socket = testpath/tap.user
+    PTY.spawn bin/"tmux", "-S", socket, "-f", "/dev/null"
+    sleep 10
+
+    assert_predicate socket, :exist?
+    assert_predicate socket, :socket?
+    assert_equal "no server running on #{socket}", shell_output("#{bin}/tmux -S#{socket} list-sessions 2>&1", 1).chomp
   end
 end
