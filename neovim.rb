@@ -1,8 +1,8 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.5.0.tar.gz"
-  sha256 "2294caa9d2011996499fbd70e4006e4ef55db75b99b6719154c09262e23764ef"
+  url "https://github.com/neovim/neovim/archive/v0.5.1.tar.gz"
+  sha256 "aa449795e5cc69bdd2eeed7095f20b9c086c6ecfcde0ab62ab97a9d04243ec84"
   license "Apache-2.0"
 
   bottle :unneeded
@@ -42,8 +42,8 @@ class Neovim < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
-    sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0/wcwidth9.h"
+    sha256 "30a2baeb3c98096d007f9aa5c1f7bc6036a1674c71769477d47fbb0a31b9cbf5"
   end
 
   patch :DATA
@@ -94,20 +94,25 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index 12474d3c1..0a4164ff0 100755
+index 12474d3c1..99b05bff2 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
-@@ -5,7 +5,8 @@ data_files="UnicodeData.txt CaseFolding.txt EastAsianWidth.txt"
+@@ -1,11 +1,12 @@
+ #!/bin/sh
+ 
+ set -e
+-data_files="UnicodeData.txt CaseFolding.txt EastAsianWidth.txt"
++data_files="UnicodeData.txt CaseFolding.txt"
  emoji_files="emoji-data.txt"
  
  UNIDIR_DEFAULT=unicode
 -DOWNLOAD_URL_BASE_DEFAULT='http://unicode.org/Public'
-+UNICODE_VERSION="13.0.0"
-+DOWNLOAD_URL_BASE_DEFAULT="http://unicode.org/Public/${UNICODE_VERSION}/ucd"
++UNICODE_VERSION="14.0.0"
++DOWNLOAD_URL_BASE_DEFAULT="https://unicode.org/Public/${UNICODE_VERSION}/ucd"
  
  if test x$1 = 'x--help' ; then
    echo 'Usage:'
-@@ -22,22 +23,9 @@ UNIDIR=${1:-$UNIDIR_DEFAULT}
+@@ -22,22 +23,11 @@ UNIDIR=${1:-$UNIDIR_DEFAULT}
  DOWNLOAD_URL_BASE=${2:-$DOWNLOAD_URL_BASE_DEFAULT}
  
  for filename in $data_files ; do
@@ -127,13 +132,14 @@ index 12474d3c1..0a4164ff0 100755
 -  )
 +  curl -# -L -o "$UNIDIR/$filename" "$DOWNLOAD_URL_BASE/emoji/$filename"
  done
--
+ 
 -(
 -  cd "$UNIDIR"
 -  git commit -m "Update unicode files" -- $files
 -)
++curl -# -L -o "$UNIDIR/EastAsianWidth.txt" "https://github.com/waltarix/localedata/releases/download/14.0.0/EastAsianWidth.generated.txt"
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index ec4f4cbc2..4def85fea 100644
+index 73e3ba53a..4604f03d0 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -73,6 +73,8 @@ struct interval {
@@ -187,7 +193,7 @@ index ec4f4cbc2..4def85fea 100644
    return 1;
  }
  
-@@ -1035,12 +1020,6 @@ bool utf_iscomposing(int c)
+@@ -1036,12 +1021,6 @@ bool utf_iscomposing(int c)
   */
  bool utf_printable(int c)
  {
@@ -200,7 +206,7 @@ index ec4f4cbc2..4def85fea 100644
    /* Sorted list of non-overlapping intervals.
     * 0xd800-0xdfff is reserved for UTF-16, actually illegal. */
    static struct interval nonprint[] =
-@@ -1051,7 +1030,6 @@ bool utf_printable(int c)
+@@ -1052,7 +1031,6 @@ bool utf_printable(int c)
    };
  
    return !intable(nonprint, ARRAY_SIZE(nonprint), c);
