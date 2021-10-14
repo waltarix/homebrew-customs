@@ -4,10 +4,10 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.8/zsh-5.8.tar.xz"
   mirror "https://www.zsh.org/pub/zsh-5.8.tar.xz"
   sha256 "dcc4b54cc5565670a65581760261c163d720991f0d06486da61f8d839b52de27"
-  revision 4
+  revision 5
 
   head do
-    url "https://git.code.sf.net/p/zsh/code.git"
+    url "https://git.code.sf.net/p/zsh/code.git", branch: "master"
     depends_on "autoconf" => :build
   end
 
@@ -17,8 +17,8 @@ class Zsh < Formula
   depends_on "pcre"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
-    sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0/wcwidth9.h"
+    sha256 "30a2baeb3c98096d007f9aa5c1f7bc6036a1674c71769477d47fbb0a31b9cbf5"
   end
 
   resource "htmldoc" do
@@ -38,21 +38,21 @@ class Zsh < Formula
     system "Util/preconfig" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
-                          "--enable-fndir=#{pkgshare}/functions",
-                          "--enable-scriptdir=#{pkgshare}/scripts",
-                          "--enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions",
-                          "--enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts",
-                          "--enable-runhelpdir=#{pkgshare}/help",
-                          "--enable-cap",
-                          "--enable-maildir-support",
-                          "--enable-multibyte",
-                          "--enable-pcre",
-                          "--enable-zsh-secure-free",
-                          "--enable-unicode9",
-                          "--enable-etcdir=/etc",
-                          "--with-tcsetpgrp",
-                          "--with-term-lib=ncursesw",
-                          "DL_EXT=bundle"
+           "--enable-fndir=#{pkgshare}/functions",
+           "--enable-scriptdir=#{pkgshare}/scripts",
+           "--enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions",
+           "--enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts",
+           "--enable-runhelpdir=#{pkgshare}/help",
+           "--enable-cap",
+           "--enable-maildir-support",
+           "--enable-multibyte",
+           "--enable-pcre",
+           "--enable-zsh-secure-free",
+           "--enable-unicode9",
+           "--enable-etcdir=/etc",
+           "--with-tcsetpgrp",
+           "--with-term-lib=ncursesw",
+           "DL_EXT=bundle"
 
     # Do not version installation directories.
     inreplace ["Makefile", "Src/Makefile"],
