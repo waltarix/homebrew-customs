@@ -35,6 +35,11 @@ class Zsh < Formula
     ENV.append "LDFLAGS", "-L#{ncurses.lib}"
     ENV.append "CPPFLAGS", "-I#{ncurses.include}"
 
+    # Work around configure issues with Xcode 12
+    # https://www.zsh.org/mla/workers/2020/index.html
+    # https://github.com/Homebrew/homebrew-core/issues/64921
+    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+
     system "Util/preconfig" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
