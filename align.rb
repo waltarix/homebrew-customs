@@ -4,6 +4,7 @@ class Align < Formula
   url "https://kinzler.com/me/align/align-1.7.5.tgz"
   sha256 "cc692fb9dee0cc288757e708fc1a3b6b56ca1210ca181053a371cb11746969dd"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url :homepage
@@ -26,8 +27,8 @@ class Align < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
-    sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0/wcwidth9.h"
+    sha256 "30a2baeb3c98096d007f9aa5c1f7bc6036a1674c71769477d47fbb0a31b9cbf5"
   end
 
   def install
