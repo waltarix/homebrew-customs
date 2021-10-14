@@ -4,7 +4,7 @@ class Mosh < Formula
   url "https://mosh.org/mosh-1.3.2.tar.gz"
   sha256 "da600573dfa827d88ce114e0fed30210689381bbdcff543c931e4d6a2e851216"
   license "GPL-3.0"
-  revision 14
+  revision 15
 
   bottle :unneeded
 
@@ -18,8 +18,8 @@ class Mosh < Formula
   depends_on "openssl@1.1"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/13.0.0-r1/wcwidth9.h"
-    sha256 "f00b5d73a1bb266c13bae2f9d758eaec59080ad8579cebe7d649ae125b28f9f1"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0/wcwidth9.h"
+    sha256 "30a2baeb3c98096d007f9aa5c1f7bc6036a1674c71769477d47fbb0a31b9cbf5"
   end
 
   # Fix mojave build.
