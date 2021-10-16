@@ -1,25 +1,24 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.27.2.tar.gz"
-  sha256 "7798a9e22fc363801131456dc21026ccb0f037aed026d17df60b1178b3f24111"
+  url "https://github.com/junegunn/fzf/archive/0.27.3.tar.gz"
+  sha256 "a0ad8dc6dd5c7a0c87ad623c0d9164cc2861489b76cb7a8b66f51cb4f9a81254"
   license "MIT"
-  revision 1
   head "https://github.com/junegunn/fzf.git"
 
   bottle :unneeded
 
   resource "binary" do
     if OS.linux?
-      url "https://github.com/waltarix/fzf/releases/download/0.27.2-custom-r3/fzf-0.27.2-linux_amd64.tar.xz"
-      sha256 "991858baf6591fb579a1d2f32d64b8f9f2583dc5a2da89e521dbb00e75000820"
+      url "https://github.com/waltarix/fzf/releases/download/0.27.3-custom/fzf-0.27.3-linux_amd64.tar.xz"
+      sha256 "6592426b2aaa0058738529832a43679e3764981e8a018946ee014320c0b4d761"
     else
       if Hardware::CPU.arm?
-        url "https://github.com/waltarix/fzf/releases/download/0.27.2-custom-r3/fzf-0.27.2-darwin_arm64.tar.xz"
-        sha256 "d59a9fce44ed4b36128c60f091cf2409e187f2edf88657e5bdba0014d8d98c60"
+        url "https://github.com/waltarix/fzf/releases/download/0.27.3-custom/fzf-0.27.3-darwin_arm64.tar.xz"
+        sha256 "2e4833e0ee3a784551f432c6509e6c1f6bf15747204f0cbb1b150133930101ba"
       else
-        url "https://github.com/waltarix/fzf/releases/download/0.27.2-custom-r3/fzf-0.27.2-darwin_amd64.tar.xz"
-        sha256 "d5cb9e8169597900eacb35c2986ed124d3157a6425593bfc130ee69c1c8903b3"
+        url "https://github.com/waltarix/fzf/releases/download/0.27.3-custom/fzf-0.27.3-darwin_amd64.tar.xz"
+        sha256 "1829fc515eccc8288fd6359b4f99a40f97552212290309fb3591ba39e1d82bad"
       end
     end
   end
