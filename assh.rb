@@ -2,18 +2,18 @@ class Assh < Formula
   desc "Advanced SSH config - Regex, aliases, gateways, includes and dynamic hosts"
   homepage "https://manfred.life/assh"
   if OS.linux?
-    url "https://github.com/waltarix/assh/releases/download/v2.11.3-custom/assh-2.11.3-linux_amd64.tar.xz"
-    sha256 "081d3a32b01f8106171d50f9ec41adf446d672f535c9159aa016845cbecaef8e"
+    url "https://github.com/waltarix/assh/releases/download/v2.12.0-custom/assh-2.12.0-linux_amd64.tar.xz"
+    sha256 "37d4bb7ba9c9dcbb83ca595d4147caf6d60992acc7d3d7f23169e133b81ec815"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/assh/releases/download/v2.11.3-custom/assh-2.11.3-darwin_arm64.tar.xz"
-      sha256 "7808db876ba989c4b7fca591552fc999a7bc9a36a1806c6ee84b5c23368fe33f"
+      url "https://github.com/waltarix/assh/releases/download/v2.12.0-custom/assh-2.12.0-darwin_arm64.tar.xz"
+      sha256 "3252f78708445e90d0826972b55b1f27c200865e9ff75616a1314511b2f302ac"
     else
-      url "https://github.com/waltarix/assh/releases/download/v2.11.3-custom/assh-2.11.3-darwin_amd64.tar.xz"
-      sha256 "c6bd8cfffd5f5dcf14c882bf605e66bcdb9fae19c19465a021e61dca9f84361b"
+      url "https://github.com/waltarix/assh/releases/download/v2.12.0-custom/assh-2.12.0-darwin_amd64.tar.xz"
+      sha256 "74f8a765a51edbafbbaadeef4555475aad2fe1c031693b90051612aa820f3206"
     end
   end
-  version "2.11.3"
+  version "2.12.0"
   license "MIT"
 
   bottle :unneeded
