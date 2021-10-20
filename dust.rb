@@ -22,8 +22,6 @@ class Dust < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  bottle :unneeded
-
   def install
     bin.install "dust"
   end

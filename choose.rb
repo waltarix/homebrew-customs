@@ -15,8 +15,6 @@ class Choose < Formula
   end
   license "GPL-3.0-or-later"
 
-  bottle :unneeded
-
   conflicts_with "choose-gui", because: "both install a `choose` binary"
   conflicts_with "choose-rust", because: "both install a `choose` binary"
 

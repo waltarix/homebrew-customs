@@ -16,8 +16,6 @@ class Mkcert < Formula
   version "1.4.3"
   license "BSD-3-Clause"
 
-  bottle :unneeded
-
   def install
     bin.install "mkcert"
   end

@@ -16,8 +16,6 @@ class Assh < Formula
   version "2.12.0"
   license "MIT"
 
-  bottle :unneeded
-
   def install
     bin.install "assh"
   end

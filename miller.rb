@@ -16,8 +16,6 @@ class Miller < Formula
   version "5.10.0"
   license "BSD-2-Clause"
 
-  bottle :unneeded
-
   def install
     bin.install ["mlr", "gmlr"]
   end

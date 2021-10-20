@@ -11,8 +11,6 @@ class Align < Formula
     regex(/href=.*?align[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  bottle :unneeded
-
   on_macos do
     uses_from_macos "perl"
   end

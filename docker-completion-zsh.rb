@@ -9,8 +9,6 @@ class DockerCompletionZsh < Formula
     formula "docker"
   end
 
-  bottle :unneeded
-
   conflicts_with "docker",
     because: "docker already includes this completion script"
   conflicts_with "docker-completion",

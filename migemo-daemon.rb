@@ -5,8 +5,6 @@ class MigemoDaemon < Formula
   version "20200605"
   sha256 "0e15bbd80877ae7485e1eedd225badc02b86804367866a05fd167dc7d76acc9f"
 
-  bottle :unneeded
-
   depends_on "waltarix/customs/cmigemo"
 
   def install

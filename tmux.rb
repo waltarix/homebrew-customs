@@ -12,8 +12,6 @@ class Tmux < Formula
     regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+[a-z]?)["' >]}i)
   end
 
-  bottle :unneeded
-
   if OS.linux?
     depends_on "bison" => :build
     depends_on "jemalloc"

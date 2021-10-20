@@ -5,8 +5,6 @@ class Neovim < Formula
   sha256 "aa449795e5cc69bdd2eeed7095f20b9c086c6ecfcde0ab62ab97a9d04243ec84"
   license "Apache-2.0"
 
-  bottle :unneeded
-
   if OS.linux?
     depends_on "waltarix/customs/libtree-sitter"
     depends_on "libnsl"

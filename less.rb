@@ -11,8 +11,6 @@ class Less < Formula
     regex(/less[._-]v?(\d+(?:\.\d+)*).+?released.+?general use/i)
   end
 
-  bottle :unneeded
-
   depends_on "ncurses"
   depends_on "pcre2"
   depends_on "waltarix/customs/cmigemo"

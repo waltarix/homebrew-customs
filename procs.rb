@@ -15,8 +15,6 @@ class Procs < Formula
   end
   license "MIT"
 
-  bottle :unneeded
-
   def install
     bin.install "procs"
 

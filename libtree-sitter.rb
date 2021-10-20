@@ -6,8 +6,6 @@ class LibtreeSitter < Formula
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git"
 
-  bottle :unneeded
-
   keg_only "conflicts with the TreeSitter formula"
 
   def install

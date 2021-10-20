@@ -6,8 +6,6 @@ class Fzf < Formula
   license "MIT"
   head "https://github.com/junegunn/fzf.git"
 
-  bottle :unneeded
-
   resource "binary" do
     if OS.linux?
       url "https://github.com/waltarix/fzf/releases/download/0.27.3-custom/fzf-0.27.3-linux_amd64.tar.xz"

@@ -6,8 +6,6 @@ class Tmuxcomplete < Formula
   version "0.1.4"
   license "MIT"
 
-  bottle :unneeded
-
   def install
     bin.install "tmux-complete.vim" => "tmuxcomplete"
   end

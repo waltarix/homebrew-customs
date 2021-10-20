@@ -5,8 +5,6 @@ class SystemdCompletionZsh < Formula
   sha256 "4268bd88037806c61c5cd1c78d869f7f20bf7e7368c63916d47b5d1c3411bd6f"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
 
-  bottle :unneeded
-
   def install
     zsh_completion.install Dir["shell-completion/zsh/_*"]
   end

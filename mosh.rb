@@ -6,8 +6,6 @@ class Mosh < Formula
   license "GPL-3.0"
   revision 15
 
-  bottle :unneeded
-
   if OS.mac?
     depends_on "autoconf" => :build
     depends_on "automake" => :build

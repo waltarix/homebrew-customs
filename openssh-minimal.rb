@@ -12,8 +12,6 @@ class OpensshMinimal < Formula
     regex(/href=.*?openssh[._-]v?(\d+(?:\.\d+)+(?:p\d+)?)\.t/i)
   end
 
-  bottle :unneeded
-
   conflicts_with "openssh", because: "both install the same binaries"
 
   # Please don't resubmit the keychain patch option. It will never be accepted.

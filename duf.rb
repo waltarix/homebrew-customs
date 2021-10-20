@@ -16,8 +16,6 @@ class Duf < Formula
   version "0.6.2"
   license "MIT"
 
-  bottle :unneeded
-
   def install
     bin.install "duf"
   end

@@ -14,8 +14,6 @@ class Sqlite < Formula
     end
   end
 
-  bottle :unneeded
-
   keg_only :provided_by_macos
 
   depends_on "pcre2"

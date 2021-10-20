@@ -16,8 +16,6 @@ class SpotifyTui < Formula
   license "MIT"
   head "https://github.com/Rigellute/spotify-tui.git", branch: "master"
 
-  bottle :unneeded
-
   on_linux do
     depends_on "libxcb"
     depends_on "openssl@1.1"

@@ -15,8 +15,6 @@ class Hexyl < Formula
   end
   license "Apache-2.0"
 
-  bottle :unneeded
-
   def install
     bin.install "hexyl"
   end

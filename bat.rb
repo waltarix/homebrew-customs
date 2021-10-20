@@ -15,8 +15,6 @@ class Bat < Formula
   end
   license "Apache-2.0"
 
-  bottle :unneeded
-
   uses_from_macos "zlib"
 
   def install

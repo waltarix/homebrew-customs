@@ -19,8 +19,6 @@ class W3m < Formula
     regex(/href=.*?w3m[._-]v?(\d+(?:\.\d+)+)\.orig\.t/i)
   end
 
-  bottle :unneeded
-
   depends_on "pkg-config" => :build
   depends_on "bdw-gc"
   depends_on "ncurses"

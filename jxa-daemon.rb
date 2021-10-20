@@ -5,8 +5,6 @@ class JxaDaemon < Formula
   version "20210225"
   sha256 "d5a88de6ddfd53a91ea541ab0c89beb87c087c11c11df6901ce5fc68fb9f79eb"
 
-  bottle :unneeded
-
   depends_on "ruby"
 
   resource "fast_jsonparser" do

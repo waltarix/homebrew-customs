@@ -5,8 +5,6 @@ class SlH < Formula
   version "3.03-17+b2"
   sha256 "5986d9d47ea5e812d0cbd54a0fc20f127a02d13b45469bb51ec63856a5a6d3aa"
 
-  bottle :unneeded
-
   depends_on "ncurses"
 
   resource "debian" do
