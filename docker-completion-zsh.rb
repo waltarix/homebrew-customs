@@ -1,7 +1,7 @@
 class DockerCompletionZsh < Formula
   desc "Zsh completion for Docker"
   homepage "https://www.docker.com/"
-  url "https://raw.githubusercontent.com/docker/cli/v20.10.8/contrib/completion/zsh/_docker"
+  url "https://raw.githubusercontent.com/docker/cli/v20.10.10/contrib/completion/zsh/_docker"
   sha256 "22d7922aca0c389d8980bec08426764e75fa63883d114069e24e460651e0e9ba"
   license "Apache-2.0"
 
