@@ -4,6 +4,7 @@ class Neovim < Formula
   url "https://github.com/neovim/neovim/archive/v0.5.1.tar.gz"
   sha256 "aa449795e5cc69bdd2eeed7095f20b9c086c6ecfcde0ab62ab97a9d04243ec84"
   license "Apache-2.0"
+  revision 1
 
   if OS.linux?
     depends_on "waltarix/customs/libtree-sitter"
@@ -12,12 +13,14 @@ class Neovim < Formula
     depends_on "tree-sitter"
   end
   depends_on "cmake" => :build
+  # Libtool is needed to build `libvterm`.
+  # Remove this dependency when we use the formula.
+  depends_on "libtool" => :build
   depends_on "luarocks" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "libtermkey"
   depends_on "libuv"
-  depends_on "libvterm"
   depends_on "luajit-openresty"
   depends_on "luv"
   depends_on "msgpack"
@@ -25,6 +28,13 @@ class Neovim < Formula
 
   uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
+
+  # TODO: Use `libvterm` formula when the following is resolved:
+  # https://github.com/neovim/neovim/pull/16219
+  resource "libvterm" do
+    url "http://www.leonerd.org.uk/code/libvterm/libvterm-0.1.4.tar.gz"
+    sha256 "bc70349e95559c667672fc8c55b9527d9db9ada0fb80a3beda533418d782d3dd"
+  end
 
   # Keep resources updated according to:
   # https://github.com/neovim/neovim/blob/v#{version}/third-party/CMakeLists.txt
@@ -48,9 +58,12 @@ class Neovim < Formula
 
   def install
     resources.each do |r|
-      r.stage(buildpath/"deps-build/build/src/#{r.name}")
+      if r.name == "wcwidth9.h"
+        r.stage(buildpath/"src/nvim")
+      else
+        r.stage(buildpath/"deps-build/build/src"/r.name)
+      end
     end
-    resource("wcwidth9.h").stage(buildpath/"src/nvim")
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
 
@@ -58,13 +71,13 @@ class Neovim < Formula
     ENV.prepend_path "LUA_CPATH", "#{buildpath}/deps-build/lib/lua/5.1/?.so"
     lua_path = "--lua-dir=#{Formula["luajit-openresty"].opt_prefix}"
 
-    cd "deps-build" do
+    cd "deps-build/build/src" do
       %w[
         mpack/mpack-1.0.8-0.rockspec
         lpeg/lpeg-1.0.2-1.src.rock
       ].each do |rock|
         dir, rock = rock.split("/")
-        cd "build/src/#{dir}" do
+        cd dir do
           output = Utils.safe_popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
           unpack_dir = output.split("\n")[-2]
           cd unpack_dir do
@@ -72,14 +85,23 @@ class Neovim < Formula
           end
         end
       end
+
+      # Build libvterm. Remove when we use the formula.
+      cd "libvterm" do
+        system "make", "install", "PREFIX=#{buildpath}/deps-build", "LDFLAGS=-static #{ENV.ldflags}"
+        ENV.prepend_path "PKG_CONFIG_PATH", buildpath/"deps-build/lib/pkgconfig"
+      end
     end
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args, "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}"
-      # Patch out references to Homebrew shims
-      inreplace "config/auto/versiondef.h", Superenv.shims_path/ENV.cc, ENV.cc
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}",
+                    *std_cmake_args
+
+    # Patch out references to Homebrew shims
+    inreplace "build/config/auto/versiondef.h", Superenv.shims_path/ENV.cc, ENV.cc
+
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -136,8 +158,22 @@ index 12474d3c1..99b05bff2 100755
 -  git commit -m "Update unicode files" -- $files
 -)
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" "https://github.com/waltarix/localedata/releases/download/14.0.0/EastAsianWidth.generated.txt"
+diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
+index aa96c97bc..64cafa984 100644
+--- a/src/nvim/generators/gen_unicode_tables.lua
++++ b/src/nvim/generators/gen_unicode_tables.lua
+@@ -317,8 +317,7 @@ eaw_fp:close()
+ 
+ local doublewidth = build_width_table(ut_fp, dataprops, widthprops,
+                                       {W=true, F=true}, 'doublewidth')
+-local ambiwidth = build_width_table(ut_fp, dataprops, widthprops,
+-                                    {A=true}, 'ambiguous')
++local ambiwidth = {}
+ 
+ local emoji_fp = io.open(emoji_fname, 'r')
+ local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 73e3ba53a..4604f03d0 100644
+index 73e3ba53a..02cd2bbf7 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -73,6 +73,8 @@ struct interval {
@@ -209,6 +245,16 @@ index 73e3ba53a..4604f03d0 100644
  
    return !intable(nonprint, ARRAY_SIZE(nonprint), c);
 -#endif
+ }
+ 
+ /*
+@@ -1183,8 +1161,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+ 
+ bool utf_ambiguous_width(int c)
+ {
+-  return c >= 0x80 && (intable(ambiguous, ARRAY_SIZE(ambiguous), c)
+-                       || intable(emoji_all, ARRAY_SIZE(emoji_all), c));
++  return c >= 0x80 && (intable(emoji_all, ARRAY_SIZE(emoji_all), c));
  }
  
  /*
