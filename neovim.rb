@@ -1,10 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.5.1.tar.gz"
-  sha256 "aa449795e5cc69bdd2eeed7095f20b9c086c6ecfcde0ab62ab97a9d04243ec84"
+  url "https://github.com/neovim/neovim/archive/v0.6.0.tar.gz"
+  sha256 "2cfd600cfa5bb57564cc22ffbbbcb2c91531053fc3de992df33656614384fa4c"
   license "Apache-2.0"
-  revision 1
 
   if OS.linux?
     depends_on "waltarix/customs/libtree-sitter"
@@ -173,19 +172,19 @@ index aa96c97bc..64cafa984 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 73e3ba53a..02cd2bbf7 100644
+index 42117bc76..43d26686e 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
-@@ -73,6 +73,8 @@ struct interval {
+@@ -74,6 +74,8 @@ struct interval {
  # include "unicode_tables.generated.h"
  #endif
  
 +#include "wcwidth9.h"
 +
- char_u e_loadlib[] = "E370: Could not load library %s";
- char_u e_loadfunc[] = "E448: Could not load library function %s";
- 
-@@ -469,12 +471,11 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+ // To speed up BYTELEN(); keep a lookup table to quickly get the length in
+ // bytes of a UTF-8 character from the first byte of a UTF-8 string.  Bytes
+ // which are illegal when used as the first byte have a 1.  The NUL byte has
+@@ -471,12 +473,11 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  int utf_char2cells(int c)
  {
    if (c >= 0x100) {
@@ -199,7 +198,7 @@ index 73e3ba53a..02cd2bbf7 100644
  
      if (n < 0) {
        return 6;                 // unprintable, displays <xxxx>
-@@ -482,27 +483,11 @@ int utf_char2cells(int c)
+@@ -484,27 +485,11 @@ int utf_char2cells(int c)
      if (n > 1) {
        return n;
      }
@@ -227,7 +226,7 @@ index 73e3ba53a..02cd2bbf7 100644
    return 1;
  }
  
-@@ -1036,12 +1021,6 @@ bool utf_iscomposing(int c)
+@@ -1056,12 +1041,6 @@ bool utf_iscomposing(int c)
   */
  bool utf_printable(int c)
  {
@@ -237,10 +236,10 @@ index 73e3ba53a..02cd2bbf7 100644
 -   */
 -  return iswprint(c);
 -#else
-   /* Sorted list of non-overlapping intervals.
-    * 0xd800-0xdfff is reserved for UTF-16, actually illegal. */
+   // Sorted list of non-overlapping intervals.
+   // 0xd800-0xdfff is reserved for UTF-16, actually illegal.
    static struct interval nonprint[] =
-@@ -1052,7 +1031,6 @@ bool utf_printable(int c)
+@@ -1072,7 +1051,6 @@ bool utf_printable(int c)
    };
  
    return !intable(nonprint, ARRAY_SIZE(nonprint), c);
@@ -248,7 +247,7 @@ index 73e3ba53a..02cd2bbf7 100644
  }
  
  /*
-@@ -1183,8 +1161,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1204,8 +1182,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
  
  bool utf_ambiguous_width(int c)
  {
