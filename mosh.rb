@@ -1,10 +1,10 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2-custom-r1/mosh-1.3.2-custom.tar.xz"
-  sha256 "f0a0166d89566dd190dc8e1dcd15bc3234df4ef3c4ba57991c34c3b42fc70624"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2-custom-r2/mosh-1.3.2-custom.tar.xz"
+  sha256 "3b9abfd795b954a614c84bd580479c02d8c85c2ba0c9f31946da722fe1720dd9"
   license "GPL-3.0-or-later"
-  revision 19
+  revision 20
 
   depends_on "pkg-config" => :build
   depends_on "protobuf"
