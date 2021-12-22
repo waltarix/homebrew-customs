@@ -5,12 +5,18 @@ class Neovim < Formula
   sha256 "2cfd600cfa5bb57564cc22ffbbbcb2c91531053fc3de992df33656614384fa4c"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   if OS.linux?
     depends_on "waltarix/customs/libtree-sitter"
     depends_on "libnsl"
   else
     depends_on "tree-sitter"
   end
+
   depends_on "cmake" => :build
   # Libtool is needed to build `libvterm`.
   # Remove this dependency when we use the formula.
@@ -66,8 +72,12 @@ class Neovim < Formula
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
 
-    ENV.prepend_path "LUA_PATH", "#{buildpath}/deps-build/share/lua/5.1/?.lua"
-    ENV.prepend_path "LUA_CPATH", "#{buildpath}/deps-build/lib/lua/5.1/?.so"
+    # The path separator for `LUA_PATH` and `LUA_CPATH` is `;`.
+    ENV.prepend "LUA_PATH", buildpath/"deps-build/share/lua/5.1/?.lua", ";"
+    ENV.prepend "LUA_CPATH", buildpath/"deps-build/lib/lua/5.1/?.so", ";"
+    # Don't clobber the default search path
+    ENV.append "LUA_PATH", ";", ";"
+    ENV.append "LUA_CPATH", ";", ";"
     lua_path = "--lua-dir=#{Formula["luajit-openresty"].opt_prefix}"
 
     cd "deps-build/build/src" do
