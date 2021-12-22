@@ -4,7 +4,7 @@ class Mosh < Formula
   url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2-custom-r2/mosh-1.3.2-custom.tar.xz"
   sha256 "3b9abfd795b954a614c84bd580479c02d8c85c2ba0c9f31946da722fe1720dd9"
   license "GPL-3.0-or-later"
-  revision 20
+  revision 21
 
   depends_on "pkg-config" => :build
   depends_on "protobuf"
