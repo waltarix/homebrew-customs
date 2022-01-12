@@ -5,7 +5,7 @@ class Zsh < Formula
   mirror "https://www.zsh.org/pub/zsh-5.8.tar.xz"
   sha256 "dcc4b54cc5565670a65581760261c163d720991f0d06486da61f8d839b52de27"
   license "MIT-Modern-Variant"
-  revision 5
+  revision 6
 
   head do
     url "https://git.code.sf.net/p/zsh/code.git", branch: "master"
@@ -16,8 +16,8 @@ class Zsh < Formula
   depends_on "pcre"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0/wcwidth9.h"
-    sha256 "30a2baeb3c98096d007f9aa5c1f7bc6036a1674c71769477d47fbb0a31b9cbf5"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r2/wcwidth9.h"
+    sha256 "8ce9e402611a0f8c2a44130571d9043144d43463893e13a6459d0b2c22b67eb2"
   end
 
   resource "htmldoc" do
