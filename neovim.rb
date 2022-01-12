@@ -4,6 +4,7 @@ class Neovim < Formula
   url "https://github.com/neovim/neovim/archive/v0.6.1.tar.gz"
   sha256 "dd882c21a52e5999f656cae3f336b5fc702d52addd4d9b5cd3dc39cfff35e864"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/neovim/neovim.git", branch: "master"
 
   livecheck do
@@ -56,8 +57,8 @@ class Neovim < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0/wcwidth9.h"
-    sha256 "30a2baeb3c98096d007f9aa5c1f7bc6036a1674c71769477d47fbb0a31b9cbf5"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r2/wcwidth9.h"
+    sha256 "8ce9e402611a0f8c2a44130571d9043144d43463893e13a6459d0b2c22b67eb2"
   end
 
   patch :DATA
@@ -124,7 +125,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index 12474d3c1..99b05bff2 100755
+index 12474d3c1..a8aa2233c 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,11 +1,12 @@
@@ -142,7 +143,7 @@ index 12474d3c1..99b05bff2 100755
  
  if test x$1 = 'x--help' ; then
    echo 'Usage:'
-@@ -22,22 +23,11 @@ UNIDIR=${1:-$UNIDIR_DEFAULT}
+@@ -22,22 +23,12 @@ UNIDIR=${1:-$UNIDIR_DEFAULT}
  DOWNLOAD_URL_BASE=${2:-$DOWNLOAD_URL_BASE_DEFAULT}
  
  for filename in $data_files ; do
@@ -167,7 +168,8 @@ index 12474d3c1..99b05bff2 100755
 -  cd "$UNIDIR"
 -  git commit -m "Update unicode files" -- $files
 -)
-+curl -# -L -o "$UNIDIR/EastAsianWidth.txt" "https://github.com/waltarix/localedata/releases/download/14.0.0/EastAsianWidth.generated.txt"
++curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
++  "https://github.com/waltarix/localedata/releases/download/14.0.0-r2/EastAsianWidth.txt"
 diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
 index aa96c97bc..64cafa984 100644
 --- a/src/nvim/generators/gen_unicode_tables.lua
