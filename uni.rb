@@ -2,19 +2,20 @@ class Uni < Formula
   desc "Unicode database query tool for the command-line"
   homepage "https://github.com/arp242/uni"
   if OS.linux?
-    url "https://github.com/waltarix/uni/releases/download/v2.4.0-custom/uni-2.4.0-linux_amd64.tar.xz"
-    sha256 "71f4ea5e292172cf3c606ad48644b3c341e5831fd0caf5c8cc266f54da0c7809"
+    url "https://github.com/waltarix/uni/releases/download/v2.4.0-custom-r1/uni-2.4.0-linux_amd64.tar.xz"
+    sha256 "56127718ada670e206a343e1f529f32b2e4aa38e23a89ad06c60eb503be57f91"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/uni/releases/download/v2.4.0-custom/uni-2.4.0-darwin_arm64.tar.xz"
-      sha256 "65bdad0822ef410a89035e46b7d7163c034d0dc0d94a160c147fbfe2d8a58d8c"
+      url "https://github.com/waltarix/uni/releases/download/v2.4.0-custom-r1/uni-2.4.0-darwin_arm64.tar.xz"
+      sha256 "f8c235d4b76931acd8e1e63e37a92778530d4c5d89bc320c4bdedef01e2a8a30"
     else
-      url "https://github.com/waltarix/uni/releases/download/v2.4.0-custom/uni-2.4.0-darwin_amd64.tar.xz"
-      sha256 "843dcb1e0e6b3333ef2faaa463e149998fb9ab323eb431fd2b65c9a706a231d1"
+      url "https://github.com/waltarix/uni/releases/download/v2.4.0-custom-r1/uni-2.4.0-darwin_amd64.tar.xz"
+      sha256 "9173dbf54f3da95a4fc0c6324b03ae065cb950ecffcbfc32a27a6ac2cd5f826b"
     end
   end
   version "2.4.0"
   license "MIT"
+  revision 1
 
   def install
     bin.install "uni"
