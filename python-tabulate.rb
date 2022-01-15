@@ -1,10 +1,10 @@
 class PythonTabulate < Formula
   desc "Pretty-print tabular data in Python"
   homepage "https://pypi.org/project/tabulate/"
-  url "https://github.com/waltarix/python-tabulate/archive/v0.8.9-custom.tar.gz"
-  sha256 "626de0d35880cdb744e033bad2b79139166324bec4c8a9571d50025d363d5428"
+  url "https://github.com/waltarix/python-tabulate/archive/v0.8.9-custom-r1.tar.gz"
+  sha256 "49b4f146c50092c2ca0885c955c8f606928e63a7f6c627502ed671eeece13cb4"
   license "MIT"
-  revision 1
+  revision 2
 
   depends_on "python@3.9"
 
@@ -37,14 +37,14 @@ class PythonTabulate < Formula
       ...,......,.........
     EOS
     expected_output = <<~EOS
-      ╭───────┬────────┬───────────╮
-      │ one   │ two    │ three     │
-      ├───────┼────────┼───────────┤
-      │ …    │ ……   │ ………    │
-      │ ...   │ ...... │ ......... │
-      ╰───────┴────────┴───────────╯
+      ╭─────┬────────┬───────────╮
+      │ one │ two    │ three     │
+      ├─────┼────────┼───────────┤
+      │ …  │ ……   │ ………    │
+      │ ... │ ...... │ ......... │
+      ╰─────┴────────┴───────────╯
     EOS
-    assert_equal expected_output, pipe_output("#{bin}/tabulate -s, -1 -f fancy_outline_rounded", input)
+    assert_equal expected_output, pipe_output("#{bin}/tabulate -s, -1 -g0 -f fancy_outline_rounded", input)
 
     system Formula["python@3.9"].opt_bin/"python3", "-c", "from tabulate import tabulate"
   end
