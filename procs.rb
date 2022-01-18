@@ -2,15 +2,15 @@ class Procs < Formula
   desc "Modern replacement for ps written by Rust"
   homepage "https://github.com/dalance/procs"
   if OS.linux?
-    url "https://github.com/waltarix/procs/releases/download/v0.11.13-custom/procs-0.11.13-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "c437b9bf7cc1be1375ea71a4ed21ef53c1b505a2cd83ef997546603819a09ffd"
+    url "https://github.com/waltarix/procs/releases/download/v0.12.0-custom/procs-0.12.0-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "1261aa2816725eef68ad955eb04d8788830eb1b021f730fefe6bf5c578ac5f27"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/procs/releases/download/v0.11.13-custom/procs-0.11.13-aarch64-apple-darwin.tar.xz"
-      sha256 "daafdee9feaa7dea56a84086bd7ca9eb5aadb23486f0b9181f12db11c2a57abb"
+      url "https://github.com/waltarix/procs/releases/download/v0.12.0-custom/procs-0.12.0-aarch64-apple-darwin.tar.xz"
+      sha256 "d7d9cc1a105c7a2ebaae8e147cc0c438a9e2d02341ed8266786074032303382d"
     else
-      url "https://github.com/waltarix/procs/releases/download/v0.11.13-custom/procs-0.11.13-x86_64-apple-darwin.tar.xz"
-      sha256 "15b824ed91ebe69013d640231e3464966af1080ab63ed45c34f3db79cd4b3afe"
+      url "https://github.com/waltarix/procs/releases/download/v0.12.0-custom/procs-0.12.0-x86_64-apple-darwin.tar.xz"
+      sha256 "4baed718826f76ed4ef29d840708814efe265d57e465ab1caeb51afe7f712a46"
     end
   end
   license "MIT"
