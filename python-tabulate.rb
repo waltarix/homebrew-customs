@@ -1,11 +1,11 @@
 class PythonTabulate < Formula
   desc "Pretty-print tabular data in Python"
   homepage "https://pypi.org/project/tabulate/"
-  url "https://github.com/waltarix/python-tabulate/archive/v0.8.9-custom-r2.tar.gz"
-  sha256 "517861193c6d4d832c4ac799b05516a2ab10e035b1a92f31d4042c7db8b2e456"
+  url "https://github.com/waltarix/python-tabulate/archive/v0.8.9-custom-r3.tar.gz"
+  sha256 "0eba14b1f8f0a2eb4b5f6da49d9e93d208fc66aff43ec80e81a6faccdc1600a0"
   version "0.8.9"
   license "MIT"
-  revision 3
+  revision 4
 
   depends_on "python@3.9"
 
