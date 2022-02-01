@@ -48,9 +48,9 @@ class Tmux < Formula
     mkdir_p libexec/"bin"
     mv bin/"tmux", libexec/"bin/tmux"
     env = {}.tap do |e|
-      jemalloc = Formula["jemalloc"]
-      on_macos { e[:DYLD_INSERT_LIBRARIES] = jemalloc.opt_lib/"libjemalloc.dylib" }
-      on_linux { e[:LD_PRELOAD] = jemalloc.opt_lib/"libjemalloc.so" }
+      libjemalloc = Formula["jemalloc"].opt_lib/shared_library("libjemalloc")
+      on_macos { e[:DYLD_INSERT_LIBRARIES] = libjemalloc }
+      on_linux { e[:LD_PRELOAD] = libjemalloc }
     end
     (bin/"tmux").write_env_script libexec/"bin/tmux", env
   end
