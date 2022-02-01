@@ -118,9 +118,9 @@ class Neovim < Formula
     mkdir_p libexec/"bin"
     mv bin/"nvim", libexec/"bin/nvim"
     env = {}.tap do |e|
-      jemalloc = Formula["jemalloc"]
-      on_macos { e[:DYLD_INSERT_LIBRARIES] = jemalloc.opt_lib/"libjemalloc.dylib" }
-      on_linux { e[:LD_PRELOAD] = jemalloc.opt_lib/"libjemalloc.so" }
+      libjemalloc = Formula["jemalloc"].opt_lib/shared_library("libjemalloc")
+      on_macos { e[:DYLD_INSERT_LIBRARIES] = libjemalloc }
+      on_linux { e[:LD_PRELOAD] = libjemalloc }
     end
     (bin/"nvim").write_env_script libexec/"bin/nvim", env
   end
