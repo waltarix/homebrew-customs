@@ -4,7 +4,7 @@ class Neovim < Formula
   url "https://github.com/neovim/neovim/archive/v0.6.1.tar.gz"
   sha256 "dd882c21a52e5999f656cae3f336b5fc702d52addd4d9b5cd3dc39cfff35e864"
   license "Apache-2.0"
-  revision 1
+  revision 2
   head "https://github.com/neovim/neovim.git", branch: "master"
 
   livecheck do
@@ -32,6 +32,7 @@ class Neovim < Formula
   depends_on "luv"
   depends_on "msgpack"
   depends_on "unibilium"
+  depends_on "waltarix/customs/jemalloc"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
@@ -113,6 +114,15 @@ class Neovim < Formula
 
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    mkdir_p libexec/"bin"
+    mv bin/"nvim", libexec/"bin/nvim"
+    env = {}.tap do |e|
+      jemalloc = Formula["jemalloc"]
+      on_macos { e[:DYLD_INSERT_LIBRARIES] = jemalloc.opt_lib/"libjemalloc.dylib" }
+      on_linux { e[:LD_PRELOAD] = jemalloc.opt_lib/"libjemalloc.so" }
+    end
+    (bin/"nvim").write_env_script libexec/"bin/nvim", env
   end
 
   test do
