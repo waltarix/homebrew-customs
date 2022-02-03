@@ -4,7 +4,7 @@ class Tmux < Formula
   url "https://github.com/waltarix/tmux/releases/download/3.4-alpha-custom-r2/tmux-3.4-alpha.tar.xz"
   sha256 "54860d15df4ccb8b4668e9a7b0a7f5703d0726853799eee0799a31508e360fb2"
   license "ISC"
-  revision 2
+  revision 3
 
   livecheck do
     url :stable
@@ -33,6 +33,8 @@ class Tmux < Formula
       args << "--disable-utf8proc"
     end
 
+    ENV.append "LIBS", "-ljemalloc"
+
     ncurses = Formula["ncurses"]
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
@@ -44,15 +46,6 @@ class Tmux < Formula
 
     pkgshare.install "example_tmux.conf"
     bash_completion.install resource("completion")
-
-    mkdir_p libexec/"bin"
-    mv bin/"tmux", libexec/"bin/tmux"
-    env = {}.tap do |e|
-      libjemalloc = Formula["jemalloc"].opt_lib/shared_library("libjemalloc")
-      on_macos { e[:DYLD_INSERT_LIBRARIES] = libjemalloc }
-      on_linux { e[:LD_PRELOAD] = libjemalloc }
-    end
-    (bin/"tmux").write_env_script libexec/"bin/tmux", env
   end
 
   def caveats
