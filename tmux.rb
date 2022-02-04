@@ -1,10 +1,9 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.4-alpha-custom-r2/tmux-3.4-alpha.tar.xz"
-  sha256 "54860d15df4ccb8b4668e9a7b0a7f5703d0726853799eee0799a31508e360fb2"
+  url "https://github.com/waltarix/tmux/releases/download/3.3-rc-custom-r3/tmux-3.3-rc.tar.xz"
+  sha256 "101e8793b95e18ba2241d0ca6c7075006a7430c742b15a79e9da9bff301adcf9"
   license "ISC"
-  revision 3
 
   livecheck do
     url :stable
