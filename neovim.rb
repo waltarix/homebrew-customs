@@ -4,7 +4,7 @@ class Neovim < Formula
   url "https://github.com/neovim/neovim/archive/v0.6.1.tar.gz"
   sha256 "dd882c21a52e5999f656cae3f336b5fc702d52addd4d9b5cd3dc39cfff35e864"
   license "Apache-2.0"
-  revision 2
+  revision 3
   head "https://github.com/neovim/neovim.git", branch: "master"
 
   livecheck do
@@ -42,6 +42,30 @@ class Neovim < Formula
   resource "libvterm" do
     url "http://www.leonerd.org.uk/code/libvterm/libvterm-0.1.4.tar.gz"
     sha256 "bc70349e95559c667672fc8c55b9527d9db9ada0fb80a3beda533418d782d3dd"
+    patch <<~PATCH
+      diff --git a/src/unicode.c b/src/unicode.c
+      index 0d1b5ff..28ea8c5 100644
+      --- a/src/unicode.c
+      +++ b/src/unicode.c
+      @@ -1,4 +1,5 @@
+       #include "vterm_internal.h"
+      +#include "wcwidth9.h"
+       
+       // ### The following from http://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c
+       // With modifications:
+      @@ -325,10 +326,7 @@ static const struct interval fullwidth[] = {
+       
+       INTERNAL int vterm_unicode_width(uint32_t codepoint)
+       {
+      -  if(bisearch(codepoint, fullwidth, sizeof(fullwidth) / sizeof(fullwidth[0]) - 1))
+      -    return 2;
+      -
+      -  return mk_wcwidth(codepoint);
+      +  return wcwidth9(codepoint);
+       }
+       
+       INTERNAL int vterm_unicode_is_combining(uint32_t codepoint)
+    PATCH
   end
 
   # Keep resources updated according to:
@@ -65,12 +89,11 @@ class Neovim < Formula
   patch :DATA
 
   def install
-    resources.each do |r|
-      if r.name == "wcwidth9.h"
-        r.stage(buildpath/"src/nvim")
-      else
-        r.stage(buildpath/"deps-build/build/src"/r.name)
-      end
+    res = resources.reject { |r| r.name == "wcwidth9.h" }
+    res.each { |r| r.stage(buildpath/"deps-build/build/src"/r.name) }
+    resource("wcwidth9.h").tap do |r|
+      r.stage(buildpath/"src/nvim")
+      r.stage(buildpath/"deps-build/build/src/libvterm/src")
     end
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
