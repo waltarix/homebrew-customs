@@ -13,6 +13,7 @@ class Dive < Formula
       sha256 "6011a3345ea792af0950cbda8701546c0e178f92504f2f7eb30c336e050e2901"
     end
   end
+  version "0.10.0"
   license "MIT"
 
   on_linux do
