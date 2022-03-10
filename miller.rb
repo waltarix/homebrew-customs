@@ -2,20 +2,19 @@ class Miller < Formula
   desc "Like sed, awk, cut, join & sort for name-indexed data such as CSV"
   homepage "https://github.com/johnkerl/miller"
   if OS.linux?
-    url "https://github.com/waltarix/miller/releases/download/v6.0.0-custom-r1/mlr-6.0.0-linux_amd64.tar.xz"
-    sha256 "d565677c5b016dce89afdc9d61c58327f39695634156f098a32a42f782b24b38"
+    url "https://github.com/waltarix/miller/releases/download/v6.1.0-custom/mlr-6.1.0-linux_amd64.tar.xz"
+    sha256 "7b69b70ab90627649fbf66ba462c4d6d3e568c7a1277d50ed5eccef7108eb69a"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/miller/releases/download/v6.0.0-custom-r1/mlr-6.0.0-darwin_arm64.tar.xz"
-      sha256 "2cc5e0ca10825b9972e7c608fd61264bb3c3d6f627cdc61f7d2e544c7f61fd15"
+      url "https://github.com/waltarix/miller/releases/download/v6.1.0-custom/mlr-6.1.0-darwin_arm64.tar.xz"
+      sha256 "fb88227ad2ae1db86cb3f046ee3ed70d5f91650d00b50a347de1413148ac7f67"
     else
-      url "https://github.com/waltarix/miller/releases/download/v6.0.0-custom-r1/mlr-6.0.0-darwin_amd64.tar.xz"
-      sha256 "3fa5fea57b2af50358eb45fc5ea8d5ac5492ceaf1f539606beed04ab25cef8b2"
+      url "https://github.com/waltarix/miller/releases/download/v6.1.0-custom/mlr-6.1.0-darwin_amd64.tar.xz"
+      sha256 "49b3138ad87763e152dab68b1ee1a37d2cf6e10fcff008bc7596a9baacba7648"
     end
   end
-  version "6.0.0"
+  version "6.1.0"
   license "BSD-2-Clause"
-  revision 1
 
   def install
     bin.install "mlr"
@@ -36,7 +35,7 @@ class Miller < Formula
       │ ... │ ...... │ ......... │
       ╰─────┴────────┴───────────╯
     EOS
-    ENV["LC_ALL"] = "en_US.UTF-8"
-    assert_equal result, pipe_output("#{bin}/mlr --c2p --barred cat test.csv")
+    output = pipe_output("#{bin}/mlr --c2p --barred cat test.csv")
+    assert_equal result, output
   end
 end
