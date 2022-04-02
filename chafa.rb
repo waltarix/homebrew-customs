@@ -1,13 +1,8 @@
 class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
-  if OS.mac?
-    url "https://hpjansson.org/chafa/releases/chafa-1.8.0.tar.xz"
-    sha256 "21ff652d836ba207098c40c459652b2f1de6c8a64fbffc62e7c6319ced32286b"
-  else
-    url "https://hpjansson.org/chafa/releases/static/chafa-1.8.0-1-x86_64-linux-gnu.tar.gz"
-    sha256 "a981e8a99e1993b799bd24afb93880e2a02d4c395868223c48f648cccc642168"
-  end
+  url "https://hpjansson.org/chafa/releases/static/chafa-1.10.0-1-x86_64-linux-gnu.tar.gz"
+  sha256 "42b9b96ea981a04222052a8f084d471f2ebdb0177fe01dbf391acdf13f0a34c4"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -15,28 +10,18 @@ class Chafa < Formula
     regex(/href=.*?chafa[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  if OS.mac?
-    bottle do
-      sha256 cellar: :any, arm64_big_sur: "ec3e9511b3a0ce9c08156e0129bc1b6b457bb872633ffad80e3dc75500ebd665"
-      sha256 cellar: :any, big_sur:       "978b79d0ad33901c14156632e34a1b8eba5a0256c92662dde6b9ec2cff0600f8"
-      sha256 cellar: :any, catalina:      "8603c4aea080189a148ca7097146edfd5c79fd0ddcc52ffca94eb5d8709ecff5"
-      sha256 cellar: :any, mojave:        "3b2b88dae2564f4f2d83f10f55d16866e50a1e8294a409562633d48d618252f3"
-    end
+  depends_on :linux
 
-    depends_on "pkg-config" => :build
-    depends_on "glib"
-    depends_on "imagemagick"
+  resource "bottle" do
+    url "https://ghcr.io/v2/homebrew/core/chafa/blobs/sha256:3a40584e711ca5da234e8ce86e6597f66197d3df8132fc7c5abf716bf1fe9e91"
+    sha256 "3a40584e711ca5da234e8ce86e6597f66197d3df8132fc7c5abf716bf1fe9e91"
   end
 
   def install
-    if OS.mac?
-      system "./configure", "--disable-debug",
-                            "--disable-dependency-tracking",
-                            "--disable-silent-rules",
-                            "--prefix=#{prefix}"
-      system "make", "install"
-    else
-      bin.install "chafa-linux-x86_64" => "chafa"
+    bin.install "chafa"
+
+    resource("bottle").stage do
+      man1.install "#{version}/share/man/man1/chafa.1"
     end
   end
 
