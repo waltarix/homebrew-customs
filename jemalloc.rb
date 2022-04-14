@@ -1,10 +1,11 @@
 class Jemalloc < Formula
   desc "Implementation of malloc emphasizing fragmentation avoidance"
   homepage "http://jemalloc.net/"
-  url "https://github.com/jemalloc/jemalloc/archive/20f9802e4f25922884448d9581c66d76cc905c0c.tar.gz"
+  url "https://github.com/jemalloc/jemalloc/archive/ed5fc14b28ca62a6ba57b65adf557e1ef09037f0.tar.gz"
   version "5.3-rc"
-  sha256 "9ce95313bdd50629467c29069a6fedb50804ec4b56053250ac0c0d53551151da"
+  sha256 "81f7ce57f07dd84bf0390fd2a054e7f0dd9c85f891779f46b530404336599378"
   license "BSD-2-Clause"
+  revision 1
 
   depends_on "docbook-xsl" => :build
 
