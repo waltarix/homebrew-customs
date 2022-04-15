@@ -1,11 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.6.1.tar.gz"
-  sha256 "dd882c21a52e5999f656cae3f336b5fc702d52addd4d9b5cd3dc39cfff35e864"
+  url "https://github.com/neovim/neovim/archive/v0.7.0.tar.gz"
+  sha256 "792a9c55d5d5f4a5148d475847267df309d65fb20f05523f21c1319ea8a6c7df"
   license "Apache-2.0"
-  revision 3
-  head "https://github.com/neovim/neovim.git", branch: "master"
 
   livecheck do
     url :stable
@@ -72,8 +70,8 @@ class Neovim < Formula
   # https://github.com/neovim/neovim/blob/v#{version}/third-party/CMakeLists.txt
 
   resource "mpack" do
-    url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.8/libmpack-lua-1.0.8.tar.gz"
-    sha256 "ed6b1b4bbdb56f26241397c1e168a6b1672f284989303b150f7ea8d39d1bc9e9"
+    url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.9/libmpack-lua-1.0.9.tar.gz"
+    sha256 "0fd07e709c3f6f201c2ffc9f77cef1b303b02c12413f0c15670a32bf6c959e9e"
   end
 
   resource "lpeg" do
@@ -108,7 +106,7 @@ class Neovim < Formula
 
     cd "deps-build/build/src" do
       %w[
-        mpack/mpack-1.0.8-0.rockspec
+        mpack/mpack-1.0.9-0.rockspec
         lpeg/lpeg-1.0.2-1.src.rock
       ].each do |rock|
         dir, rock = rock.split("/")
@@ -116,6 +114,10 @@ class Neovim < Formula
           output = Utils.safe_popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
           unpack_dir = output.split("\n")[-2]
           cd unpack_dir do
+            on_macos do
+              inreplace "lmpack.c", "#define _XOPEN_SOURCE 500", "#define _C99_SOURCE 1" if dir == "mpack"
+            end
+
             system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"
           end
         end
@@ -218,7 +220,7 @@ index aa96c97bc..64cafa984 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 42117bc76..43d26686e 100644
+index f634c7dda..75871d59e 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
