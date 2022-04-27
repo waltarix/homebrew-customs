@@ -2,18 +2,18 @@ class Mkcert < Formula
   desc "Simple tool to make locally trusted development certificates"
   homepage "https://github.com/FiloSottile/mkcert"
   if OS.linux?
-    url "https://github.com/waltarix/mkcert/releases/download/v1.4.3-custom/mkcert-1.4.3-linux_amd64.tar.xz"
-    sha256 "f5696b0b73d8a6fff602678e82c47efdf12289e6f04ef07250850c5917a88232"
+    url "https://github.com/waltarix/mkcert/releases/download/v1.4.4-custom/mkcert-1.4.4-linux_amd64.tar.xz"
+    sha256 "bf4adb2421c5e064b70eb356569cf030274a818ba51c6cd7609681a77117ace2"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/mkcert/releases/download/v1.4.3-custom/mkcert-1.4.3-darwin_arm64.tar.xz"
-      sha256 "6f3cb63e553fb4e1338aa5bc77df344982c5991a14f1f3b7bae66078c3baff92"
+      url "https://github.com/waltarix/mkcert/releases/download/v1.4.4-custom/mkcert-1.4.4-darwin_arm64.tar.xz"
+      sha256 "87c749b03e348a01bd7cd5325f76a150e98d86459e1c549e80d4ea8d4a04201f"
     else
-      url "https://github.com/waltarix/mkcert/releases/download/v1.4.3-custom/mkcert-1.4.3-darwin_amd64.tar.xz"
-      sha256 "16b99eb6021fcf9a9ea338167a7443671df8c69021cc469bda059b291a6a2879"
+      url "https://github.com/waltarix/mkcert/releases/download/v1.4.4-custom/mkcert-1.4.4-darwin_amd64.tar.xz"
+      sha256 "6095a2e3790ce04deebba7b8774edbb89ea8396aff87fc64df2ccac35aefa4f0"
     end
   end
-  version "1.4.3"
+  version "1.4.4"
   license "BSD-3-Clause"
 
   def install
