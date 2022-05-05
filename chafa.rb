@@ -1,8 +1,8 @@
 class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
-  url "https://hpjansson.org/chafa/releases/static/chafa-1.10.2-1-x86_64-linux-gnu.tar.gz"
-  sha256 "486026a11d200ce7e3a5ac38c56aabe82ce1d51a583f29fdbd74463cdb3cc1c3"
+  url "https://hpjansson.org/chafa/releases/static/chafa-1.10.3-1-x86_64-linux-gnu.tar.gz"
+  sha256 "9c4bae507438af1ec96675b8a338516ecd1c94a65d7649d1334d2435e13bb25f"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -13,8 +13,8 @@ class Chafa < Formula
   depends_on :linux
 
   resource "bottle" do
-    url "https://ghcr.io/v2/homebrew/core/chafa/blobs/sha256:110de3d3360e9dbf8fddb87590a0b0ee876ce38fc2e6ea0f7f0a4cc69ab5c5aa"
-    sha256 "110de3d3360e9dbf8fddb87590a0b0ee876ce38fc2e6ea0f7f0a4cc69ab5c5aa"
+    url "https://ghcr.io/v2/homebrew/core/chafa/blobs/sha256:682396e890521341156d6590ae0354d1e5f8f8337dec00bd4d5523d67fbd91da"
+    sha256 "682396e890521341156d6590ae0354d1e5f8f8337dec00bd4d5523d67fbd91da"
   end
 
   def install
