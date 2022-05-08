@@ -4,6 +4,7 @@ class Neovim < Formula
   url "https://github.com/neovim/neovim/archive/v0.7.0.tar.gz"
   sha256 "792a9c55d5d5f4a5148d475847267df309d65fb20f05523f21c1319ea8a6c7df"
   license "Apache-2.0"
+  revision 1
 
   livecheck do
     url :stable
@@ -24,13 +25,13 @@ class Neovim < Formula
   depends_on "luarocks" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
+  depends_on "jemalloc"
   depends_on "libtermkey"
   depends_on "libuv"
   depends_on "luajit-openresty"
   depends_on "luv"
   depends_on "msgpack"
   depends_on "unibilium"
-  depends_on "waltarix/customs/jemalloc"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
