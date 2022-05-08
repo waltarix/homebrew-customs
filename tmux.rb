@@ -4,7 +4,7 @@ class Tmux < Formula
   url "https://github.com/waltarix/tmux/releases/download/3.3-rc-custom-r4/tmux-3.3-rc.tar.xz"
   sha256 "e7d99120b166f10b020ff12fedd4f520dda53399eaf3067da9865244fc7609c0"
   license "ISC"
-  revision 1
+  revision 2
 
   livecheck do
     url :stable
@@ -13,9 +13,9 @@ class Tmux < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "jemalloc"
   depends_on "libevent"
   depends_on "ncurses"
-  depends_on "waltarix/customs/jemalloc"
 
   resource "completion" do
     url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/f5d53239f7658f8e8fbaf02535cc369009c436d6/completions/tmux"
