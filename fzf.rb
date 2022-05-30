@@ -4,18 +4,19 @@ class Fzf < Formula
   url "https://github.com/junegunn/fzf/archive/0.30.0.tar.gz"
   sha256 "a3428f510b7136e39104a002f19b2e563090496cb5205fa2e4c5967d34a20124"
   license "MIT"
+  revision 1
 
   resource "binary" do
     if OS.linux?
-      url "https://github.com/waltarix/fzf/releases/download/0.30.0-custom/fzf-0.30.0-linux_amd64.tar.xz"
-      sha256 "9c4e12a75d76ab1c2a4b3557f6939023713b6ff7a84cf142a9cbcbdfec34f4dc"
+      url "https://github.com/waltarix/fzf/releases/download/0.30.0-custom-r1/fzf-0.30.0-linux_amd64.tar.xz"
+      sha256 "cd966ae685425850817d4226db8bac2d4036531d2f52366757c4d23aacb4b6f1"
     else
       if Hardware::CPU.arm?
-        url "https://github.com/waltarix/fzf/releases/download/0.30.0-custom/fzf-0.30.0-darwin_arm64.tar.xz"
-        sha256 "898ce15f63c7ba900d52b1b38a532bf68132426fd6e69433f537e1e258ff9b01"
+        url "https://github.com/waltarix/fzf/releases/download/0.30.0-custom-r1/fzf-0.30.0-darwin_arm64.tar.xz"
+        sha256 "3ed7751e2070288a1e385f53147e04f016bab3e4dc37e7d158e7a5175d0bfda4"
       else
-        url "https://github.com/waltarix/fzf/releases/download/0.30.0-custom/fzf-0.30.0-darwin_amd64.tar.xz"
-        sha256 "459162a20e3a9d05acc66cbd8d47345a0260e878950c3849a44f74fe31b8d2e5"
+        url "https://github.com/waltarix/fzf/releases/download/0.30.0-custom-r1/fzf-0.30.0-darwin_amd64.tar.xz"
+        sha256 "a3d350eb6492e23db12bece85af5c63b41b419d5853b89e245ff3189da7842dc"
       end
     end
   end
