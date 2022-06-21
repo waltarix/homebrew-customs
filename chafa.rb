@@ -2,11 +2,11 @@ class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
   if OS.linux?
-    url "https://hpjansson.org/chafa/releases/static/chafa-1.12.0-1-x86_64-linux-gnu.tar.gz"
-    sha256 "3e7f3b89f32207710e9e9c9bc448b8d6c8ce85c0b6f14e210f6a1a1fd0696380"
+    url "https://hpjansson.org/chafa/releases/static/chafa-1.12.1-1-x86_64-linux-gnu.tar.gz"
+    sha256 "0e6aad0b7866a2fbf8e52be4844ef070e90ad5aac9f9a751bb972e66363b7beb"
   else
-    url "https://hpjansson.org/chafa/releases/chafa-1.12.0.tar.xz"
-    sha256 "aafde6275e498f34e5120b56dc20dd15f6bb5e9b35ac590f52fde5ad6b2c7319"
+    url "https://hpjansson.org/chafa/releases/chafa-1.12.1.tar.xz"
+    sha256 "f08cbcd87f604ba20cf8699dc107349400f21b825be20491e8e0ada8995194ea"
   end
   license "LGPL-3.0-or-later"
 
@@ -31,8 +31,8 @@ class Chafa < Formula
     end
   else
     resource "bottle" do
-      url "https://ghcr.io/v2/homebrew/core/chafa/blobs/sha256:66b6fb5879df30ae0af6391ea1704b01adf6d7c117f6aab8de516090368348e0"
-      sha256 "66b6fb5879df30ae0af6391ea1704b01adf6d7c117f6aab8de516090368348e0"
+      url "https://ghcr.io/v2/homebrew/core/chafa/blobs/sha256:16ac74f07964555d5ca7494586fa79a72f65288e1aab4d9dae15282fdb1999c1"
+      sha256 "16ac74f07964555d5ca7494586fa79a72f65288e1aab4d9dae15282fdb1999c1"
     end
   end
 
