@@ -1,34 +1,16 @@
 class PythonTabulate < Formula
   desc "Pretty-print tabular data in Python"
   homepage "https://pypi.org/project/tabulate/"
-  url "https://github.com/waltarix/python-tabulate/archive/v0.8.9-custom-r4.tar.gz"
-  sha256 "7577dd26c1406374597126f6c5e38e00de71909b4dae31d2909e449285267d68"
-  version "0.8.9"
+  url "https://github.com/waltarix/python-tabulate/archive/v0.8.10-custom.tar.gz"
+  sha256 "e5f98e5c969236aa5c8b215045b6a456b88cf064adda1ebec82a6a55791f6f77"
   license "MIT"
-  revision 5
 
   depends_on "python@3.9"
-
-  resource "wcwidth" do
-    url "https://github.com/waltarix/python-wcwidth/archive/0.2.5-custom.tar.gz"
-    sha256 "428f0217bd9c56fa3905ae34f4ac42b073273668342a2d203ed4f895b4442237"
-  end
+  depends_on "waltarix/customs/libpython-tabulate"
 
   def install
-    python_bin = Formula["python@3.9"].opt_bin/"python3"
-    vendor = libexec/"vendor"
-    vendor_lib = vendor/"lib"
-
-    resource("wcwidth").stage do
-      system python_bin, *Language::Python.setup_install_args(vendor)
-    end
-    system python_bin, *Language::Python.setup_install_args(prefix)
-
-    xy = Language::Python.major_minor_version python_bin
-    site_packages = "python#{xy}/site-packages"
-    (lib/site_packages/"homebrew-tabulate.pth").write <<~EOS
-      import sys; sys.path.insert(0, '#{vendor_lib/site_packages}')
-    EOS
+    # Install the binary only, the lib part is provided by libpython-tabulate
+    system "python3", "setup.py", "--no-user-cfg", "install_scripts", "--install-dir=#{bin}", "--skip-build"
   end
 
   test do
@@ -46,7 +28,5 @@ class PythonTabulate < Formula
       ╰─────┴────────┴───────────╯
     EOS
     assert_equal expected_output, pipe_output("#{bin}/tabulate -s, -1 -g0 -f fancy_outline_rounded", input)
-
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "from tabulate import tabulate"
   end
 end
