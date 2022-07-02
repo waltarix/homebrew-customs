@@ -2,11 +2,11 @@ class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
   if OS.linux?
-    url "https://hpjansson.org/chafa/releases/static/chafa-1.12.1-1-x86_64-linux-gnu.tar.gz"
-    sha256 "0e6aad0b7866a2fbf8e52be4844ef070e90ad5aac9f9a751bb972e66363b7beb"
+    url "https://hpjansson.org/chafa/releases/static/chafa-1.12.2-1-x86_64-linux-gnu.tar.gz"
+    sha256 "3963bfcf9bc133a45f8d5ef29135336bc39f4cd1bfe6a2e818f2b41f49a195f1"
   else
-    url "https://hpjansson.org/chafa/releases/chafa-1.12.1.tar.xz"
-    sha256 "f08cbcd87f604ba20cf8699dc107349400f21b825be20491e8e0ada8995194ea"
+    url "https://hpjansson.org/chafa/releases/chafa-1.12.2.tar.xz"
+    sha256 "f41d44afb325a7fa0c095160723ddcc10fbd430a3ad674aa23e2426d713a96f5"
   end
   license "LGPL-3.0-or-later"
 
@@ -23,26 +23,16 @@ class Chafa < Formula
     depends_on "librsvg"
     depends_on "libtiff"
     depends_on "webp"
-
-    # Fix -flat_namespace being used on Big Sur and later.
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-      sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-    end
   else
     resource "bottle" do
-      url "https://ghcr.io/v2/homebrew/core/chafa/blobs/sha256:16ac74f07964555d5ca7494586fa79a72f65288e1aab4d9dae15282fdb1999c1"
-      sha256 "16ac74f07964555d5ca7494586fa79a72f65288e1aab4d9dae15282fdb1999c1"
+      url "https://ghcr.io/v2/homebrew/core/chafa/blobs/sha256:fa8bf974fe28dda61b53a2e332074121bfeae419e5ceb34dfd02c67d95355a8a"
+      sha256 "fa8bf974fe28dda61b53a2e332074121bfeae419e5ceb34dfd02c67d95355a8a"
     end
   end
 
   def install
     if OS.mac?
-      system "./configure", "--disable-debug",
-                            "--disable-dependency-tracking",
-                            "--disable-silent-rules",
-                            "--without-imagemagick",
-                            "--prefix=#{prefix}"
+      system "./configure", *std_configure_args, "--disable-silent-rules", "--without-imagemagick"
       system "make", "install"
       man1.install "docs/chafa.1"
     else
