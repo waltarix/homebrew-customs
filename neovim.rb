@@ -10,13 +10,6 @@ class Neovim < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  if OS.linux?
-    depends_on "waltarix/customs/libtree-sitter"
-    depends_on "libnsl"
-  else
-    depends_on "tree-sitter"
-  end
-
   depends_on "cmake" => :build
   # Libtool is needed to build `libvterm`.
   # Remove this dependency when we use the formula.
@@ -27,13 +20,18 @@ class Neovim < Formula
   depends_on "jemalloc"
   depends_on "libtermkey"
   depends_on "libuv"
-  depends_on "luajit-openresty"
   depends_on "luv"
   depends_on "msgpack"
   depends_on "unibilium"
+  depends_on "waltarix/customs/libtree-sitter"
+  depends_on "waltarix/customs/luajit-openresty"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
+
+  on_linux do
+    depends_on "libnsl"
+  end
 
   # TODO: Use `libvterm` formula when the following is resolved:
   # https://github.com/neovim/neovim/pull/16219
@@ -87,6 +85,8 @@ class Neovim < Formula
   patch :DATA
 
   def install
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+
     res = resources.reject { |r| r.name == "wcwidth9.h" }
     res.each { |r| r.stage(buildpath/"deps-build/build/src"/r.name) }
     resource("wcwidth9.h").tap do |r|
