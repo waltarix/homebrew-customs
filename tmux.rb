@@ -38,6 +38,9 @@ class Tmux < Formula
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
 
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+
     ENV.append "LDFLAGS", "-lresolv"
     system "./configure", *args
 
