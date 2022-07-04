@@ -1,4 +1,4 @@
-class LuajitOpenresty < Formula
+class LuajitOpenrestyOptimized < Formula
   desc "OpenResty's Branch of LuaJIT 2"
   homepage "https://github.com/openresty/luajit2"
   url "https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20220411.tar.gz"
