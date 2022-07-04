@@ -9,6 +9,9 @@ class LibtreeSitter < Formula
   keg_only "conflicts with the TreeSitter formula"
 
   def install
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+
     system "make", "AMALGAMATED=1"
     system "make", "install", "PREFIX=#{prefix}"
   end
