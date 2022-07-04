@@ -37,6 +37,10 @@ class Zsh < Formula
       ENV.append "CPPFLAGS", "-I#{ncurses.include}"
     end
 
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+    ENV.append "LDFLAGS", "-flto"
+
     # Work around configure issues with Xcode 12
     # https://www.zsh.org/mla/workers/2020/index.html
     # https://github.com/Homebrew/homebrew-core/issues/64921
