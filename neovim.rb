@@ -102,7 +102,7 @@ class Neovim < Formula
     # Don't clobber the default search path
     ENV.append "LUA_PATH", ";", ";"
     ENV.append "LUA_CPATH", ";", ";"
-    lua_path = "--lua-dir=#{Formula["luajit-openresty"].opt_prefix}"
+    lua_path = "--lua-dir=#{Formula["waltarix/customs/luajit-openresty"].opt_prefix}"
 
     cd "deps-build/build/src" do
       %w[
