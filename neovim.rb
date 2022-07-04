@@ -24,7 +24,7 @@ class Neovim < Formula
   depends_on "msgpack"
   depends_on "unibilium"
   depends_on "waltarix/customs/libtree-sitter"
-  depends_on "waltarix/customs/luajit-openresty"
+  depends_on "waltarix/customs/luajit-openresty-optimized"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
@@ -102,7 +102,7 @@ class Neovim < Formula
     # Don't clobber the default search path
     ENV.append "LUA_PATH", ";", ";"
     ENV.append "LUA_CPATH", ";", ";"
-    lua_path = "--lua-dir=#{Formula["waltarix/customs/luajit-openresty"].opt_prefix}"
+    lua_path = "--lua-dir=#{Formula["waltarix/customs/luajit-openresty-optimized"].opt_prefix}"
 
     cd "deps-build/build/src" do
       %w[
