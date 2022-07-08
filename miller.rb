@@ -2,18 +2,18 @@ class Miller < Formula
   desc "Like sed, awk, cut, join & sort for name-indexed data such as CSV"
   homepage "https://github.com/johnkerl/miller"
   if OS.linux?
-    url "https://github.com/waltarix/miller/releases/download/v6.2.0-custom/mlr-6.2.0-linux_amd64.tar.xz"
-    sha256 "b8fe5b3620e1fa2a1ae9820ed664e1422b1a68c31d076aef2d5d8f0b5a542be3"
+    url "https://github.com/waltarix/miller/releases/download/v6.3.0-custom/mlr-6.3.0-linux_amd64.tar.xz"
+    sha256 "e0707bb06b4778e922f5a89641f156081b02f94414a1ab85555e46e0f69ac21a"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/miller/releases/download/v6.2.0-custom/mlr-6.2.0-darwin_arm64.tar.xz"
-      sha256 "3c6991d20ca4049c58c269c83983c28770c745320f21a08d666ce772b986811d"
+      url "https://github.com/waltarix/miller/releases/download/v6.3.0-custom/mlr-6.3.0-darwin_arm64.tar.xz"
+      sha256 "881ca2b1654ccb8c911dc792d4026bb0094fffdc68b1ac98253507bcecf4af53"
     else
-      url "https://github.com/waltarix/miller/releases/download/v6.2.0-custom/mlr-6.2.0-darwin_amd64.tar.xz"
-      sha256 "72feb45559ad472dee2e8c4afb78f34595ae76b01e4760146569a309ab70c457"
+      url "https://github.com/waltarix/miller/releases/download/v6.3.0-custom/mlr-6.3.0-darwin_amd64.tar.xz"
+      sha256 "b5ffc00ba98bbd5a2fc8f66a0fa8cadc31ff498e09a87d231ad525328dfa983f"
     end
   end
-  version "6.2.0"
+  version "6.3.0"
   license "BSD-2-Clause"
 
   def install
