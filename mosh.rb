@@ -1,10 +1,15 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2-custom-r7/mosh-1.3.2-custom.tar.xz"
-  sha256 "7f4ae702560e81452235b1b4674cf5552d69488fbd367a317aed47f91203e388"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2-custom-r8/mosh-1.3.2-custom.tar.xz"
+  sha256 "2e3410051902bafd931510e1d49ad9eb92d02607b7bb8ecb14caa55267e74304"
   license "GPL-3.0-or-later"
-  revision 25
+  revision 26
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?mosh[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   depends_on "pkg-config" => :build
   depends_on "ncurses"
@@ -22,7 +27,7 @@ class Mosh < Formula
     args = %W[
       --prefix=#{prefix}
       --enable-completion
-      --with-crypto-library=openssl
+      --with-crypto-library=openssl-with-openssl-ocb
     ]
 
     on_linux do
