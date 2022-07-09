@@ -1,8 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.7.2.tar.gz"
-  sha256 "ccab8ca02a0c292de9ea14b39f84f90b635a69282de38a6b4ccc8565bc65d096"
+  url "https://github.com/neovim/neovim/archive/d8360e90333186ebb3a205a1ae64c1cbb531f0b9.tar.gz"
+  sha256 "d81454b651a6f265ef98622622525d14ee5217311cb35a8e71cd6b27914c4232"
+  version "0.8.0-dev+580-gd8360e903"
   license "Apache-2.0"
 
   livecheck do
@@ -20,11 +21,11 @@ class Neovim < Formula
   depends_on "jemalloc"
   depends_on "libtermkey"
   depends_on "libuv"
-  depends_on "luv"
   depends_on "msgpack"
   depends_on "unibilium"
   depends_on "waltarix/customs/libtree-sitter"
-  depends_on "waltarix/customs/luajit-openresty-optimized"
+  depends_on "waltarix/customs/luajit"
+  depends_on "waltarix/customs/luv"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
@@ -102,7 +103,7 @@ class Neovim < Formula
     # Don't clobber the default search path
     ENV.append "LUA_PATH", ";", ";"
     ENV.append "LUA_CPATH", ";", ";"
-    lua_path = "--lua-dir=#{Formula["waltarix/customs/luajit-openresty-optimized"].opt_prefix}"
+    lua_path = "--lua-dir=#{Formula["waltarix/customs/luajit"].opt_prefix}"
 
     cd "deps-build/build/src" do
       %w[
@@ -135,7 +136,7 @@ class Neovim < Formula
                     *std_cmake_args
 
     # Patch out references to Homebrew shims
-    inreplace "build/config/auto/versiondef.h", Superenv.shims_path/ENV.cc, ENV.cc
+    inreplace "build/cmake.config/auto/versiondef.h", Superenv.shims_path/ENV.cc, ENV.cc
 
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
@@ -160,7 +161,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index 12474d3c1..a8aa2233c 100755
+index 4482cefa3..02bbb4af5 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,11 +1,12 @@
@@ -171,7 +172,7 @@ index 12474d3c1..a8aa2233c 100755
 +data_files="UnicodeData.txt CaseFolding.txt"
  emoji_files="emoji-data.txt"
  
- UNIDIR_DEFAULT=unicode
+ UNIDIR_DEFAULT=src/unicode
 -DOWNLOAD_URL_BASE_DEFAULT='http://unicode.org/Public'
 +UNICODE_VERSION="14.0.0"
 +DOWNLOAD_URL_BASE_DEFAULT="https://unicode.org/Public/${UNICODE_VERSION}/ucd"
@@ -201,7 +202,7 @@ index 12474d3c1..a8aa2233c 100755
  
 -(
 -  cd "$UNIDIR"
--  git commit -m "Update unicode files" -- $files
+-  git commit -m "feat: update unicode tables" -- $files
 -)
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/14.0.0-r2/EastAsianWidth.txt"
@@ -220,7 +221,7 @@ index aa96c97bc..64cafa984 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index f634c7dda..75871d59e 100644
+index a9792cf1b..4e2804092 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
@@ -232,35 +233,22 @@ index f634c7dda..75871d59e 100644
  // To speed up BYTELEN(); keep a lookup table to quickly get the length in
  // bytes of a UTF-8 character from the first byte of a UTF-8 string.  Bytes
  // which are illegal when used as the first byte have a 1.  The NUL byte has
-@@ -471,12 +473,11 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+@@ -472,25 +474,16 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  int utf_char2cells(int c)
  {
    if (c >= 0x100) {
--#ifdef USE_WCHAR_FUNCTIONS
-     //
-     // Assume the library function wcwidth() works better than our own
-     // stuff.  It should return 1 for ambiguous width chars!
-     //
--    int n = wcwidth(c);
-+    int n = wcwidth9(c);
- 
-     if (n < 0) {
-       return 6;                 // unprintable, displays <xxxx>
-@@ -484,27 +485,11 @@ int utf_char2cells(int c)
-     if (n > 1) {
-       return n;
-     }
--#else
 -    if (!utf_printable(c)) {
--      return 6;                 // unprintable, displays <xxxx>
--    }
++    int n = wcwidth9(c);
++    if (n < 0) {
+       return 6;                 // unprintable, displays <xxxx>
+     }
 -    if (intable(doublewidth, ARRAY_SIZE(doublewidth), c)) {
 -      return 2;
 -    }
--#endif
 -    if (p_emoji && intable(emoji_width, ARRAY_SIZE(emoji_width), c)) {
 -      return 2;
 -    }
++    return n;
    } else if (c >= 0x80 && !vim_isprintc(c)) {
      // Characters below 0x100 are influenced by 'isprint' option.
      return 4;                   // unprintable, displays <xx>
@@ -274,28 +262,7 @@ index f634c7dda..75871d59e 100644
    return 1;
  }
  
-@@ -1056,12 +1041,6 @@ bool utf_iscomposing(int c)
-  */
- bool utf_printable(int c)
- {
--#ifdef USE_WCHAR_FUNCTIONS
--  /*
--   * Assume the iswprint() library function works better than our own stuff.
--   */
--  return iswprint(c);
--#else
-   // Sorted list of non-overlapping intervals.
-   // 0xd800-0xdfff is reserved for UTF-16, actually illegal.
-   static struct interval nonprint[] =
-@@ -1072,7 +1051,6 @@ bool utf_printable(int c)
-   };
- 
-   return !intable(nonprint, ARRAY_SIZE(nonprint), c);
--#endif
- }
- 
- /*
-@@ -1204,8 +1182,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1187,8 +1180,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
  
  bool utf_ambiguous_width(int c)
  {
@@ -305,3 +272,25 @@ index f634c7dda..75871d59e 100644
  }
  
  /*
+diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
+index e2289eb9c..fdd163312 100644
+--- a/src/nvim/tui/tui.c
++++ b/src/nvim/tui/tui.c
+@@ -2049,7 +2049,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+   }
+ 
+   data->unibi_ext.set_cursor_color = unibi_find_ext_str(ut, "Cs");
+-  if (-1 == data->unibi_ext.set_cursor_color) {
++  // if (-1 == data->unibi_ext.set_cursor_color) {
+     if (iterm || iterm_pretending_xterm) {
+       // FIXME: Bypassing tmux like this affects the cursor colour globally, in
+       // all panes, which is not particularly desirable.  A better approach
+@@ -2062,7 +2062,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+       data->unibi_ext.set_cursor_color = (int)unibi_add_ext_str(ut, "ext.set_cursor_color",
+                                                                 "\033]12;#%p1%06x\007");
+     }
+-  }
++  // }
+   if (-1 != data->unibi_ext.set_cursor_color) {
+     data->unibi_ext.reset_cursor_color = unibi_find_ext_str(ut, "Cr");
+     if (-1 == data->unibi_ext.reset_cursor_color) {
