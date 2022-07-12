@@ -1,8 +1,8 @@
 class BusyboxManpage < Formula
   desc "Man page for Busybox"
   homepage "https://busybox.net/"
-  url "https://busybox.net/downloads/busybox-1.33.1.tar.bz2"
-  sha256 "12cec6bd2b16d8a9446dd16130f2b92982f1819f6e1c5f5887b6db03f5660d28"
+  url "https://busybox.net/downloads/busybox-1.35.0.tar.bz2"
+  sha256 "faeeb244c35a348a334f4a59e44626ee870fb07b6884d68c10ae8bc19f83a694"
   license "GPL-2.0"
 
   livecheck do
@@ -10,7 +10,9 @@ class BusyboxManpage < Formula
     regex(/BusyBox\s+(\d+(?:\.\d+)*)\s+\(stable\)/i)
   end
 
-  depends_on "gnu-sed" => :build
+  on_macos do
+    depends_on "gnu-sed" => :build
+  end
 
   def install
     system "make", "defconfig"
