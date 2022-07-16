@@ -4,7 +4,7 @@ class Mosh < Formula
   url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2-custom-r8/mosh-1.3.2-custom.tar.xz"
   sha256 "2e3410051902bafd931510e1d49ad9eb92d02607b7bb8ecb14caa55267e74304"
   license "GPL-3.0-or-later"
-  revision 26
+  revision 27
 
   livecheck do
     url :homepage
@@ -19,6 +19,9 @@ class Mosh < Formula
 
   def install
     ENV.cxx11
+
+    # https://github.com/protocolbuffers/protobuf/issues/9947
+    ENV.append_to_cflags "-DNDEBUG"
 
     # teach mosh to locate mosh-client without referring
     # PATH to support launching outside shell e.g. via launcher
