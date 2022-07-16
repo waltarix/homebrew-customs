@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.39.0-migemo/sqlite-autoconf-3390000.tar.xz"
-  version "3.39.0"
-  sha256 "fc663a75ea0bc8cc11c98381a991b648359ddf543c3562d1eb10df7165ebb20d"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.39.1-migemo/sqlite-autoconf-3390100.tar.xz"
+  version "3.39.1"
+  sha256 "52c0a3f1d5a45c2915cfcdc616e399b1f81d978b0315ffb63c915790ce61f349"
   license "blessing"
 
   livecheck do
@@ -22,6 +22,10 @@ class Sqlite < Formula
   depends_on "zlib"
 
   def install
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+    ENV.append "LDFLAGS", "-flto"
+
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
     # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
     # applications. Set to 250000 (Same value used in Debian and Ubuntu).
