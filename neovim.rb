@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/d8360e90333186ebb3a205a1ae64c1cbb531f0b9.tar.gz"
-  sha256 "d81454b651a6f265ef98622622525d14ee5217311cb35a8e71cd6b27914c4232"
-  version "0.8.0-dev+580-gd8360e903"
+  url "https://github.com/neovim/neovim/archive/e9b58a619e1dd7a831138dc14bd8258104724e06.tar.gz"
+  sha256 "55ef67d0553970db76d61b34c015e904bb48c60412df3661277a084d39c1c059"
+  version "0.8.0-dev-687-ge9b58a619"
   license "Apache-2.0"
 
   livecheck do
@@ -79,8 +79,8 @@ class Neovim < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r2/wcwidth9.h"
-    sha256 "8ce9e402611a0f8c2a44130571d9043144d43463893e13a6459d0b2c22b67eb2"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
+    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
   end
 
   patch :DATA
@@ -133,6 +133,7 @@ class Neovim < Formula
 
     system "cmake", "-S", ".", "-B", "build",
                     "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}",
+                    "-DNVIM_VERSION_MEDIUM=v#{version}",
                     *std_cmake_args
 
     # Patch out references to Homebrew shims
@@ -205,7 +206,7 @@ index 4482cefa3..02bbb4af5 100755
 -  git commit -m "feat: update unicode tables" -- $files
 -)
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
-+  "https://github.com/waltarix/localedata/releases/download/14.0.0-r2/EastAsianWidth.txt"
++  "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/EastAsianWidth.txt"
 diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
 index aa96c97bc..64cafa984 100644
 --- a/src/nvim/generators/gen_unicode_tables.lua
