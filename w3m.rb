@@ -33,8 +33,8 @@ class W3m < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r2/wcwidth9.h"
-    sha256 "8ce9e402611a0f8c2a44130571d9043144d43463893e13a6459d0b2c22b67eb2"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
+    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
   end
 
   patch :DATA
