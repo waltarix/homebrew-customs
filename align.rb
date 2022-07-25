@@ -25,8 +25,8 @@ class Align < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0/wcwidth9.h"
-    sha256 "30a2baeb3c98096d007f9aa5c1f7bc6036a1674c71769477d47fbb0a31b9cbf5"
+    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
+    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
   end
 
   def install
