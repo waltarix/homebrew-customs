@@ -4,6 +4,7 @@ class Chafa < Formula
   url "https://hpjansson.org/chafa/releases/chafa-1.12.3.tar.xz"
   sha256 "2456a0b6c1150e25b64cd6a92810d59bed3f061f8b86f91aba5a77bc7cc76cfa"
   license "LGPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url "https://hpjansson.org/chafa/releases/?C=M&O=D"
@@ -13,7 +14,7 @@ class Chafa < Formula
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "glib"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
   depends_on "webp"
 
@@ -36,5 +37,10 @@ class Chafa < Formula
   test do
     output = shell_output("#{bin}/chafa #{test_fixtures("test.png")}")
     assert_equal 2, output.lines.count
+    output = shell_output("#{bin}/chafa --version")
+    expected_loaders = ["JPEG", "TIFF", "WebP"]
+    expected_loaders << "SVG" if OS.mac?
+    loaders = output.lines.find { |line| line.start_with?("Loaders:") }.split(/\s+/)
+    assert_equal loaders & expected_loaders, expected_loaders
   end
 end
