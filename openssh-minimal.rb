@@ -6,6 +6,7 @@ class OpensshMinimal < Formula
   version "9.0p1"
   sha256 "03974302161e9ecce32153cfa10012f1e65c8f3750f573a73ab1befd5972a28a"
   license "SSH-OpenSSH"
+  revision 1
 
   livecheck do
     url "https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/"
@@ -18,6 +19,7 @@ class OpensshMinimal < Formula
   # https://archive.is/hSB6d#10%25
 
   depends_on "pkg-config" => :build
+  depends_on "libxcrypt"
   depends_on "openssl@1.1"
   depends_on "zlib"
 
