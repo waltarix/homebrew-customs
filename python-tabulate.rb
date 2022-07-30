@@ -4,8 +4,9 @@ class PythonTabulate < Formula
   url "https://github.com/waltarix/python-tabulate/archive/v0.8.10-custom.tar.gz"
   sha256 "e5f98e5c969236aa5c8b215045b6a456b88cf064adda1ebec82a6a55791f6f77"
   license "MIT"
+  revision 1
 
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "waltarix/customs/libpython-tabulate"
 
   def install

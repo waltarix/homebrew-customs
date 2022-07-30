@@ -9,6 +9,10 @@ class LibpythonTabulate < Formula
   depends_on "python@3.9" => [:build, :test]
   depends_on "waltarix/customs/libpython-wcwidth"
 
+  livecheck do
+    formula "python-tabulate"
+  end
+
   def pythons
     deps.map(&:to_formula)
         .select { |f| f.name.match?(/python@\d\.\d+/) }
