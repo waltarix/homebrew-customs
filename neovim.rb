@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/e9b58a619e1dd7a831138dc14bd8258104724e06.tar.gz"
-  sha256 "55ef67d0553970db76d61b34c015e904bb48c60412df3661277a084d39c1c059"
-  version "0.8.0-dev-687-ge9b58a619"
+  url "https://github.com/neovim/neovim/archive/9c91d5c61382639c06ca59e6cc2bfda6ba6abf18.tar.gz"
+  sha256 "03aca91c2ff38f270bfa169421f78722c50f569d0480f9baf9f5b9e0b03ddfb8"
+  version "0.8.0-dev-761-g9c91d5c61"
   license "Apache-2.0"
 
   livecheck do
@@ -162,7 +162,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index 4482cefa3..02bbb4af5 100755
+index 4482cefa3..8e40714b4 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,11 +1,12 @@
@@ -222,7 +222,7 @@ index aa96c97bc..64cafa984 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index a9792cf1b..4e2804092 100644
+index cf4ac27d1..0faf16151 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
