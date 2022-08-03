@@ -2,15 +2,19 @@
 #       singular exception for luajit. This exception will not be extended
 #       to other formulae. See:
 #       https://github.com/Homebrew/homebrew-core/pull/99580
+# TODO: Add an audit in `brew` for this. https://github.com/Homebrew/homebrew-core/pull/104765
 class Luajit < Formula
   desc "Just-In-Time Compiler (JIT) for the Lua programming language"
   homepage "https://luajit.org/luajit.html"
   # Update this to the tip of the `v2.1` branch at the start of every month.
-  url "https://github.com/LuaJIT/LuaJIT/archive/50936d784474747b4569d988767f1b5bab8bb6d0.tar.gz"
+  # Get the latest commit with:
+  #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
+  url "https://github.com/LuaJIT/LuaJIT/archive/a7d0265480c662964988f83d4e245bf139eb7cc0.tar.gz"
   # Use the version scheme `2.1.0-beta3-yyyymmdd.x` where `yyyymmdd` is the date of the
   # latest commit at the time of updating, and `x` is the number of commits on that date.
-  version "2.1.0-beta3-20220712.6"
-  sha256 "4d44e4709130b031c1c2c81cf5c102dfce877bf454409dabba03249e18870e66"
+  # `brew livecheck luajit` will generate the correct version for you automatically.
+  version "2.1.0-beta3-20220728.2"
+  sha256 "7d7f58ca5c02b453ed4ddd2298e741053cbd6cd3d96e79460d06ec6684244c59"
   license "MIT"
   head "https://luajit.org/git/luajit-2.0.git", branch: "v2.1"
 
@@ -56,9 +60,6 @@ class Luajit < Formula
       end
     end
 
-    # https://github.com/LuaJIT/LuaJIT/issues/648#issuecomment-752023149
-    ENV.runtime_cpu_detection
-
     # 1 - Override the hardcoded gcc.
     # 2 - Remove the "-march=i686" so we can set the march in cflags.
     # Both changes should persist and were discussed upstream.
@@ -74,9 +75,10 @@ class Luajit < Formula
     # is not set then it's forced to 10.4, which breaks compile on Mojave.
     ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
 
-    # Pass `Q=` to build verbosely.
-    system "make", "amalg", "PREFIX=#{prefix}", "Q="
-    system "make", "install", "PREFIX=#{prefix}", "Q="
+    # Pass `Q= E=@:` to build verbosely.
+    args = %W[PREFIX=#{prefix} Q= E=@:]
+    system "make", "amalg", *args
+    system "make", "install", *args
 
     # We need `stable.version` here to avoid breaking symlink generation for HEAD.
     upstream_version = stable.version.to_s.sub(/-\d+\.\d+$/, "")
@@ -108,7 +110,18 @@ class Luajit < Formula
 
     # Check that LuaJIT can find its own `jit.*` modules
     touch "empty.lua"
-    system bin/"luajit", "-b", "empty.lua", "empty.o"
+    system bin/"luajit", "-b", "-o", "osx", "-a", "arm64", "empty.lua", "empty.o"
     assert_predicate testpath/"empty.o", :exist?
+
+    # Check that we're not affected by https://github.com/LuaJIT/LuaJIT/issues/865.
+    require "macho"
+    machobj = MachO.open("empty.o")
+    assert_kind_of MachO::FatFile, machobj
+    assert_predicate machobj, :object?
+
+    cputypes = machobj.machos.map(&:cputype)
+    assert_includes cputypes, :arm64
+    assert_includes cputypes, :x86_64
+    assert_equal 2, cputypes.length
   end
 end
