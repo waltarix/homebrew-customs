@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/9c91d5c61382639c06ca59e6cc2bfda6ba6abf18.tar.gz"
-  sha256 "03aca91c2ff38f270bfa169421f78722c50f569d0480f9baf9f5b9e0b03ddfb8"
-  version "0.8.0-dev-761-g9c91d5c61"
+  url "https://github.com/neovim/neovim/archive/fea15adad394619aaea69b627be249f8a20dc2ed.tar.gz"
+  sha256 "e01f16aed072a92dcab3a349d3bc772d9deccc0cbe2e7661352985daeb09f4ff"
+  version "0.8.0-dev-789-gfea15adad"
   license "Apache-2.0"
 
   livecheck do
@@ -18,7 +18,6 @@ class Neovim < Formula
   depends_on "luarocks" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
-  depends_on "jemalloc"
   depends_on "libtermkey"
   depends_on "libuv"
   depends_on "msgpack"
@@ -141,15 +140,6 @@ class Neovim < Formula
 
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    mkdir_p libexec/"bin"
-    mv bin/"nvim", libexec/"bin/nvim"
-    env = {}.tap do |e|
-      libjemalloc = Formula["jemalloc"].opt_lib/shared_library("libjemalloc")
-      on_macos { e[:DYLD_INSERT_LIBRARIES] = libjemalloc }
-      on_linux { e[:LD_PRELOAD] = libjemalloc }
-    end
-    (bin/"nvim").write_env_script libexec/"bin/nvim", env
   end
 
   test do
