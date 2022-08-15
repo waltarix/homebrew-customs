@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/fea15adad394619aaea69b627be249f8a20dc2ed.tar.gz"
-  sha256 "e01f16aed072a92dcab3a349d3bc772d9deccc0cbe2e7661352985daeb09f4ff"
-  version "0.8.0-dev-789-gfea15adad"
+  url "https://github.com/neovim/neovim/archive/36acb803c673baa7969244d64bd5e319b7bbc675.tar.gz"
+  sha256 "b7164d8deae9c3d5a62a5775fb69b90707ebfd78c9af6984111e6905a5c1e94d"
+  version "0.8.0-dev-848-g36acb803c"
   license "Apache-2.0"
 
   livecheck do
@@ -198,7 +198,7 @@ index 4482cefa3..8e40714b4 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/EastAsianWidth.txt"
 diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
-index aa96c97bc..64cafa984 100644
+index 36553f464..6c5cef62a 100644
 --- a/src/nvim/generators/gen_unicode_tables.lua
 +++ b/src/nvim/generators/gen_unicode_tables.lua
 @@ -317,8 +317,7 @@ eaw_fp:close()
@@ -212,7 +212,7 @@ index aa96c97bc..64cafa984 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index cf4ac27d1..0faf16151 100644
+index 53bbaab69..e55eae421 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
@@ -221,13 +221,18 @@ index cf4ac27d1..0faf16151 100644
  
 +#include "wcwidth9.h"
 +
- // To speed up BYTELEN(); keep a lookup table to quickly get the length in
- // bytes of a UTF-8 character from the first byte of a UTF-8 string.  Bytes
- // which are illegal when used as the first byte have a 1.  The NUL byte has
-@@ -472,25 +474,16 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+ static char e_list_item_nr_is_not_list[]
+   = N_("E1109: List item %d is not a List");
+ static char e_list_item_nr_does_not_contain_3_numbers[]
+@@ -485,30 +487,16 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  int utf_char2cells(int c)
  {
    if (c >= 0x100) {
+-    int n = cw_value(c);
+-    if (n != 0) {
+-      return n;
+-    }
+-
 -    if (!utf_printable(c)) {
 +    int n = wcwidth9(c);
 +    if (n < 0) {
@@ -236,7 +241,7 @@ index cf4ac27d1..0faf16151 100644
 -    if (intable(doublewidth, ARRAY_SIZE(doublewidth), c)) {
 -      return 2;
 -    }
--    if (p_emoji && intable(emoji_width, ARRAY_SIZE(emoji_width), c)) {
+-    if (p_emoji && intable(emoji_wide, ARRAY_SIZE(emoji_wide), c)) {
 -      return 2;
 -    }
 +    return n;
@@ -253,7 +258,7 @@ index cf4ac27d1..0faf16151 100644
    return 1;
  }
  
-@@ -1187,8 +1180,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1205,8 +1193,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
  
  bool utf_ambiguous_width(int c)
  {
@@ -264,10 +269,10 @@ index cf4ac27d1..0faf16151 100644
  
  /*
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index e2289eb9c..fdd163312 100644
+index 38e8c1576..b461ac945 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -2049,7 +2049,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2091,7 +2091,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
    }
  
    data->unibi_ext.set_cursor_color = unibi_find_ext_str(ut, "Cs");
@@ -276,7 +281,7 @@ index e2289eb9c..fdd163312 100644
      if (iterm || iterm_pretending_xterm) {
        // FIXME: Bypassing tmux like this affects the cursor colour globally, in
        // all panes, which is not particularly desirable.  A better approach
-@@ -2062,7 +2062,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2104,7 +2104,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
        data->unibi_ext.set_cursor_color = (int)unibi_add_ext_str(ut, "ext.set_cursor_color",
                                                                  "\033]12;#%p1%06x\007");
      }
