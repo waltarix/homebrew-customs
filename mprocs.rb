@@ -2,15 +2,15 @@ class Mprocs < Formula
   desc "Run multiple commands in parallel"
   homepage "https://github.com/pvolok/mprocs"
   if OS.linux?
-    url "https://github.com/waltarix/mprocs/releases/download/v0.6.2-custom/mprocs-0.6.2-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "bb283d6a8f878cfdb8cc1567939ae76bf8dcf68dc87d3d615f59cbebfd39625d"
+    url "https://github.com/waltarix/mprocs/releases/download/v0.6.3-custom/mprocs-0.6.3-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "aeab3271930a5cd88eed695f6f17c678718d8db2f6b98cfc40ef041481b3b0a2"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/mprocs/releases/download/v0.6.2-custom/mprocs-0.6.2-aarch64-apple-darwin.tar.xz"
-      sha256 "91818231853359f8441f7c93928844930322d581c10f44a5d58e1ec543197d98"
+      url "https://github.com/waltarix/mprocs/releases/download/v0.6.3-custom/mprocs-0.6.3-aarch64-apple-darwin.tar.xz"
+      sha256 "2f20eeb02dcf6e1f9f46d58a81882aa0a9ce6c0db6963710bf5b502e1a010116"
     else
-      url "https://github.com/waltarix/mprocs/releases/download/v0.6.2-custom/mprocs-0.6.2-x86_64-apple-darwin.tar.xz"
-      sha256 "db5e7efe5ac9a1386e994c51b162ffd28eae062d5caf4e0b1dcc0108216dd004"
+      url "https://github.com/waltarix/mprocs/releases/download/v0.6.3-custom/mprocs-0.6.3-x86_64-apple-darwin.tar.xz"
+      sha256 "2c9f67d5957ea1195b3a2f8186899f744e9c4af4748fe436581298cc452fcb40"
     end
   end
   license "MIT"
