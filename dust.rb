@@ -14,6 +14,7 @@ class Dust < Formula
     end
   end
   license "Apache-2.0"
+  revision 1
   head "https://github.com/bootandy/dust.git", branch: "master"
 
   livecheck do
