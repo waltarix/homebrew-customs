@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/6b9852cc4188d9ca7bce8e7592dcfca38539c743.tar.gz"
-  sha256 "4686bb21be36f830fc4463170ca40902fdf3cc5961b6f164edda1bacd571902c"
-  version "0.8.0-dev-905-g6b9852cc4"
+  url "https://github.com/neovim/neovim/archive/c12f6002a15b27ada972b997bc0950f37d06027d.tar.gz"
+  sha256 "60bf0a93b70d38665e8190031fb5d127e383b5ed224bed0ea4a830e437dcda5f"
+  version "0.8.0-dev-956-gc12f6002a"
   license "Apache-2.0"
 
   livecheck do
@@ -130,8 +130,18 @@ class Neovim < Formula
       end
     end
 
+    # Point system locations inside `HOMEBREW_PREFIX`.
+    inreplace "src/nvim/os/stdpaths.c" do |s|
+      s.gsub! "/etc/xdg/", "#{etc}/xdg/:\\0"
+
+      unless HOMEBREW_PREFIX.to_s == HOMEBREW_DEFAULT_PREFIX
+        s.gsub! "/usr/local/share/:/usr/share/", "#{HOMEBREW_PREFIX}/share/:\\0"
+      end
+    end
+
     system "cmake", "-S", ".", "-B", "build",
                     "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}",
+                    "-DLIBUV_LIBRARY=#{Formula["libuv"].opt_lib/shared_library("libuv")}",
                     "-DNVIM_VERSION_MEDIUM=v#{version}",
                     *std_cmake_args
 
@@ -212,7 +222,7 @@ index 36553f464..6c5cef62a 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index af9e214d9..ec34c0a82 100644
+index 83044f209..c194e53ec 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
