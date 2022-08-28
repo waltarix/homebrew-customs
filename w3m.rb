@@ -1,19 +1,9 @@
 class W3m < Formula
   desc "Pager/text based browser"
   homepage "https://packages.debian.org/sid/w3m"
-  url "https://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20210102.orig.tar.xz"
-  version "0.5.3+git20210102-6"
-  sha256 "32fcf47999a4fab59021382d382add86fe87159d9e3a95bddafda246ae12f5f9"
-  revision 1
-
-  patch do
-    url "https://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20210102-6.debian.tar.xz"
-    sha256 "ef6f835be35815580bc0f4683e7dd2e6f4ce411072d12dbccbd52051b5fa8770"
-    apply "patches/010_section.patch",
-          "patches/030_str-overflow.patch",
-          "patches/040_libwc-overflow.patch"
-
-  end
+  url "https://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20220429.orig.tar.xz"
+  version "0.5.3+git20220429-1"
+  sha256 "597cda53b95b8cb467d387249d5ae9be31556d42ab5f2abaaa9a42cab5d8b28e"
 
   livecheck do
     url "https://deb.debian.org/debian/pool/main/w/w3m/"
@@ -22,6 +12,8 @@ class W3m < Formula
 
   depends_on "pkg-config" => :build
   depends_on "bdw-gc"
+  depends_on "brotli"
+  depends_on "bzip2"
   depends_on "ncurses"
   depends_on "openssl@1.1"
   depends_on "waltarix/customs/cmigemo"
@@ -54,7 +46,6 @@ class W3m < Formula
                           "--enable-m17n",
                           "--enable-nls",
                           "--enable-unicode",
-                          "--with-gc",
                           "--with-migemo='cmigemo -c -q'",
                           "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
                           "--with-termlib=ncursesw"
