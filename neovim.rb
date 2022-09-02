@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/c12f6002a15b27ada972b997bc0950f37d06027d.tar.gz"
-  sha256 "60bf0a93b70d38665e8190031fb5d127e383b5ed224bed0ea4a830e437dcda5f"
-  version "0.8.0-dev-956-gc12f6002a"
+  url "https://github.com/neovim/neovim/archive/1ffd527c837fb2465c9659273bbe5447a1352db2.tar.gz"
+  sha256 "c0d633cec31c0dba8300c951721344ffb52afb9f376bf9e24881f0a4983110cb"
+  version "0.8.0-dev-1013-g1ffd527c8"
   license "Apache-2.0"
 
   livecheck do
@@ -222,7 +222,7 @@ index 36553f464..6c5cef62a 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 83044f209..c194e53ec 100644
+index 116a66e77..d05d6ac27 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
@@ -234,7 +234,7 @@ index 83044f209..c194e53ec 100644
  static char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
  static char e_list_item_nr_does_not_contain_3_numbers[]
-@@ -485,30 +487,16 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+@@ -469,30 +471,16 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  int utf_char2cells(int c)
  {
    if (c >= 0x100) {
@@ -268,7 +268,7 @@ index 83044f209..c194e53ec 100644
    return 1;
  }
  
-@@ -1206,8 +1194,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1162,8 +1150,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
  
  bool utf_ambiguous_width(int c)
  {
@@ -277,7 +277,7 @@ index 83044f209..c194e53ec 100644
 +  return c >= 0x80 && (intable(emoji_all, ARRAY_SIZE(emoji_all), c));
  }
  
- /*
+ // Generic conversion function for case operations.
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
 index 38e8c1576..b461ac945 100644
 --- a/src/nvim/tui/tui.c
