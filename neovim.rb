@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/1ffd527c837fb2465c9659273bbe5447a1352db2.tar.gz"
-  sha256 "c0d633cec31c0dba8300c951721344ffb52afb9f376bf9e24881f0a4983110cb"
-  version "0.8.0-dev-1013-g1ffd527c8"
+  url "https://github.com/neovim/neovim/archive/b17c5c3d9c9f51423c3d8c7f76711ad82191bdcf.tar.gz"
+  sha256 "f8c3eca20f45c86805525eae6b4e22b7064d03d7066f23e185319c7ce0656511"
+  version "0.8.0-dev-1038-gb17c5c3d9"
   license "Apache-2.0"
 
   livecheck do
@@ -16,6 +16,7 @@ class Neovim < Formula
   # Remove this dependency when we use the formula.
   depends_on "libtool" => :build
   depends_on "luarocks" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "libtermkey"
@@ -33,11 +34,9 @@ class Neovim < Formula
     depends_on "libnsl"
   end
 
-  # TODO: Use `libvterm` formula when the following is resolved:
-  # https://github.com/neovim/neovim/pull/16219
   resource "libvterm" do
-    url "http://www.leonerd.org.uk/code/libvterm/libvterm-0.1.4.tar.gz"
-    sha256 "bc70349e95559c667672fc8c55b9527d9db9ada0fb80a3beda533418d782d3dd"
+    url "http://www.leonerd.org.uk/code/libvterm/libvterm-0.3-RC1.tar.gz"
+    sha256 "441d1c372b84a0df12525100ab06c0366260fb4f6252abd1665ee4fa571b5134"
     patch <<~PATCH
       diff --git a/src/unicode.c b/src/unicode.c
       index 0d1b5ff..28ea8c5 100644
@@ -148,6 +147,7 @@ class Neovim < Formula
     # Patch out references to Homebrew shims
     inreplace "build/cmake.config/auto/versiondef.h", Superenv.shims_path/ENV.cc, ENV.cc
 
+    ENV.deparallelize
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -222,7 +222,7 @@ index 36553f464..6c5cef62a 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 116a66e77..d05d6ac27 100644
+index 83b060905..50b8063b6 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
@@ -279,10 +279,10 @@ index 116a66e77..d05d6ac27 100644
  
  // Generic conversion function for case operations.
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 38e8c1576..b461ac945 100644
+index 471a3fb85..37b34f646 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -2091,7 +2091,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2110,7 +2110,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
    }
  
    data->unibi_ext.set_cursor_color = unibi_find_ext_str(ut, "Cs");
@@ -291,7 +291,7 @@ index 38e8c1576..b461ac945 100644
      if (iterm || iterm_pretending_xterm) {
        // FIXME: Bypassing tmux like this affects the cursor colour globally, in
        // all panes, which is not particularly desirable.  A better approach
-@@ -2104,7 +2104,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2123,7 +2123,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
        data->unibi_ext.set_cursor_color = (int)unibi_add_ext_str(ut, "ext.set_cursor_color",
                                                                  "\033]12;#%p1%06x\007");
      }
