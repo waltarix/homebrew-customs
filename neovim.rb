@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/b17c5c3d9c9f51423c3d8c7f76711ad82191bdcf.tar.gz"
-  sha256 "f8c3eca20f45c86805525eae6b4e22b7064d03d7066f23e185319c7ce0656511"
-  version "0.8.0-dev-1038-gb17c5c3d9"
+  url "https://github.com/neovim/neovim/archive/982fef6018fb64c883ddafc897c8f7c58fb1c62d.tar.gz"
+  sha256 "265cf0a4f9c86e70e34a42c8e83457f11b9cc6bc2b6d82f9ba806e23a17509e8"
+  version "0.8.0-dev-1093-g982fef601"
   license "Apache-2.0"
 
   livecheck do
@@ -138,7 +138,7 @@ class Neovim < Formula
       end
     end
 
-    system "cmake", "-S", ".", "-B", "build",
+    system "cmake", "-S", ".", "-B", "build", "-G", "Ninja",
                     "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}",
                     "-DLIBUV_LIBRARY=#{Formula["libuv"].opt_lib/shared_library("libuv")}",
                     "-DNVIM_VERSION_MEDIUM=v#{version}",
