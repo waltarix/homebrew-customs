@@ -5,6 +5,7 @@ class Neovim < Formula
   sha256 "265cf0a4f9c86e70e34a42c8e83457f11b9cc6bc2b6d82f9ba806e23a17509e8"
   version "0.8.0-dev-1093-g982fef601"
   license "Apache-2.0"
+  revision 1
 
   livecheck do
     url :stable
@@ -12,9 +13,6 @@ class Neovim < Formula
   end
 
   depends_on "cmake" => :build
-  # Libtool is needed to build `libvterm`.
-  # Remove this dependency when we use the formula.
-  depends_on "libtool" => :build
   depends_on "luarocks" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
@@ -24,6 +22,7 @@ class Neovim < Formula
   depends_on "msgpack"
   depends_on "unibilium"
   depends_on "waltarix/customs/libtree-sitter"
+  depends_on "waltarix/customs/libvterm"
   depends_on "waltarix/customs/luajit"
   depends_on "waltarix/customs/luv"
 
@@ -32,35 +31,6 @@ class Neovim < Formula
 
   on_linux do
     depends_on "libnsl"
-  end
-
-  resource "libvterm" do
-    url "http://www.leonerd.org.uk/code/libvterm/libvterm-0.3-RC1.tar.gz"
-    sha256 "441d1c372b84a0df12525100ab06c0366260fb4f6252abd1665ee4fa571b5134"
-    patch <<~PATCH
-      diff --git a/src/unicode.c b/src/unicode.c
-      index 0d1b5ff..28ea8c5 100644
-      --- a/src/unicode.c
-      +++ b/src/unicode.c
-      @@ -1,4 +1,5 @@
-       #include "vterm_internal.h"
-      +#include "wcwidth9.h"
-       
-       // ### The following from http://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c
-       // With modifications:
-      @@ -325,10 +326,7 @@ static const struct interval fullwidth[] = {
-       
-       INTERNAL int vterm_unicode_width(uint32_t codepoint)
-       {
-      -  if(bisearch(codepoint, fullwidth, sizeof(fullwidth) / sizeof(fullwidth[0]) - 1))
-      -    return 2;
-      -
-      -  return mk_wcwidth(codepoint);
-      +  return wcwidth9(codepoint);
-       }
-       
-       INTERNAL int vterm_unicode_is_combining(uint32_t codepoint)
-    PATCH
   end
 
   # Keep resources updated according to:
@@ -86,11 +56,12 @@ class Neovim < Formula
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
 
-    res = resources.reject { |r| r.name == "wcwidth9.h" }
-    res.each { |r| r.stage(buildpath/"deps-build/build/src"/r.name) }
-    resource("wcwidth9.h").tap do |r|
-      r.stage(buildpath/"src/nvim")
-      r.stage(buildpath/"deps-build/build/src/libvterm/src")
+    resources.each do |r|
+      if r.name == "wcwidth9.h"
+        r.stage(buildpath/"src/nvim")
+      else
+        r.stage(buildpath/"deps-build/build/src"/r.name)
+      end
     end
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
@@ -120,12 +91,6 @@ class Neovim < Formula
             system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"
           end
         end
-      end
-
-      # Build libvterm. Remove when we use the formula.
-      cd "libvterm" do
-        system "make", "install", "PREFIX=#{buildpath}/deps-build", "LDFLAGS=-static #{ENV.ldflags}"
-        ENV.prepend_path "PKG_CONFIG_PATH", buildpath/"deps-build/lib/pkgconfig"
       end
     end
 
