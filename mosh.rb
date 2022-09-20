@@ -1,10 +1,9 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2-custom-r8/mosh-1.3.2-custom.tar.xz"
-  sha256 "2e3410051902bafd931510e1d49ad9eb92d02607b7bb8ecb14caa55267e74304"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2.95rc1-custom/mosh-1.3.2.95rc1-custom.tar.xz"
+  sha256 "6fbd29cd64de299723798a051ee22e47d7303102310958309988fc955124df72"
   license "GPL-3.0-or-later"
-  revision 27
 
   livecheck do
     url :homepage
@@ -13,7 +12,7 @@ class Mosh < Formula
 
   depends_on "pkg-config" => :build
   depends_on "ncurses"
-  depends_on "openssl@1.1"
+  depends_on "openssl"
   depends_on "protobuf"
   depends_on "zlib"
 
