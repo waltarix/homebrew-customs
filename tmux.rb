@@ -1,9 +1,10 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.3a-custom/tmux-3.3a.tar.xz"
-  sha256 "fbe9828b22b5baed6867a508ef348ad40c0e0c74fe80fea8db944e2449458dd9"
+  url "https://github.com/waltarix/tmux/releases/download/3.3a-custom-r1/tmux-3.3a.tar.xz"
+  sha256 "1dce6d9e0e95ff0d663752f48e74e86c7a1da07779158c6aaa9ca864c10ad346"
   license "ISC"
+  revision 1
 
   livecheck do
     url :stable
@@ -21,14 +22,7 @@ class Tmux < Formula
     sha256 "b5f7bbd78f9790026bbff16fc6e3fe4070d067f58f943e156bd1a8c3c99f6a6f"
   end
 
-  resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
-    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
-  end
-
   def install
-    resource("wcwidth9.h").stage(buildpath)
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
