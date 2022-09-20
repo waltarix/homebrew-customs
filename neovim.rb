@@ -1,11 +1,10 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/982fef6018fb64c883ddafc897c8f7c58fb1c62d.tar.gz"
-  sha256 "265cf0a4f9c86e70e34a42c8e83457f11b9cc6bc2b6d82f9ba806e23a17509e8"
-  version "0.8.0-dev-1093-g982fef601"
+  url "https://github.com/neovim/neovim/archive/875b58e0941ef62a75992ce0e6496bb7879e0bbe.tar.gz"
+  sha256 "f26d4e33fb7e6147b0c68bdf90d99f0ec2fa3eb960b2b52cafb211dd402495ec"
+  version "0.8.0-dev-1119-g875b58e09"
   license "Apache-2.0"
-  revision 1
 
   livecheck do
     url :stable
@@ -47,8 +46,8 @@ class Neovim < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
-    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
+    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
   end
 
   patch :DATA
@@ -127,7 +126,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index 4482cefa3..8e40714b4 100755
+index 4482cefa3..4830eddd0 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,11 +1,12 @@
@@ -140,7 +139,7 @@ index 4482cefa3..8e40714b4 100755
  
  UNIDIR_DEFAULT=src/unicode
 -DOWNLOAD_URL_BASE_DEFAULT='http://unicode.org/Public'
-+UNICODE_VERSION="14.0.0"
++UNICODE_VERSION="15.0.0"
 +DOWNLOAD_URL_BASE_DEFAULT="https://unicode.org/Public/${UNICODE_VERSION}/ucd"
  
  if test x$1 = 'x--help' ; then
@@ -171,7 +170,7 @@ index 4482cefa3..8e40714b4 100755
 -  git commit -m "feat: update unicode tables" -- $files
 -)
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
-+  "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/EastAsianWidth.txt"
++  "https://github.com/waltarix/localedata/releases/download/15.0.0/EastAsianWidth.txt"
 diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
 index 36553f464..6c5cef62a 100644
 --- a/src/nvim/generators/gen_unicode_tables.lua
@@ -187,7 +186,7 @@ index 36553f464..6c5cef62a 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 83b060905..50b8063b6 100644
+index 33d652a51..827c15b9f 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -74,6 +74,8 @@ struct interval {
@@ -244,7 +243,7 @@ index 83b060905..50b8063b6 100644
  
  // Generic conversion function for case operations.
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 471a3fb85..37b34f646 100644
+index fd9287350..e915c04fb 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -2110,7 +2110,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
