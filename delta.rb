@@ -2,18 +2,19 @@ class Delta < Formula
   desc "Syntax-highlighting pager for git and diff output"
   homepage "https://github.com/dandavison/delta"
   if OS.linux?
-    url "https://github.com/waltarix/delta/releases/download/0.14.0-custom/delta-0.14.0-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "26d6e3093828be47a38597baed80b42401176fa8e52a2eec4d5adde748f3a18c"
+    url "https://github.com/waltarix/delta/releases/download/0.14.0-custom-r1/delta-0.14.0-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "36147cdf7e00d38351f199b3045a9fa52cff8c7eb34a1945f97e1c20a8e02d50"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/delta/releases/download/0.14.0-custom/delta-0.14.0-aarch64-apple-darwin.tar.xz"
-      sha256 "600b526145ba2a191017ae32c4c61dbbe34098c854278feddf1cbfaea7658805"
+      url "https://github.com/waltarix/delta/releases/download/0.14.0-custom-r1/delta-0.14.0-aarch64-apple-darwin.tar.xz"
+      sha256 "a1d23e988451900e7bed7acc619002d2b559526f8db9e6eee4dad784c4351aff"
     else
-      url "https://github.com/waltarix/delta/releases/download/0.14.0-custom/delta-0.14.0-x86_64-apple-darwin.tar.xz"
-      sha256 "794a8abee93e3138a78d1e9aeb39ffd87b7b1b37d9d0947b86337022b419cb45"
+      url "https://github.com/waltarix/delta/releases/download/0.14.0-custom-r1/delta-0.14.0-x86_64-apple-darwin.tar.xz"
+      sha256 "c328632ad30eb396a352a49ce3ed578d970cabaada6552195ffe5e516f8a6353"
     end
   end
   license "MIT"
+  revision 1
 
   conflicts_with "git-delta", because: "both install a `delta` binary"
 
