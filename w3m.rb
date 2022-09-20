@@ -4,6 +4,7 @@ class W3m < Formula
   url "https://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20220429.orig.tar.xz"
   version "0.5.3+git20220429-1"
   sha256 "597cda53b95b8cb467d387249d5ae9be31556d42ab5f2abaaa9a42cab5d8b28e"
+  revision 1
 
   livecheck do
     url "https://deb.debian.org/debian/pool/main/w/w3m/"
@@ -15,7 +16,7 @@ class W3m < Formula
   depends_on "brotli"
   depends_on "bzip2"
   depends_on "ncurses"
-  depends_on "openssl@1.1"
+  depends_on "openssl"
   depends_on "waltarix/customs/cmigemo"
   depends_on "zlib"
 
@@ -25,8 +26,8 @@ class W3m < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
-    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
+    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
   end
 
   patch :DATA
@@ -47,7 +48,7 @@ class W3m < Formula
                           "--enable-nls",
                           "--enable-unicode",
                           "--with-migemo='cmigemo -c -q'",
-                          "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}",
                           "--with-termlib=ncursesw"
     system "make", "install"
   end
