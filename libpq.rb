@@ -4,6 +4,7 @@ class Libpq < Formula
   url "https://ftp.postgresql.org/pub/source/v14.5/postgresql-14.5.tar.bz2"
   sha256 "d4f72cb5fb857c9a9f75ec8cf091a1771272802f2178f0b2e65b7b6ff64f4a30"
   license "PostgreSQL"
+  revision 1
 
   livecheck do
     formula "postgresql"
@@ -22,8 +23,8 @@ class Libpq < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
-    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
+    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
   end
 
   def install
