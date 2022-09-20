@@ -4,7 +4,7 @@ class Align < Formula
   url "https://kinzler.com/me/align/align-1.7.5.tgz"
   sha256 "cc692fb9dee0cc288757e708fc1a3b6b56ca1210ca181053a371cb11746969dd"
   license "GPL-2.0-or-later"
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -25,8 +25,8 @@ class Align < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
-    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
+    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
   end
 
   def install
@@ -34,7 +34,7 @@ class Align < Formula
     ENV.prepend_path "PERL5LIB", libexec/"lib"
 
     resource("Text::CharWidth").stage(buildpath/"text_charwidth")
-    (buildpath/"text_charwidth").install resource("wcwidth9.h")
+    resource("wcwidth9.h").stage(buildpath/"text_charwidth")
     cd "text_charwidth" do
       on_linux do
         perl_archlib = Utils.safe_popen_read("perl", "-MConfig", "-e", "print $Config{archlib}")
