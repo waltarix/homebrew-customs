@@ -5,6 +5,7 @@ class Zsh < Formula
   mirror "https://www.zsh.org/pub/zsh-5.9.tar.xz"
   sha256 "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5"
   license "MIT-Modern-Variant"
+  revision 1
 
   livecheck do
     url "https://sourceforge.net/projects/zsh/rss?path=/zsh"
@@ -25,12 +26,12 @@ class Zsh < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/14.0.0-r3/wcwidth9.h"
-    sha256 "5797b11ba5712a6a98ad21ed2a2cec71467e2ccd4b0c7fd43ebb16a00ff85bda"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
+    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
   end
 
   def install
-    (buildpath/"Src").install resource("wcwidth9.h")
+    resource("wcwidth9.h").stage(buildpath/"Src")
 
     Formula["ncurses"].tap do |ncurses|
       ENV.append "LDFLAGS", "-L#{ncurses.lib}"
