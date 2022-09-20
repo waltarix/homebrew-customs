@@ -1,9 +1,10 @@
 class LibpythonWcwidth < Formula
   desc "Pretty-print tabular data in Python"
   homepage "https://pypi.org/project/tabulate/"
-  url "https://github.com/waltarix/python-wcwidth/archive/0.2.5-custom.tar.gz"
-  sha256 "428f0217bd9c56fa3905ae34f4ac42b073273668342a2d203ed4f895b4442237"
+  url "https://github.com/waltarix/python-wcwidth/archive/0.2.5-custom-r1.tar.gz"
+  sha256 "02e2428c74fce44afba1d01161e2f149ed6120fde8eee162bedf8d89a7788383"
   license "MIT"
+  revision 1
 
   depends_on "python@3.10" => [:build, :test]
   depends_on "python@3.9" => [:build, :test]
