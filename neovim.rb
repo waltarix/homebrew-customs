@@ -1,9 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/875b58e0941ef62a75992ce0e6496bb7879e0bbe.tar.gz"
-  sha256 "f26d4e33fb7e6147b0c68bdf90d99f0ec2fa3eb960b2b52cafb211dd402495ec"
-  version "0.8.0-dev-1119-g875b58e09"
+  url "https://github.com/neovim/neovim/archive/14610332b2e851f9464a2d32a0ef3869dcff9834.tar.gz"
+  sha256 "3caaab1096c497f675e8dea447e38c697c376067246e7cc0d6a9740b8786389c"
+  version "0.8.0-dev-1152-g14610332b"
   license "Apache-2.0"
 
   livecheck do
@@ -243,10 +243,10 @@ index 33d652a51..827c15b9f 100644
  
  // Generic conversion function for case operations.
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index fd9287350..e915c04fb 100644
+index 5a331463e..08da7ae4a 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -2110,7 +2110,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2135,7 +2135,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
    }
  
    data->unibi_ext.set_cursor_color = unibi_find_ext_str(ut, "Cs");
@@ -255,7 +255,7 @@ index fd9287350..e915c04fb 100644
      if (iterm || iterm_pretending_xterm) {
        // FIXME: Bypassing tmux like this affects the cursor colour globally, in
        // all panes, which is not particularly desirable.  A better approach
-@@ -2123,7 +2123,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2148,7 +2148,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
        data->unibi_ext.set_cursor_color = (int)unibi_add_ext_str(ut, "ext.set_cursor_color",
                                                                  "\033]12;#%p1%06x\007");
      }
