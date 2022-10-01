@@ -1,9 +1,8 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/14610332b2e851f9464a2d32a0ef3869dcff9834.tar.gz"
-  sha256 "3caaab1096c497f675e8dea447e38c697c376067246e7cc0d6a9740b8786389c"
-  version "0.8.0-dev-1152-g14610332b"
+  url "https://github.com/neovim/neovim/archive/v0.8.0.tar.gz"
+  sha256 "505e3dfb71e2f73495c737c034a416911c260c0ba9fd2092c6be296655be4d18"
   license "Apache-2.0"
 
   livecheck do
@@ -105,7 +104,6 @@ class Neovim < Formula
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja",
                     "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}",
                     "-DLIBUV_LIBRARY=#{Formula["libuv"].opt_lib/shared_library("libuv")}",
-                    "-DNVIM_VERSION_MEDIUM=v#{version}",
                     *std_cmake_args
 
     # Patch out references to Homebrew shims
@@ -243,10 +241,10 @@ index 33d652a51..827c15b9f 100644
  
  // Generic conversion function for case operations.
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 5a331463e..08da7ae4a 100644
+index b483ad348..742cd7522 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -2135,7 +2135,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2133,7 +2133,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
    }
  
    data->unibi_ext.set_cursor_color = unibi_find_ext_str(ut, "Cs");
@@ -255,7 +253,7 @@ index 5a331463e..08da7ae4a 100644
      if (iterm || iterm_pretending_xterm) {
        // FIXME: Bypassing tmux like this affects the cursor colour globally, in
        // all panes, which is not particularly desirable.  A better approach
-@@ -2148,7 +2148,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2146,7 +2146,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
        data->unibi_ext.set_cursor_color = (int)unibi_add_ext_str(ut, "ext.set_cursor_color",
                                                                  "\033]12;#%p1%06x\007");
      }
