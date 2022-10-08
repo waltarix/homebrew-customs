@@ -6,9 +6,9 @@ class Pspg < Formula
   license "BSD-2-Clause"
   head "https://github.com/okbob/pspg.git", branch: "master"
 
+  depends_on "libpq"
   depends_on "ncurses"
   depends_on "readline"
-  depends_on "waltarix/customs/libpq"
 
   resource "wcwidth9.h" do
     url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
