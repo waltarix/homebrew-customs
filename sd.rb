@@ -2,15 +2,15 @@ class Sd < Formula
   desc "Intuitive find & replace CLI"
   homepage "https://github.com/chmln/sd"
   if OS.linux?
-    url "https://github.com/waltarix/sd/releases/download/v0.8.0-custom/sd-0.8.0-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "379311bcdc360942bfe49ec0ad7642316f152e94f8a7de455433a6551a69474c"
+    url "https://github.com/waltarix/sd/releases/download/v0.8.1-custom/sd-0.8.1-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "5ed1d121973318c9e28d77e4beaf594d075a651f9a1b78025f8b2c64ddae0a7b"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/sd/releases/download/v0.8.0-custom/sd-0.8.0-aarch64-apple-darwin.tar.xz"
-      sha256 "9fd163737901e46683dd42f3702cf8a52d8ceea228ac2ff38631b56c113923d2"
+      url "https://github.com/waltarix/sd/releases/download/v0.8.1-custom/sd-0.8.1-aarch64-apple-darwin.tar.xz"
+      sha256 "f257f6beb2b7bccd6b06413032b32bcc10f7e5b81ad954a1aac11877879631f4"
     else
-      url "https://github.com/waltarix/sd/releases/download/v0.8.0-custom/sd-0.8.0-x86_64-apple-darwin.tar.xz"
-      sha256 "d106421b210ed608e5596d2705000683eac59ca06f85f34cb95407167f45e8d1"
+      url "https://github.com/waltarix/sd/releases/download/v0.8.1-custom/sd-0.8.1-x86_64-apple-darwin.tar.xz"
+      sha256 "c1b469d557814121759fcecb74bc3082db6fce3e085105fcd5663e0e29c68011"
     end
   end
   license "MIT"
