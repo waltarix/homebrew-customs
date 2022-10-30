@@ -5,9 +5,10 @@ class LibpythonWcwidth < Formula
   version "0.2.5"
   sha256 "02e2428c74fce44afba1d01161e2f149ed6120fde8eee162bedf8d89a7788383"
   license "MIT"
-  revision 1
+  revision 2
 
   depends_on "python@3.10" => [:build, :test]
+  depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.9" => [:build, :test]
 
   def pythons
