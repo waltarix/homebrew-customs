@@ -4,12 +4,14 @@ class LibpythonTabulate < Formula
   url "https://github.com/waltarix/python-tabulate/archive/v0.9.0-custom.tar.gz"
   sha256 "18b93ff6c2734e7fb5fdeccee5c896d0d0567ed93cc3720f679ed9f699c47d3d"
   license "MIT"
+  revision 1
 
   livecheck do
     formula "python-tabulate"
   end
 
   depends_on "python@3.10" => [:build, :test]
+  depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.9" => [:build, :test]
   depends_on "waltarix/customs/libpython-wcwidth"
 
