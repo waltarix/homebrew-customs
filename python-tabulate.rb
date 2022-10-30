@@ -5,14 +5,14 @@ class PythonTabulate < Formula
   version "0.8.10"
   sha256 "a8fd8689cb647fce7927ea9cc1c62b23020cb34d935179663fb4fcb6e04b21cd"
   license "MIT"
-  revision 2
+  revision 3
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "waltarix/customs/libpython-tabulate"
 
   def install
     # Install the binary only, the lib part is provided by libpython-tabulate
-    system "python3.10", "setup.py", "--no-user-cfg", "install_scripts", "--install-dir=#{bin}", "--skip-build"
+    system "python3.11", "setup.py", "--no-user-cfg", "install_scripts", "--install-dir=#{bin}", "--skip-build"
   end
 
   test do
