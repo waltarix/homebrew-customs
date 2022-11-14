@@ -1,8 +1,8 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.8.0.tar.gz"
-  sha256 "505e3dfb71e2f73495c737c034a416911c260c0ba9fd2092c6be296655be4d18"
+  url "https://github.com/neovim/neovim/archive/v0.8.1.tar.gz"
+  sha256 "b4484e130aa962457189f3dee34b8481943c1e395d2d684c6f8b91598494d9ec"
   license "Apache-2.0"
 
   livecheck do
@@ -11,7 +11,6 @@ class Neovim < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "luarocks" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -32,7 +31,7 @@ class Neovim < Formula
   end
 
   # Keep resources updated according to:
-  # https://github.com/neovim/neovim/blob/v#{version}/third-party/CMakeLists.txt
+  # https://github.com/neovim/neovim/blob/v#{version}/cmake.deps/cmake/BuildLuarocks.cmake
 
   resource "mpack" do
     url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.9/libmpack-lua-1.0.9.tar.gz"
@@ -42,6 +41,11 @@ class Neovim < Formula
   resource "lpeg" do
     url "https://luarocks.org/manifests/gvvaughan/lpeg-1.0.2-1.src.rock"
     sha256 "e0d0d687897f06588558168eeb1902ac41a11edd1b58f1aa61b99d0ea0abbfbc"
+  end
+
+  resource "luarocks" do
+    url "https://luarocks.org/releases/luarocks-3.9.1.tar.gz"
+    sha256 "ffafd83b1c42aa38042166a59ac3b618c838ce4e63f4ace9d961a5679ef58253"
   end
 
   resource "wcwidth9.h" do
@@ -54,12 +58,19 @@ class Neovim < Formula
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
 
-    resources.each do |r|
-      if r.name == "wcwidth9.h"
-        r.stage(buildpath/"src/nvim")
-      else
-        r.stage(buildpath/"deps-build/build/src"/r.name)
-      end
+    resource("luarocks").stage do
+      system "./configure", "--prefix=#{buildpath}/luarocks",
+                            "--rocks-tree=#{HOMEBREW_PREFIX}"
+      system "make", "install"
+
+      ENV.append_path "PATH", buildpath/"luarocks/bin"
+    end
+
+    resource("wcwidth9.h").stage(buildpath/"src/nvim")
+
+    rocks = resources.map(&:name).to_set - ["luarocks", "wcwidth9.h"]
+    rocks.each do |r|
+      resource(r).stage(buildpath/"deps-build/build/src"/r)
     end
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
@@ -241,10 +252,10 @@ index 33d652a51..827c15b9f 100644
  
  // Generic conversion function for case operations.
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index b483ad348..742cd7522 100644
+index 1cb1c34ad..9b0b0fcf8 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -2133,7 +2133,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2136,7 +2136,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
    }
  
    data->unibi_ext.set_cursor_color = unibi_find_ext_str(ut, "Cs");
@@ -253,7 +264,7 @@ index b483ad348..742cd7522 100644
      if (iterm || iterm_pretending_xterm) {
        // FIXME: Bypassing tmux like this affects the cursor colour globally, in
        // all panes, which is not particularly desirable.  A better approach
-@@ -2146,7 +2146,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
+@@ -2149,7 +2149,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
        data->unibi_ext.set_cursor_color = (int)unibi_add_ext_str(ut, "ext.set_cursor_color",
                                                                  "\033]12;#%p1%06x\007");
      }
