@@ -23,7 +23,6 @@ class Neovim < Formula
   depends_on "waltarix/customs/luajit"
   depends_on "waltarix/customs/luv"
 
-  uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
 
   on_linux do
