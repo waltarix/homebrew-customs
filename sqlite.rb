@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.39.4-migemo/sqlite-autoconf-3390400.tar.xz"
-  version "3.39.4"
-  sha256 "a3e6ae372db11ee411206017f2117e3416a40e44b1abec108e5cd30d3abb072b"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.40.0-migemo/sqlite-autoconf-3400000.tar.xz"
+  version "3.40.0"
+  sha256 "0762b6898b10da415d7cdeb6c038c1fa84a34032d0e0efc7ee114a48a37fe674"
   license "blessing"
 
   livecheck do
