@@ -2,18 +2,22 @@ class Cmigemo < Formula
   desc "Migemo is a tool that supports Japanese incremental search with Romaji"
   homepage "https://www.kaoriya.net/software/cmigemo"
   url "https://github.com/waltarix/cmigemo.git",
-    tag: "20150404-custom-r3"
-  version "20150404-custom-r3"
+    tag: "20220623-custom"
+  version "20220623-custom"
   license "MIT"
 
   depends_on "nkf" => :build
 
   def install
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+
     system "./configure", "--prefix=#{prefix}"
-    system "make", make_target
-    system "make", "#{make_target}-dict"
-    ENV.deparallelize # Install can fail on multi-core machines unless serialized
-    system "make", "#{make_target}-install"
+
+    os = OS.mac? ? "osx" : "gcc"
+    inreplace "compile/Make_#{os}.mak", /^(CFLAGS_MIGEMO.+)$/, "\\1 -flto"
+    system "make", os
+    system "make", "#{os}-dict"
+    system "make", "#{os}-install"
   end
 
   def caveats
@@ -21,12 +25,6 @@ class Cmigemo < Formula
       See also https://github.com/emacs-jp/migemo to use cmigemo with Emacs.
       You will have to save as migemo.el and put it in your load-path.
     EOS
-  end
-
-  def make_target
-    return "gcc" if OS.linux?
-
-    "osx"
   end
 
   test do
