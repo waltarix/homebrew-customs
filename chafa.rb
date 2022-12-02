@@ -4,6 +4,7 @@ class Chafa < Formula
   url "https://hpjansson.org/chafa/releases/chafa-1.12.4.tar.xz"
   sha256 "9774bd1a7076ea3124f7fea811e371d0e1da2e76b7ac06260d63a86c7b1a573f"
   license "LGPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url "https://hpjansson.org/chafa/releases/?C=M&O=D"
@@ -23,12 +24,13 @@ class Chafa < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
-    on_macos do
-      ENV.append "CFLAGS", "-flto"
-    end
-
-    system "./configure", *std_configure_args, "--disable-silent-rules", "--without-imagemagick"
+    system "./configure", *std_configure_args,
+                          "--disable-silent-rules",
+                          "--without-imagemagick"
     system "make", "install"
     man1.install "docs/chafa.1"
   end
