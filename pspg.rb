@@ -1,8 +1,8 @@
 class Pspg < Formula
   desc "Unix pager optimized for psql"
   homepage "https://github.com/okbob/pspg"
-  url "https://github.com/okbob/pspg/archive/5.5.12.tar.gz"
-  sha256 "8cee0a0cd4aa8a5ce91c11b1d6cb34b87deb71a78a6b25a6993f1af2264957c3"
+  url "https://github.com/okbob/pspg/archive/5.6.4.tar.gz"
+  sha256 "195cbafdc9ed5b7eb1724b19cd1f88a711d62c979e27f5418996c7e14fe370f5"
   license "BSD-2-Clause"
   head "https://github.com/okbob/pspg.git", branch: "master"
 
@@ -18,6 +18,8 @@ class Pspg < Formula
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
     resource("wcwidth9.h").stage(buildpath/"src")
     inreplace "src/unicode.c", /(?<=^#include "string\.h")/, %(\n#include "wcwidth9.h")
