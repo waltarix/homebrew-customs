@@ -122,6 +122,8 @@ class Neovim < Formula
     ENV.deparallelize
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    rm share/"nvim/runtime/filetype.vim"
   end
 
   test do
