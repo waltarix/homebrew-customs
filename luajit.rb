@@ -41,6 +41,9 @@ class Luajit < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
     inreplace "src/lj_jit.h" do |s|
       tbl = {
