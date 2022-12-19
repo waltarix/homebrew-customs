@@ -8,53 +8,32 @@ class JxaDaemon < Formula
   depends_on "ruby"
 
   resource "fast_jsonparser" do
-    url "https://rubygems.org/downloads/oj-3.11.0.gem"
-    sha256 "470d6ac425efd19c526ecea1cabb0219dd8bbcbdeeec57bd45a803b5e082ab5b"
+    url "https://rubygems.org/downloads/oj-3.13.23.gem"
+    sha256 "206dfdc4020ad9974705037f269cfba211d61b7662a58c717cce771829ccef51"
   end
 
   def install
     ENV["GEM_HOME"] = libexec
     resources.each do |r|
       r.fetch
-      system "gem", "install", r.cached_download, "--no-document",
-                    "--install-dir", libexec
+      system "gem", "install", r.cached_download, "--ignore-dependencies",
+                    "--no-document", "--install-dir", libexec
     end
 
     libexec.install "jxa_daemon.rb" => "jxa-daemon"
-    jxa_daemon = libexec/"jxa-daemon"
-    chmod 0555, jxa_daemon
-    ruby = Formula["ruby"].opt_bin/"ruby"
-    (bin/"jxa-daemon").write_env_script(ruby, jxa_daemon, GEM_HOME: ENV["GEM_HOME"])
+    chmod 0555, libexec/"jxa-daemon"
+    (bin/"jxa-daemon").write_env_script libexec/"jxa-daemon",
+      PATH:     "#{Formula["ruby"].opt_bin}:$PATH",
+      GEM_HOME: ENV["GEM_HOME"]
   end
 
-  plist_options manual: "#{HOMEBREW_PREFIX}/opt/jxa_daemon/bin/jxa-daemon"
+  plist_options startup: true
 
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>KeepAlive</key>
-        <true/>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/jxa-daemon</string>
-        </array>
-        <key>EnvironmentVariables</key>
-        <dict>
-          <key>GEM_HOME</key>
-          <string>#{libexec}</string>
-        </dict>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{HOMEBREW_PREFIX}</string>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"jxa-daemon"]
+    run_type :immediate
+    keep_alive true
+    working_dir HOMEBREW_PREFIX
   end
 
   test do
