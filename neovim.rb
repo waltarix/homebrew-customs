@@ -1,8 +1,8 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.8.1.tar.gz"
-  sha256 "b4484e130aa962457189f3dee34b8481943c1e395d2d684c6f8b91598494d9ec"
+  url "https://github.com/neovim/neovim/archive/v0.8.2.tar.gz"
+  sha256 "c516c8db73e1b12917a6b2e991b344d0914c057cef8266bce61a2100a28ffcc9"
   license "Apache-2.0"
 
   livecheck do
@@ -252,25 +252,3 @@ index 33d652a51..827c15b9f 100644
  }
  
  // Generic conversion function for case operations.
-diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 1cb1c34ad..9b0b0fcf8 100644
---- a/src/nvim/tui/tui.c
-+++ b/src/nvim/tui/tui.c
-@@ -2136,7 +2136,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
-   }
- 
-   data->unibi_ext.set_cursor_color = unibi_find_ext_str(ut, "Cs");
--  if (-1 == data->unibi_ext.set_cursor_color) {
-+  // if (-1 == data->unibi_ext.set_cursor_color) {
-     if (iterm || iterm_pretending_xterm) {
-       // FIXME: Bypassing tmux like this affects the cursor colour globally, in
-       // all panes, which is not particularly desirable.  A better approach
-@@ -2149,7 +2149,7 @@ static void augment_terminfo(TUIData *data, const char *term, long vte_version,
-       data->unibi_ext.set_cursor_color = (int)unibi_add_ext_str(ut, "ext.set_cursor_color",
-                                                                 "\033]12;#%p1%06x\007");
-     }
--  }
-+  // }
-   if (-1 != data->unibi_ext.set_cursor_color) {
-     data->unibi_ext.reset_cursor_color = unibi_find_ext_str(ut, "Cr");
-     if (-1 == data->unibi_ext.reset_cursor_color) {
