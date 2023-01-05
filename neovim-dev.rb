@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/4703e561d5bc0eef13da171c4f8f8b6e02ae4883.tar.gz"
-  sha256 "2beb1ce656dbdd14342bc8e2ecd53812cd775698f1221794df9508cbb86c2eb9"
-  version "0.9.0-dev-580-g4703e561d"
+  url "https://github.com/neovim/neovim/archive/ae64772a88125153a438a0e9e43d5f6bcb4eeb28.tar.gz"
+  sha256 "1b4a74be2acbe14a7d1ccca20e6367f7cc04e911e6606cd89375d0f548d78109"
+  version "0.9.0-dev-617-gae64772a8"
   license "Apache-2.0"
 
   livecheck do
@@ -51,14 +51,15 @@ class NeovimDev < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
-    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r1/wcwidth9.h"
+    sha256 "aa242ec09a43dc360d8ccf971b55a5dc9910fec27db3822f3abc0ee04b06cc5c"
   end
 
   patch :DATA
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
     resource("luarocks").stage do
       system "./configure", "--prefix=#{buildpath}/luarocks",
@@ -165,7 +166,7 @@ index 3982489b9..35508a3db 100644
    call s:Remove_Matches()
  
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index f0fd4c66e..a06534368 100755
+index f0fd4c66e..54f2a5e4b 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,14 +1,15 @@
@@ -207,7 +208,21 @@ index f0fd4c66e..a06534368 100755
  
 -git -C "$UNIDIR" commit -m "feat: update unicode tables" .
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
-+  "https://github.com/waltarix/localedata/releases/download/$UNIDIR_VERSION/EastAsianWidth.txt"
++  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r1/EastAsianWidth.txt"
+diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
+index e4134133a..71fb84922 100644
+--- a/src/nvim/api/ui.c
++++ b/src/nvim/api/ui.c
+@@ -928,9 +928,6 @@ static void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startc
+       remote_ui_cursor_goto(ui, row, startcol + i);
+       remote_ui_highlight_set(ui, attrs[i]);
+       remote_ui_put(ui, (const char *)chunk[i]);
+-      if (utf_ambiguous_width(utf_ptr2char((char *)chunk[i]))) {
+-        data->client_col = -1;  // force cursor update
+-      }
+     }
+     if (endcol < clearcol) {
+       remote_ui_cursor_goto(ui, row, endcol);
 diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
 index 9ad99c802..e6c3569b1 100644
 --- a/src/nvim/generators/gen_unicode_tables.lua
@@ -223,7 +238,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index f48955c90..494c7cbb7 100644
+index f48955c90..83cae3049 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -90,6 +90,8 @@ struct interval {
@@ -269,13 +284,42 @@ index f48955c90..494c7cbb7 100644
    return 1;
  }
  
-@@ -1175,8 +1163,7 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
- 
- bool utf_ambiguous_width(int c)
- {
--  return c >= 0x80 && (intable(ambiguous, ARRAY_SIZE(ambiguous), c)
--                       || intable(emoji_all, ARRAY_SIZE(emoji_all), c));
-+  return c >= 0x80 && (intable(emoji_all, ARRAY_SIZE(emoji_all), c));
+@@ -1173,12 +1161,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+   return 2;
  }
  
+-bool utf_ambiguous_width(int c)
+-{
+-  return c >= 0x80 && (intable(ambiguous, ARRAY_SIZE(ambiguous), c)
+-                       || intable(emoji_all, ARRAY_SIZE(emoji_all), c));
+-}
+-
  // Generic conversion function for case operations.
+ // Return the converted equivalent of "a", which is a UCS-4 character.  Use
+ // the given conversion "table".  Uses binary search on "table".
+diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
+index 066567a87..31911e283 100644
+--- a/src/nvim/tui/tui.c
++++ b/src/nvim/tui/tui.c
+@@ -899,8 +899,7 @@ static void print_cell_at_pos(UI *ui, int row, int col, UCell *cell, bool is_dou
+ 
+   cursor_goto(ui, row, col);
+ 
+-  bool is_ambiwidth = utf_ambiguous_width(utf_ptr2char(cell->data));
+-  if (is_ambiwidth && is_doublewidth) {
++  if (is_doublewidth) {
+     // Clear the two screen cells.
+     // If the character is single-width in the host terminal it won't change the second cell.
+     update_attrs(ui, cell->attr);
+@@ -909,11 +908,6 @@ static void print_cell_at_pos(UI *ui, int row, int col, UCell *cell, bool is_dou
+   }
+ 
+   print_cell(ui, cell);
+-
+-  if (is_ambiwidth) {
+-    // Force repositioning cursor after printing an ambiguous-width character.
+-    grid->row = -1;
+-  }
+ }
+ 
+ static void clear_region(UI *ui, int top, int bot, int left, int right, int attr_id)
