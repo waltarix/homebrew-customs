@@ -1,10 +1,10 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.3a-custom-r1/tmux-3.3a.tar.xz"
-  sha256 "1dce6d9e0e95ff0d663752f48e74e86c7a1da07779158c6aaa9ca864c10ad346"
+  url "https://github.com/waltarix/tmux/releases/download/3.3a-custom-r2/tmux-3.3a.tar.xz"
+  sha256 "0fbbd7ab934e59530390402d9f55cddde2252dd9e3ad9185feeba64294987b82"
   license "ISC"
-  revision 1
+  revision 2
 
   livecheck do
     url :stable
@@ -41,6 +41,8 @@ class Tmux < Formula
 
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
     ENV.append "LDFLAGS", "-lresolv"
     system "./configure", *args
