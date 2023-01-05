@@ -5,7 +5,7 @@ class Zsh < Formula
   mirror "https://www.zsh.org/pub/zsh-5.9.tar.xz"
   sha256 "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5"
   license "MIT-Modern-Variant"
-  revision 1
+  revision 2
 
   livecheck do
     url "https://sourceforge.net/projects/zsh/rss?path=/zsh"
@@ -26,8 +26,8 @@ class Zsh < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
-    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r1/wcwidth9.h"
+    sha256 "aa242ec09a43dc360d8ccf971b55a5dc9910fec27db3822f3abc0ee04b06cc5c"
   end
 
   def install
@@ -40,7 +40,8 @@ class Zsh < Formula
 
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     ENV.append "CFLAGS", "-flto"
-    ENV.append "LDFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
     # Work around configure issues with Xcode 12
     # https://www.zsh.org/mla/workers/2020/index.html
