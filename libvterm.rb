@@ -5,7 +5,7 @@ class Libvterm < Formula
   sha256 "61eb0d6628c52bdf02900dfd4468aa86a1a7125228bab8a67328981887483358"
   license "MIT"
   version_scheme 1
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -15,13 +15,18 @@ class Libvterm < Formula
   depends_on "libtool" => :build
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
-    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r1/wcwidth9.h"
+    sha256 "aa242ec09a43dc360d8ccf971b55a5dc9910fec27db3822f3abc0ee04b06cc5c"
   end
 
   patch :DATA
 
   def install
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
+
     resource("wcwidth9.h").stage(buildpath/"src")
 
     system "make", "install", "PREFIX=#{prefix}"
