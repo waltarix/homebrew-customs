@@ -22,6 +22,7 @@ class MigemoDaemon < Formula
     run_type :immediate
     keep_alive true
     working_dir HOMEBREW_PREFIX
+    environment_variables LANG: "en_US.UTF-8"
   end
 
   test do
