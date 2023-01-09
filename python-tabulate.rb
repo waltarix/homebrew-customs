@@ -7,12 +7,12 @@ class PythonTabulate < Formula
 
   depends_on "python@3.10" => [:build, :test]
   depends_on "python@3.11" => [:build, :test]
-  depends_on "python@3.9" => [:build, :test]
   depends_on "waltarix/customs/libpython-wcwidth"
 
   def pythons
     deps.map(&:to_formula)
         .select { |f| f.name.match?(/^python@\d\.\d+$/) }
+        .sort_by(&:version)
         .map { |f| f.opt_libexec/"bin/python" }
   end
 
