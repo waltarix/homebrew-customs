@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/ae64772a88125153a438a0e9e43d5f6bcb4eeb28.tar.gz"
-  sha256 "1b4a74be2acbe14a7d1ccca20e6367f7cc04e911e6606cd89375d0f548d78109"
-  version "0.9.0-dev-617-gae64772a8"
+  url "https://github.com/neovim/neovim/archive/c19bd47c0a2e3cc77d7f5e41ed184edb41685bd3.tar.gz"
+  sha256 "e90a22462eeba1bda5ffd70d6e0b17e2a0aa2c38ee95be5e2fdd1f362fff260b"
+  version "0.9.0-dev-635-gc19bd47c0"
   license "Apache-2.0"
 
   livecheck do
@@ -210,10 +210,10 @@ index f0fd4c66e..54f2a5e4b 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r1/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index e4134133a..71fb84922 100644
+index 32b294c0c..1101ce92f 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -928,9 +928,6 @@ static void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startc
+@@ -868,9 +868,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
        remote_ui_put(ui, (const char *)chunk[i]);
@@ -298,23 +298,23 @@ index f48955c90..83cae3049 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 066567a87..31911e283 100644
+index 44f671803..17873a9bb 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -899,8 +899,7 @@ static void print_cell_at_pos(UI *ui, int row, int col, UCell *cell, bool is_dou
+@@ -848,8 +848,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
-   cursor_goto(ui, row, col);
+   cursor_goto(tui, row, col);
  
 -  bool is_ambiwidth = utf_ambiguous_width(utf_ptr2char(cell->data));
 -  if (is_ambiwidth && is_doublewidth) {
 +  if (is_doublewidth) {
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
-     update_attrs(ui, cell->attr);
-@@ -909,11 +908,6 @@ static void print_cell_at_pos(UI *ui, int row, int col, UCell *cell, bool is_dou
+     update_attrs(tui, cell->attr);
+@@ -858,11 +857,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
-   print_cell(ui, cell);
+   print_cell(tui, cell);
 -
 -  if (is_ambiwidth) {
 -    // Force repositioning cursor after printing an ambiguous-width character.
@@ -322,4 +322,4 @@ index 066567a87..31911e283 100644
 -  }
  }
  
- static void clear_region(UI *ui, int top, int bot, int left, int right, int attr_id)
+ static void clear_region(TUIData *tui, int top, int bot, int left, int right, int attr_id)
