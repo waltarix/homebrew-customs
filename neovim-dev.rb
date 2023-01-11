@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/c19bd47c0a2e3cc77d7f5e41ed184edb41685bd3.tar.gz"
-  sha256 "e90a22462eeba1bda5ffd70d6e0b17e2a0aa2c38ee95be5e2fdd1f362fff260b"
-  version "0.9.0-dev-635-gc19bd47c0"
+  url "https://github.com/neovim/neovim/archive/08d5b4275ecaae4d3329d4ed2469782f10dd463e.tar.gz"
+  sha256 "5d71fab3f91e5e39b790037302018e24def5dd6883f08015e4fa70a764a6f7b0"
+  version "0.9.0-dev-655-g08d5b4275"
   license "Apache-2.0"
 
   livecheck do
@@ -238,7 +238,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index f48955c90..83cae3049 100644
+index e1a870071..ac255e530 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -90,6 +90,8 @@ struct interval {
@@ -284,7 +284,7 @@ index f48955c90..83cae3049 100644
    return 1;
  }
  
-@@ -1173,12 +1161,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1171,12 +1159,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
    return 2;
  }
  
