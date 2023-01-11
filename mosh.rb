@@ -1,8 +1,8 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.3.2.95rc1-custom/mosh-1.3.2.95rc1-custom.tar.xz"
-  sha256 "6fbd29cd64de299723798a051ee22e47d7303102310958309988fc955124df72"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom/mosh-1.4.0-custom.tar.xz"
+  sha256 "689d13a78610fab3ba9329ba9188cc246ce7984f0d6fb68f4717ba0e3954a1d7"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -12,11 +12,16 @@ class Mosh < Formula
 
   depends_on "pkg-config" => :build
   depends_on "ncurses"
-  depends_on "openssl"
+  depends_on "openssl@3"
   depends_on "protobuf"
   depends_on "zlib"
 
   def install
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
+
     ENV.cxx11
 
     # https://github.com/protocolbuffers/protobuf/issues/9947
