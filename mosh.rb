@@ -1,9 +1,10 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom/mosh-1.4.0-custom.tar.xz"
-  sha256 "689d13a78610fab3ba9329ba9188cc246ce7984f0d6fb68f4717ba0e3954a1d7"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r1/mosh-1.4.0-custom.tar.xz"
+  sha256 "d86dbb9431d405efb0f0adee47e44ec6b91718308107674843351df8335337fd"
   license "GPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url :homepage
@@ -34,6 +35,7 @@ class Mosh < Formula
     args = %W[
       --prefix=#{prefix}
       --enable-completion
+      --enable-syslog
       --with-crypto-library=openssl-with-openssl-ocb
     ]
 
