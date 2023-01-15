@@ -1,10 +1,10 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r1/mosh-1.4.0-custom.tar.xz"
-  sha256 "d86dbb9431d405efb0f0adee47e44ec6b91718308107674843351df8335337fd"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r2/mosh-1.4.0-custom.tar.xz"
+  sha256 "9cdf7ffcab9078e751c6dcbd2e9591db8dc03017226ad84c2dccc37d3f5e5f3e"
   license "GPL-3.0-or-later"
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -15,7 +15,7 @@ class Mosh < Formula
   depends_on "ncurses"
   depends_on "openssl@3"
   depends_on "protobuf"
-  depends_on "zlib"
+  depends_on "zstd"
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
