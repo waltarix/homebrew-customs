@@ -11,6 +11,8 @@ class LibtreeSitter < Formula
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
     system "make", "AMALGAMATED=1"
     system "make", "install", "PREFIX=#{prefix}"
