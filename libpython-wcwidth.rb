@@ -1,37 +1,34 @@
 class LibpythonWcwidth < Formula
   desc "Pretty-print tabular data in Python"
   homepage "https://pypi.org/project/tabulate/"
-  url "https://github.com/waltarix/python-wcwidth/archive/0.2.5-custom-r1.tar.gz"
-  version "0.2.5"
-  sha256 "02e2428c74fce44afba1d01161e2f149ed6120fde8eee162bedf8d89a7788383"
+  url "https://github.com/waltarix/python-wcwidth/archive/0.2.6-custom.tar.gz"
+  version "0.2.6"
+  sha256 "b094248eaf5203d5b1e98e58a2d4b70c8c46529ea6149d0f301415e03444f36b"
   license "MIT"
-  revision 2
 
   depends_on "python@3.10" => [:build, :test]
   depends_on "python@3.11" => [:build, :test]
-  depends_on "python@3.9" => [:build, :test]
 
   def pythons
     deps.map(&:to_formula)
         .select { |f| f.name.match?(/^python@\d\.\d+$/) }
+        .sort_by(&:version)
         .map { |f| f.opt_libexec/"bin/python" }
   end
 
   def install
     pythons.each do |python|
-      site_packages = Language::Python.site_packages(python)
-
-      system python, *Language::Python.setup_install_args(prefix, python), "--install-lib=#{libexec/site_packages}"
-
-      (prefix/site_packages/"homebrew-libpython-wcwidth.pth").write <<~EOS
-        import sys; sys.path.insert(0, '#{libexec/site_packages}')
-      EOS
+      system python, "-m", "pip", "install", "--prefix=#{prefix}", "--no-deps", "."
     end
   end
 
   test do
+    script = <<~EOS
+      from wcwidth import wcswidth
+      print([wcswidth('☆'), wcswidth('🇫🇮'), wcswidth('├┼┤')])
+    EOS
     pythons.each do |python|
-      system python, "-c", "import wcwidth"
+      assert_equal "[2, 2, 3]\n", pipe_output(python, script, 0)
     end
   end
 end
