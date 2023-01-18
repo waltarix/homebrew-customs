@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/b884d0b37031ec3d5a521925ea66621b572adfda.tar.gz"
-  sha256 "f69997bbfa3494ce6f518fb52588ca57ea388e68a9eaed492c1003759dc7ffe4"
-  version "0.9.0-dev-677-gb884d0b37"
+  url "https://github.com/neovim/neovim/archive/0aae7f386042593aecfc8237020899d0e94fe8e4.tar.gz"
+  sha256 "8697f92415292b72a93041ea444dd083770e867c03535a8c8bf25b565bd63480"
+  version "0.9.0-dev-737-g0aae7f386"
   license "Apache-2.0"
 
   livecheck do
@@ -166,7 +166,7 @@ index 3982489b9..35508a3db 100644
    call s:Remove_Matches()
  
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index f0fd4c66e..54f2a5e4b 100755
+index f0fd4c66e..1a15eb4b5 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,14 +1,15 @@
@@ -181,7 +181,7 @@ index f0fd4c66e..54f2a5e4b 100755
  UNIDIR_DEFAULT=src/unicode
 -DOWNLOAD_URL_BASE_DEFAULT='http://unicode.org/Public'
 +UNIDIR_VERSION=15.0.0
-+DOWNLOAD_URL_BASE_DEFAULT="https://unicode.org/Public/$UNIDIR_VERSION/ucd"
++DOWNLOAD_URL_BASE_DEFAULT="https://www.unicode.org/Public/$UNIDIR_VERSION/ucd"
  
 -if test "$1" = '--help' ; then
 +if test "$1" = '--help'; then
@@ -208,12 +208,12 @@ index f0fd4c66e..54f2a5e4b 100755
  
 -git -C "$UNIDIR" commit -m "feat: update unicode tables" .
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
-+  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r1/EastAsianWidth.txt"
++  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r2/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 32b294c0c..1101ce92f 100644
+index e67607a7e..0dffc6a42 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -868,9 +868,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -871,9 +871,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
        remote_ui_put(ui, (const char *)chunk[i]);
@@ -238,7 +238,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index e1a870071..ac255e530 100644
+index 68e8a3269..00291081c 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -90,6 +90,8 @@ struct interval {
@@ -298,10 +298,10 @@ index e1a870071..ac255e530 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 44f671803..17873a9bb 100644
+index 44b99f6c8..742d0dc90 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -848,8 +848,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -844,8 +844,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
    cursor_goto(tui, row, col);
  
@@ -311,7 +311,7 @@ index 44f671803..17873a9bb 100644
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -858,11 +857,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -854,11 +853,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, cell);
