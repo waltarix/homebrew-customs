@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/0aae7f386042593aecfc8237020899d0e94fe8e4.tar.gz"
-  sha256 "8697f92415292b72a93041ea444dd083770e867c03535a8c8bf25b565bd63480"
-  version "0.9.0-dev-737-g0aae7f386"
+  url "https://github.com/neovim/neovim/archive/06d1e86ff8e7814e4a648293c1a90414fe82bb1e.tar.gz"
+  sha256 "811c7e9eab0ff3488f689fb4c7af4f1ee054a9d60a9309cb9e0e75e379c90be3"
+  version "0.9.0-dev-809-g06d1e86ff"
   license "Apache-2.0"
 
   livecheck do
@@ -28,8 +28,8 @@ class NeovimDev < Formula
 
   uses_from_macos "unzip" => :build
 
-  on_linux do
-    depends_on "libnsl"
+  on_macos do
+    depends_on "libiconv"
   end
 
   # Keep resources updated according to:
@@ -138,33 +138,6 @@ class NeovimDev < Formula
 end
 
 __END__
-diff --git a/runtime/plugin/matchparen.vim b/runtime/plugin/matchparen.vim
-index 3982489b9..35508a3db 100644
---- a/runtime/plugin/matchparen.vim
-+++ b/runtime/plugin/matchparen.vim
-@@ -19,7 +19,8 @@ endif
- 
- augroup matchparen
-   " Replace all matchparen autocommands
--  autocmd! CursorMoved,CursorMovedI,WinEnter,BufWinEnter,WinScrolled * call s:Highlight_Matching_Pair()
-+  autocmd! CursorMoved,CursorMovedI,WinEnter,WinScrolled * call s:Highlight_Matching_Pair()
-+  autocmd! BufWinEnter * call s:Highlight_Matching_Pair('bwe')
-   autocmd! WinLeave,BufLeave * call s:Remove_Matches()
-   if exists('##TextChanged')
-     autocmd! TextChanged,TextChangedI * call s:Highlight_Matching_Pair()
-@@ -36,7 +37,11 @@ set cpo-=C
- 
- " The function that is invoked (very often) to define a ":match" highlighting
- " for any matching paren.
--func s:Highlight_Matching_Pair()
-+func s:Highlight_Matching_Pair(...)
-+  if get(a:, 1, '') == 'bwe' && has_key(v:lua.vim.api.nvim_win_get_config(0), 'zindex')
-+    return
-+  endif
-+
-   " Remove any previous match.
-   call s:Remove_Matches()
- 
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
 index f0fd4c66e..1a15eb4b5 100755
 --- a/scripts/download-unicode-files.sh
@@ -238,7 +211,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 68e8a3269..00291081c 100644
+index 8b50ba719..67d2887f9 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -90,6 +90,8 @@ struct interval {
@@ -250,15 +223,20 @@ index 68e8a3269..00291081c 100644
  static char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
  static char e_list_item_nr_does_not_contain_3_numbers[]
-@@ -483,30 +485,16 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+@@ -482,33 +484,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+ ///       gen_unicode_tables.lua, which must be manually invoked as needed.
  int utf_char2cells(int c)
  {
-   if (c >= 0x100) {
+-  // Use the value from setcellwidths() at 0x80 and higher, unless the
+-  // character is not printable.
+-  if (c >= 0x80 && vim_isprintc(c)) {
 -    int n = cw_value(c);
 -    if (n != 0) {
 -      return n;
 -    }
+-  }
 -
+   if (c >= 0x100) {
 -    if (!utf_printable(c)) {
 +    int n = wcwidth9(c);
 +    if (n < 0) {
@@ -270,21 +248,22 @@ index 68e8a3269..00291081c 100644
 -    if (p_emoji && intable(emoji_wide, ARRAY_SIZE(emoji_wide), c)) {
 -      return 2;
 -    }
+-  } else if (c >= 0x80 && !vim_isprintc(c)) {
+-    // Characters below 0x100 are influenced by 'isprint' option.
+-    return 4;                   // unprintable, displays <xx>
 +    return n;
-   } else if (c >= 0x80 && !vim_isprintc(c)) {
-     // Characters below 0x100 are influenced by 'isprint' option.
-     return 4;                   // unprintable, displays <xx>
    }
  
 -  if (c >= 0x80 && *p_ambw == 'd'
 -      && intable(ambiguous, ARRAY_SIZE(ambiguous), c)) {
 -    return 2;
--  }
--
-   return 1;
- }
++  if (c >= 0x80 && !vim_isprintc(c)) {
++    // Characters below 0x100 are influenced by 'isprint' option.
++    return 4;                   // unprintable, displays <xx>
+   }
  
-@@ -1171,12 +1159,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+   return 1;
+@@ -1175,12 +1161,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
    return 2;
  }
  
@@ -298,10 +277,10 @@ index 68e8a3269..00291081c 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 44b99f6c8..742d0dc90 100644
+index a50e44f7a..4d32708d1 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -844,8 +844,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -852,8 +852,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
    cursor_goto(tui, row, col);
  
@@ -311,7 +290,7 @@ index 44b99f6c8..742d0dc90 100644
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -854,11 +853,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -862,11 +861,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, cell);
