@@ -33,8 +33,6 @@ class Tmux < Formula
       args << "--disable-utf8proc"
     end
 
-    ENV.append "LIBS", "-ljemalloc"
-
     ncurses = Formula["ncurses"]
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
@@ -49,6 +47,10 @@ class Tmux < Formula
 
     system "make", "install"
 
+    (libexec/"bin").install bin/"tmux"
+    (bin/"tmux").write_env_script libexec/"bin/tmux",
+                                  ld_preload => Formula["jemalloc"].lib/shared_library("libjemalloc")
+
     pkgshare.install "example_tmux.conf"
     bash_completion.install resource("completion")
   end
@@ -57,7 +59,20 @@ class Tmux < Formula
     <<~EOS
       Example configuration has been installed to:
         #{opt_pkgshare}
+
+      To prevent jemalloc from being injected into child processes,
+      add the following to your tmux.conf:
+        set-environment -g -r #{ld_preload}
     EOS
+  end
+
+  def ld_preload
+    on_macos do
+      return :DYLD_INSERT_LIBRARIES
+    end
+    on_linux do
+      return :LD_PRELOAD
+    end
   end
 
   test do
