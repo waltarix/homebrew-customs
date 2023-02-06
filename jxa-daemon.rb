@@ -27,12 +27,11 @@ class JxaDaemon < Formula
       GEM_HOME: ENV["GEM_HOME"]
   end
 
-  plist_options startup: true
-
   service do
     run [opt_bin/"jxa-daemon"]
     run_type :immediate
     keep_alive true
+    require_root true
     working_dir HOMEBREW_PREFIX
     environment_variables LANG: "en_US.UTF-8"
   end
