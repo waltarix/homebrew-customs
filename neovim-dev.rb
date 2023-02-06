@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/b4c4c232ba6fe3df5c6f12faff4405a16e4d40df.tar.gz"
-  sha256 "49fa6650725cf1deca0d7a226e7474ea96ba184ce8cdcb362e299e66e5b9a37b"
-  version "0.9.0-dev-833+gb4c4c232b"
+  url "https://github.com/neovim/neovim/archive/6c39edaa7e5060cedfbbf61e88f4aad20fdff73d.tar.gz"
+  sha256 "0ceeaaf42192d7f8bc28c68bb78af053d97df183d68a221362a0733ee6a23702"
+  version "0.9.0-dev-878-g6c39edaa7"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -272,7 +272,7 @@ index 8b50ba719..67d2887f9 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index a50e44f7a..4d32708d1 100644
+index fff5c865b..f189a6983 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -852,8 +852,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
