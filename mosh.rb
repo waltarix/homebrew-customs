@@ -1,10 +1,10 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r2/mosh-1.4.0-custom.tar.xz"
-  sha256 "9cdf7ffcab9078e751c6dcbd2e9591db8dc03017226ad84c2dccc37d3f5e5f3e"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r3/mosh-1.4.0-custom.tar.xz"
+  sha256 "7adda46edfc4107e581e1dce386fde1c02a7ffe5df5e85fa4f40dc55ff343eab"
   license "GPL-3.0-or-later"
-  revision 2
+  revision 3
 
   livecheck do
     url :homepage
