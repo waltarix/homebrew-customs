@@ -1,4 +1,4 @@
-class SystemdCompletionZsh < Formula
+class SystemdCompletion < Formula
   desc "System and service manager"
   homepage "https://wiki.freedesktop.org/www/Software/systemd/"
   url "https://github.com/systemd/systemd/archive/v252.tar.gz"
@@ -7,10 +7,14 @@ class SystemdCompletionZsh < Formula
 
   def install
     zsh_completion.install Dir["shell-completion/zsh/_*"].reject { |f| f.end_with?('.in') }
+    bash_completion.install Dir["shell-completion/bash/*"].reject { |f| f.end_with?('.in') }
   end
 
   test do
     assert_match "_journalctl is an autoload shell function",
       shell_output("zsh -c 'autoload -Uz compinit; compinit; whence -v _journalctl'")
+
+    assert_match "-F _journalctl",
+      shell_output("bash -c 'source #{bash_completion}/journalctl && complete -p journalctl'")
   end
 end
