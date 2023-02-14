@@ -2,15 +2,15 @@ class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
   if OS.linux?
-    url "https://github.com/waltarix/dprint/releases/download/0.34.4-custom/dprint-0.34.4-x86_64-unknown-linux-gnu.tar.xz"
-    sha256 "cc9c373af6ea81c26aadbcfd08e58f9bb77bfbf60b7b4f0035d4db252ff0534f"
+    url "https://github.com/waltarix/dprint/releases/download/0.34.5-custom-r1/dprint-0.34.5-x86_64-unknown-linux-gnu.tar.xz"
+    sha256 "02d4d9fcab516cc6dc71c9255826a073e1e11ea7c50dc60ee89530802346de34"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/dprint/releases/download/0.34.4-custom/dprint-0.34.4-aarch64-apple-darwin.tar.xz"
-      sha256 "d72ffd9576c2f101d4d1ba6b300b635c1b9ba3dfa3ff042c5df5e806218c3305"
+      url "https://github.com/waltarix/dprint/releases/download/0.34.5-custom-r1/dprint-0.34.5-aarch64-apple-darwin.tar.xz"
+      sha256 "4ae3dedb5def62f92d2ca9f69295f066317f8f301852c2dd93dbc584481b5c77"
     else
-      url "https://github.com/waltarix/dprint/releases/download/0.34.4-custom/dprint-0.34.4-x86_64-apple-darwin.tar.xz"
-      sha256 "12f90087377fffa28844fc39a3bd3532003d72e49d1e2b66b0d9e51955a0c979"
+      url "https://github.com/waltarix/dprint/releases/download/0.34.5-custom-r1/dprint-0.34.5-x86_64-apple-darwin.tar.xz"
+      sha256 "035e66583f7de65300c3597bf37ff8986d02d57de1a2016033c2a33a358eb7f2"
     end
   end
   license "MIT"
