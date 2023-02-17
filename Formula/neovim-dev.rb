@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/1539f713639eb1c661da9f9003fd58bf4cbbc615.tar.gz"
-  sha256 "9d617f5180e9437732516875bff24079a92ee671f4daa5874be5c24fa90eb7f4"
-  version "0.9.0-dev-965-g8307ed3a1"
+  url "https://github.com/neovim/neovim/archive/0326ef2f41a5c18c6cfd2c1b1dda95f7b309a5c4.tar.gz"
+  sha256 "553da0551974fb8c7d5b970ffc4ddc9e5010c8d21a42861b83b472e225dac9b2"
+  version "0.9.0-dev-984+g0326ef2f4"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -111,13 +111,11 @@ class NeovimDev < Formula
     end
 
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja",
-                    "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}",
-                    "-DLIBUV_LIBRARY=#{Formula["libuv"].opt_lib/shared_library("libuv")}",
-                    "-DNVIM_VERSION_MEDIUM=v#{version}", 
+                    "-DNVIM_VERSION_MEDIUM=v#{version}",
                     *std_cmake_args
 
     # Patch out references to Homebrew shims
-    inreplace "build/cmake.config/auto/versiondef.h", Superenv.shims_path/ENV.cc, ENV.cc
+    inreplace "build/cmake.config/auto/versiondef-Release.h", Superenv.shims_path/ENV.cc, ENV.cc
 
     ENV.deparallelize
     system "cmake", "--build", "build"
