@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/0326ef2f41a5c18c6cfd2c1b1dda95f7b309a5c4.tar.gz"
-  sha256 "553da0551974fb8c7d5b970ffc4ddc9e5010c8d21a42861b83b472e225dac9b2"
-  version "0.9.0-dev-984+g0326ef2f4"
+  url "https://github.com/neovim/neovim/archive/649742821a640c47c3934e7366676efc03153a28.tar.gz"
+  sha256 "2bc0e38dad86678df07bd0f4673486674bdfed691e6bf6d115578d2c0ecf3da2"
+  version "0.9.0-dev-1023+g649742821"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -46,8 +46,8 @@ class NeovimDev < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r1/wcwidth9.h"
-    sha256 "aa242ec09a43dc360d8ccf971b55a5dc9910fec27db3822f3abc0ee04b06cc5c"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r4/wcwidth9.h"
+    sha256 "81974cfee64faece46162923a3ed3a70b9dfb7723005103730718bf2dded6ab5"
   end
 
   patch :DATA
@@ -176,7 +176,7 @@ index f0fd4c66e..c4938a537 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r4/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 61f2c881b..c8eba78a2 100644
+index f6dee066d..4c26ea283 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
 @@ -871,9 +871,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
@@ -270,7 +270,7 @@ index e27bb003e..2476092c8 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 8df6e49b7..06c72b815 100644
+index fee1d2167..18d56f2b0 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -849,8 +849,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
