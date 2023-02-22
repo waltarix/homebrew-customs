@@ -1,10 +1,9 @@
 class W3m < Formula
   desc "Pager/text based browser"
   homepage "https://packages.debian.org/sid/w3m"
-  url "https://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20220429.orig.tar.xz"
-  version "0.5.3+git20220429-1"
-  sha256 "597cda53b95b8cb467d387249d5ae9be31556d42ab5f2abaaa9a42cab5d8b28e"
-  revision 1
+  url "https://deb.debian.org/debian/pool/main/w/w3m/w3m_0.5.3+git20230121.orig.tar.xz"
+  version "0.5.3+git20230121-2"
+  sha256 "974d1095a47f1976150a792fe9c5a44cc821c02b6bdd714a37a098386250e03a"
 
   livecheck do
     url "https://deb.debian.org/debian/pool/main/w/w3m/"
@@ -16,18 +15,17 @@ class W3m < Formula
   depends_on "brotli"
   depends_on "bzip2"
   depends_on "ncurses"
-  depends_on "openssl"
+  depends_on "openssl@3"
   depends_on "waltarix/customs/cmigemo"
   depends_on "zlib"
 
   on_linux do
     depends_on "gettext"
-    depends_on "libbsd"
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0/wcwidth9.h"
-    sha256 "a18bd4ddc6a27e9f7a9c9ba273bf3a120846f31fe32f00972aa7987d21e3154d"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r4/wcwidth9.h"
+    sha256 "81974cfee64faece46162923a3ed3a70b9dfb7723005103730718bf2dded6ab5"
   end
 
   patch :DATA
@@ -40,7 +38,6 @@ class W3m < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-gopher",
-                          "--disable-ipv6",
                           "--disable-w3mmailer",
                           "--enable-image=no",
                           "--enable-japanese=U",
