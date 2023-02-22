@@ -5,6 +5,7 @@ class Libvterm < Formula
   sha256 "25a8ad9c15485368dfd0a8a9dca1aec8fea5c27da3fa74ec518d5d3787f0c397"
   license "MIT"
   version_scheme 1
+  revision 1
 
   livecheck do
     url :homepage
@@ -14,8 +15,8 @@ class Libvterm < Formula
   depends_on "libtool" => :build
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r1/wcwidth9.h"
-    sha256 "aa242ec09a43dc360d8ccf971b55a5dc9910fec27db3822f3abc0ee04b06cc5c"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r4/wcwidth9.h"
+    sha256 "81974cfee64faece46162923a3ed3a70b9dfb7723005103730718bf2dded6ab5"
   end
 
   patch :DATA
