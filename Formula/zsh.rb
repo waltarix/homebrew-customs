@@ -5,7 +5,7 @@ class Zsh < Formula
   mirror "https://www.zsh.org/pub/zsh-5.9.tar.xz"
   sha256 "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5"
   license "MIT-Modern-Variant"
-  revision 2
+  revision 3
 
   livecheck do
     url "https://sourceforge.net/projects/zsh/rss?path=/zsh"
@@ -26,8 +26,20 @@ class Zsh < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r1/wcwidth9.h"
-    sha256 "aa242ec09a43dc360d8ccf971b55a5dc9910fec27db3822f3abc0ee04b06cc5c"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r4/wcwidth9.h"
+    sha256 "81974cfee64faece46162923a3ed3a70b9dfb7723005103730718bf2dded6ab5"
+  end
+
+  patch do
+    url "https://deb.debian.org/debian/pool/main/z/zsh/zsh_5.9-4.debian.tar.xz"
+    sha256 "44ff8339a70cc3aaad2d336f23fc5903fe73fa7d7d3518a7af9205275ca72ac8"
+    apply %w[
+      patches/further-mitigate-test-suite-hangs.patch
+      patches/update-debian-sections.patch
+      patches/completion-dscverify.diff
+      patches/fix-typos-in-man-pages.patch
+      patches/cherry-pick-3e3cfabc-revert-38150-and-fix-in-calling-function-cfp_matcher_range-instead.patch
+    ]
   end
 
   def install
