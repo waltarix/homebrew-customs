@@ -37,7 +37,6 @@ class Zsh < Formula
       patches/further-mitigate-test-suite-hangs.patch
       patches/update-debian-sections.patch
       patches/completion-dscverify.diff
-      patches/fix-typos-in-man-pages.patch
       patches/cherry-pick-3e3cfabc-revert-38150-and-fix-in-calling-function-cfp_matcher_range-instead.patch
     ]
   end
