@@ -2,19 +2,18 @@ class Dufs < Formula
   desc "Static file server"
   homepage "https://github.com/sigoden/dufs"
   if OS.linux?
-    url "https://github.com/waltarix/dufs/releases/download/v0.31.0-custom-r1/dufs-0.31.0-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "665292b46687d700efcd869ce4156bebad506c6e9112d5776148a75ecd609ecc"
+    url "https://github.com/waltarix/dufs/releases/download/v0.32.0-custom/dufs-0.32.0-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "eedfb933f669c508c0d89757773961c162a52fb46c922381da5a052c17514fcb"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/dufs/releases/download/v0.31.0-custom-r1/dufs-0.31.0-aarch64-apple-darwin.tar.xz"
-      sha256 "b600f0cb4a46453500a42e3ce1b5652828140fb679dc6683f40472061fed66f4"
+      url "https://github.com/waltarix/dufs/releases/download/v0.32.0-custom/dufs-0.32.0-aarch64-apple-darwin.tar.xz"
+      sha256 "21381d0a767968912c47abf1c832cb21d35d5adccc518920e38f649d664e2d3b"
     else
-      url "https://github.com/waltarix/dufs/releases/download/v0.31.0-custom-r1/dufs-0.31.0-x86_64-apple-darwin.tar.xz"
-      sha256 "382ca04837f6ea686578a197626b718031910616f72259ddf78241e205596120"
+      url "https://github.com/waltarix/dufs/releases/download/v0.32.0-custom/dufs-0.32.0-x86_64-apple-darwin.tar.xz"
+      sha256 "e95ba5d0f0f8c1fb69b94267289d91dfe8ae6b766642ba237add1c330dc364a5"
     end
   end
   license any_of: ["Apache-2.0", "MIT"]
-  revision 1
 
   def install
     bin.install "dufs"
