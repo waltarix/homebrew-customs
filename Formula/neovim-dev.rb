@@ -1,16 +1,15 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/1d8b77da6b0abe6dccd6ce64e283b7208f873d57.tar.gz"
-  sha256 "8eacb044e245bf10bc485eda26bd91f37b32fed27b96fab7e64fb7bb284839ee"
-  version "0.9.0-dev-1051+g1d8b77da6"
+  url "https://github.com/neovim/neovim/archive/361de6d54d41fc0fc8f8a89ec779696f3f7bb46e.tar.gz"
+  sha256 "cdaff6f60100fffb235407d1645d68c8a290abc89d84899ffbf93813503dadcb"
+  version "0.9.0-dev-1099+g361de6d54"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "libtermkey"
   depends_on "libuv"
@@ -176,10 +175,10 @@ index f0fd4c66e..c4938a537 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r4/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index f6dee066d..4c26ea283 100644
+index a8f5d2e07..c51080cfb 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -871,9 +871,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -874,9 +874,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
        remote_ui_put(ui, (const char *)chunk[i]);
@@ -270,7 +269,7 @@ index e27bb003e..2476092c8 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index fee1d2167..18d56f2b0 100644
+index 48dc860eb..3f02d74c8 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -849,8 +849,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
