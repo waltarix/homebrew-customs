@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/361de6d54d41fc0fc8f8a89ec779696f3f7bb46e.tar.gz"
-  sha256 "cdaff6f60100fffb235407d1645d68c8a290abc89d84899ffbf93813503dadcb"
-  version "0.9.0-dev-1099+g361de6d54"
+  url "https://github.com/neovim/neovim/archive/39096f48f0a632870f0792955b37dc32e77458fb.tar.gz"
+  sha256 "8725149d5bf371d7cef07388692ede7d992fee22e0b73698bf00e38818b738fa"
+  version "0.9.0-dev-1154+g39096f48f"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -130,6 +130,96 @@ class NeovimDev < Formula
 end
 
 __END__
+diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
+index a56e141c2..5c252ce1d 100644
+--- a/runtime/lua/vim/lsp.lua
++++ b/runtime/lua/vim/lsp.lua
+@@ -58,6 +58,7 @@ lsp._request_name_to_capability = {
+   ['textDocument/references'] = { 'referencesProvider' },
+   ['textDocument/rangeFormatting'] = { 'documentRangeFormattingProvider' },
+   ['textDocument/formatting'] = { 'documentFormattingProvider' },
++  ['textDocument/diagnostic'] = { 'diagnosticProvider' },
+   ['textDocument/completion'] = { 'completionProvider' },
+   ['textDocument/documentHighlight'] = { 'documentHighlightProvider' },
+   ['textDocument/semanticTokens/full'] = { 'semanticTokensProvider' },
+@@ -622,6 +623,9 @@ do
+           },
+           contentChanges = changes,
+         })
++        vim.schedule(function()
++          vim.lsp.diagnostic.pull_diagnostic(bufnr, client)
++        end)
+       end
+     end
+   end
+@@ -740,6 +744,8 @@ local function text_document_did_open_handler(bufnr, client)
+   client.notify('textDocument/didOpen', params)
+   util.buf_versions[bufnr] = params.textDocument.version
+ 
++  vim.lsp.diagnostic.pull_diagnostic(bufnr, client)
++
+   -- Next chance we get, we should re-do the diagnostics
+   vim.schedule(function()
+     -- Protect against a race where the buffer disappears
+diff --git a/runtime/lua/vim/lsp/diagnostic.lua b/runtime/lua/vim/lsp/diagnostic.lua
+index 5e2bf75f1..37641284e 100644
+--- a/runtime/lua/vim/lsp/diagnostic.lua
++++ b/runtime/lua/vim/lsp/diagnostic.lua
+@@ -206,6 +206,25 @@ function M.on_publish_diagnostics(_, result, ctx, config)
+   vim.diagnostic.set(namespace, bufnr, diagnostic_lsp_to_vim(diagnostics, bufnr, client_id))
+ end
+ 
++function M.pull_diagnostic(bufnr, client)
++  if not client.supports_method('textDocument/diagnostic') then
++    return
++  end
++
++  client.request(
++    'textDocument/diagnostic',
++    { textDocument = { uri = vim.uri_from_bufnr(bufnr) } },
++    function(err, result)
++      if err or result == nil then
++        return
++      end
++
++      local namespace = M.get_namespace(client.id)
++      vim.diagnostic.set(namespace, bufnr, diagnostic_lsp_to_vim(result.items, bufnr, client.id))
++    end
++  )
++end
++
+ --- Clear diagnostics and diagnostic cache.
+ ---
+ --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
+diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
+index 27dd68645..b9b2d2952 100644
+--- a/runtime/lua/vim/lsp/protocol.lua
++++ b/runtime/lua/vim/lsp/protocol.lua
+@@ -805,6 +805,10 @@ function protocol.make_client_capabilities()
+           end)(),
+         },
+       },
++      diagnostic = {
++        dynamicRegistration = false,
++        relatedDocumentSupport = false,
++      },
+       callHierarchy = {
+         dynamicRegistration = false,
+       },
+diff --git a/runtime/lua/vim/lsp/util.lua b/runtime/lua/vim/lsp/util.lua
+index 554e26022..ba22c73f1 100644
+--- a/runtime/lua/vim/lsp/util.lua
++++ b/runtime/lua/vim/lsp/util.lua
+@@ -457,6 +457,9 @@ function M.apply_text_edits(text_edits, bufnr, offset_encoding)
+   for _, text_edit in ipairs(text_edits) do
+     -- Normalize line ending
+     text_edit.newText, _ = string.gsub(text_edit.newText, '\r\n?', '\n')
++    if string.sub(text_edit.newText, -1) == '\n' then
++      text_edit.newText = string.gsub(text_edit.newText, '\n$', '')
++    end
+ 
+     -- Convert from LSP style ranges to Neovim style ranges.
+     local e = {
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
 index f0fd4c66e..c4938a537 100755
 --- a/scripts/download-unicode-files.sh
@@ -203,10 +293,10 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index e27bb003e..2476092c8 100644
+index 35af7479b..c45fd44ec 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
-@@ -90,6 +90,8 @@ struct interval {
+@@ -87,6 +87,8 @@ struct interval {
  #endif
  // uncrustify:on
  
@@ -215,7 +305,7 @@ index e27bb003e..2476092c8 100644
  static char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
  static char e_list_item_nr_does_not_contain_3_numbers[]
-@@ -480,33 +482,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+@@ -477,33 +479,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  ///       gen_unicode_tables.lua, which must be manually invoked as needed.
  int utf_char2cells(int c)
  {
@@ -255,7 +345,7 @@ index e27bb003e..2476092c8 100644
    }
  
    return 1;
-@@ -1165,12 +1151,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1162,12 +1148,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
    return 2;
  }
  
@@ -269,10 +359,10 @@ index e27bb003e..2476092c8 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 48dc860eb..3f02d74c8 100644
+index df7c87ad6..f60ddc756 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -849,8 +849,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -836,8 +836,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
    cursor_goto(tui, row, col);
  
@@ -282,7 +372,7 @@ index 48dc860eb..3f02d74c8 100644
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -859,11 +858,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -846,11 +845,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, cell);
