@@ -1,13 +1,15 @@
 class Jq < Formula
   desc "Lightweight and flexible command-line JSON processor"
   homepage "https://stedolan.github.io/jq/"
-  url "https://github.com/stedolan/jq.git",
-      revision: "cff5336ec71b6fee396a95bb0e4bea365e0cd1e8"
+  url "https://github.com/waltarix/jq.git",
+    revision: "28bb5ff6ca78bf4b92462a895270746214efaf89"
   version "1.6-152-gcff5336"
   license "MIT"
+  revision 1
 
   depends_on "libtool" => :build
-  depends_on "oniguruma"
+  depends_on "oniguruma" => :build
+  depends_on "waltarix/customs/cmigemo" => :build
 
   on_macos do
     depends_on "autoconf" => :build
@@ -20,23 +22,6 @@ class Jq < Formula
     ENV.append "CFLAGS", "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
-    inreplace "src/jv_print.c" do |s|
-      colors = [
-        "4;38;5;250", # null
-        "0;38;5;219", # false
-        "0;38;5;219", # true
-        "0;33",       # numbers
-        "0;38;5;214", # strings
-        "0;36",       # arrays
-        "0;38;5;119", # objects
-      ].map do |v|
-        %(COL("#{v}"))
-      end.join(",")
-
-      s.gsub!(/(?<=def_colors\[\] =).+?\};/m, "{#{colors}};")
-      s.gsub!(/(?<=FIELD_COLOR COL\(")[^"]+/, "0;38;5;229")
-    end
-
     (buildpath/"scripts/version").write_env_script("echo", version, {})
 
     system "autoreconf", "-iv"
@@ -44,11 +29,14 @@ class Jq < Formula
                           "--disable-silent-rules",
                           "--disable-maintainer-mode",
                           "--enable-all-static",
+                          "--with-oniguruma=#{Formula["oniguruma"].opt_prefix}",
+                          "--with-migemo",
                           "--prefix=#{prefix}"
     system "make", "install"
   end
 
   test do
     assert_equal "2\n", pipe_output("#{bin}/jq .bar", '{"foo":1, "bar":2}')
+    assert_equal "[\"ボブ\"]\n", pipe_output("#{bin}/jq -c 'map(select(test_migemo(\"bob\")))'", '["ボブ", "スー"]')
   end
 end
