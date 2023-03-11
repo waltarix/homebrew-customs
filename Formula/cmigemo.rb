@@ -2,9 +2,10 @@ class Cmigemo < Formula
   desc "Migemo is a tool that supports Japanese incremental search with Romaji"
   homepage "https://www.kaoriya.net/software/cmigemo"
   url "https://github.com/waltarix/cmigemo.git",
-    tag: "20220623-custom"
+    tag: "20220623-custom-r1"
   version "20220623-custom"
   license "MIT"
+  revision 1
 
   depends_on "nkf" => :build
 
@@ -14,7 +15,7 @@ class Cmigemo < Formula
     system "./configure", "--prefix=#{prefix}"
 
     os = OS.mac? ? "osx" : "gcc"
-    inreplace "compile/Make_#{os}.mak", /^(CFLAGS_MIGEMO.+)$/, "\\1 -flto"
+    inreplace "compile/Make_#{os}.mak", /^(CFLAGS_MIGEMO.+)$/, "\\1 -flto -ffat-lto-objects"
     system "make", os
     system "make", "#{os}-dict"
     system "make", "#{os}-install"
