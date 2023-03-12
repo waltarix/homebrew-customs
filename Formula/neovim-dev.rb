@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/39096f48f0a632870f0792955b37dc32e77458fb.tar.gz"
-  sha256 "8725149d5bf371d7cef07388692ede7d992fee22e0b73698bf00e38818b738fa"
-  version "0.9.0-dev-1154+g39096f48f"
+  url "https://github.com/neovim/neovim/archive/714f6bf249fc6a9e6e389fafebdab3719bc06e71.tar.gz"
+  sha256 "309078aa603d44d3bbc99090a348a83ebbc02215f0b93861a6ec3ff058d40913"
+  version "0.9.0-dev-1208+g714f6bf24"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -131,10 +131,10 @@ end
 
 __END__
 diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
-index a56e141c2..5c252ce1d 100644
+index 39665a3d4..40305440d 100644
 --- a/runtime/lua/vim/lsp.lua
 +++ b/runtime/lua/vim/lsp.lua
-@@ -58,6 +58,7 @@ lsp._request_name_to_capability = {
+@@ -59,6 +59,7 @@ lsp._request_name_to_capability = {
    ['textDocument/references'] = { 'referencesProvider' },
    ['textDocument/rangeFormatting'] = { 'documentRangeFormattingProvider' },
    ['textDocument/formatting'] = { 'documentFormattingProvider' },
@@ -142,7 +142,7 @@ index a56e141c2..5c252ce1d 100644
    ['textDocument/completion'] = { 'completionProvider' },
    ['textDocument/documentHighlight'] = { 'documentHighlightProvider' },
    ['textDocument/semanticTokens/full'] = { 'semanticTokensProvider' },
-@@ -622,6 +623,9 @@ do
+@@ -607,6 +608,9 @@ do
            },
            contentChanges = changes,
          })
@@ -152,7 +152,7 @@ index a56e141c2..5c252ce1d 100644
        end
      end
    end
-@@ -740,6 +744,8 @@ local function text_document_did_open_handler(bufnr, client)
+@@ -722,6 +726,8 @@ local function text_document_did_open_handler(bufnr, client)
    client.notify('textDocument/didOpen', params)
    util.buf_versions[bufnr] = params.textDocument.version
  
@@ -162,7 +162,7 @@ index a56e141c2..5c252ce1d 100644
    vim.schedule(function()
      -- Protect against a race where the buffer disappears
 diff --git a/runtime/lua/vim/lsp/diagnostic.lua b/runtime/lua/vim/lsp/diagnostic.lua
-index 5e2bf75f1..37641284e 100644
+index b27bf6e42..e178c8cb8 100644
 --- a/runtime/lua/vim/lsp/diagnostic.lua
 +++ b/runtime/lua/vim/lsp/diagnostic.lua
 @@ -206,6 +206,25 @@ function M.on_publish_diagnostics(_, result, ctx, config)
@@ -192,7 +192,7 @@ index 5e2bf75f1..37641284e 100644
  ---
  --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
 diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index 27dd68645..b9b2d2952 100644
+index 1686e22c4..357a23eb6 100644
 --- a/runtime/lua/vim/lsp/protocol.lua
 +++ b/runtime/lua/vim/lsp/protocol.lua
 @@ -805,6 +805,10 @@ function protocol.make_client_capabilities()
@@ -207,7 +207,7 @@ index 27dd68645..b9b2d2952 100644
          dynamicRegistration = false,
        },
 diff --git a/runtime/lua/vim/lsp/util.lua b/runtime/lua/vim/lsp/util.lua
-index 554e26022..ba22c73f1 100644
+index 342fad33c..adcb27b6c 100644
 --- a/runtime/lua/vim/lsp/util.lua
 +++ b/runtime/lua/vim/lsp/util.lua
 @@ -457,6 +457,9 @@ function M.apply_text_edits(text_edits, bufnr, offset_encoding)
