@@ -2,7 +2,7 @@ class Jq < Formula
   desc "Lightweight and flexible command-line JSON processor"
   homepage "https://stedolan.github.io/jq/"
   url "https://github.com/waltarix/jq.git",
-    revision: "28bb5ff6ca78bf4b92462a895270746214efaf89"
+    revision: "ef6b7fc2ab742e465c10e00be0ace2e5c5308718"
   version "1.6-152-gcff5336"
   license "MIT"
   revision 1
