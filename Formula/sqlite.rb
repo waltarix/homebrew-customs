@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.41.0-migemo/sqlite-autoconf-3410000.tar.xz"
-  version "3.41.0"
-  sha256 "b15491d354fa4eb00f9d4839131c3694803baf4acc2a9077b9b148f0b7c3aba2"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.41.1-custom/sqlite-autoconf-3410100.tar.xz"
+  version "3.41.1"
+  sha256 "2596d8fedb14ddbc44ad1de294a60cd2abbfd5307572351de8933f676c4d8643"
   license "blessing"
 
   livecheck do
@@ -47,6 +47,9 @@ class Sqlite < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    # Avoid rebuilds of dependants that hardcode this path.
+    inreplace lib/"pkgconfig/sqlite3.pc", prefix, opt_prefix
   end
 
   test do
