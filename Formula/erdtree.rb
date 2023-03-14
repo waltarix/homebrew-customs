@@ -2,15 +2,15 @@ class Erdtree < Formula
   desc "Multi-threaded file-tree visualizer and disk usage analyzer"
   homepage "https://github.com/solidiquis/erdtree"
   if OS.linux?
-    url "https://github.com/waltarix/erdtree/releases/download/v1.3.0-custom/et-1.3.0-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "d220475e8f4c77bcf2767de92b891934fb8387a422c2b1809e06f3f134f97625"
+    url "https://github.com/waltarix/erdtree/releases/download/v1.4.1-custom/et-1.4.1-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "dd597a5b6b4c827460218ed4f48328dbcac62be96be26218a40a6bd292c0bfcc"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/erdtree/releases/download/v1.3.0-custom/et-1.3.0-aarch64-apple-darwin.tar.xz"
-      sha256 "7b5683a4d0f47ce2325834ec301193f70bd067fdd3ea40ea829c3e6009ec79a8"
+      url "https://github.com/waltarix/erdtree/releases/download/v1.4.1-custom/et-1.4.1-aarch64-apple-darwin.tar.xz"
+      sha256 "cc964f3efbd4fe6ad9f80b8fa43dcd569afdafdc36ee30785716928e48303b4d"
     else
-      url "https://github.com/waltarix/erdtree/releases/download/v1.3.0-custom/et-1.3.0-x86_64-apple-darwin.tar.xz"
-      sha256 "9d411a380b0bfacf48f3d1788b33e63f6991f803734de081f83f1b8a61ff2b1b"
+      url "https://github.com/waltarix/erdtree/releases/download/v1.4.1-custom/et-1.4.1-x86_64-apple-darwin.tar.xz"
+      sha256 "3f3ae5b576ac345cf5448b3c656a5438367d3a397d5da14ae7a9336da320302c"
     end
   end
   license "MIT"
