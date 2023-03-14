@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/714f6bf249fc6a9e6e389fafebdab3719bc06e71.tar.gz"
-  sha256 "309078aa603d44d3bbc99090a348a83ebbc02215f0b93861a6ec3ff058d40913"
-  version "0.9.0-dev-1208+g714f6bf24"
+  url "https://github.com/neovim/neovim/archive/d1e0f7454b5fc61d26db5af5ce00c1894e7c49fc.tar.gz"
+  sha256 "c46ddeb86836a88f095fcc34ed55328ec2384be99d2b629e276fab20c14e0430"
+  version "0.9.0-dev-1230+gd1e0f7454"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -206,20 +206,6 @@ index 1686e22c4..357a23eb6 100644
        callHierarchy = {
          dynamicRegistration = false,
        },
-diff --git a/runtime/lua/vim/lsp/util.lua b/runtime/lua/vim/lsp/util.lua
-index 342fad33c..adcb27b6c 100644
---- a/runtime/lua/vim/lsp/util.lua
-+++ b/runtime/lua/vim/lsp/util.lua
-@@ -457,6 +457,9 @@ function M.apply_text_edits(text_edits, bufnr, offset_encoding)
-   for _, text_edit in ipairs(text_edits) do
-     -- Normalize line ending
-     text_edit.newText, _ = string.gsub(text_edit.newText, '\r\n?', '\n')
-+    if string.sub(text_edit.newText, -1) == '\n' then
-+      text_edit.newText = string.gsub(text_edit.newText, '\n$', '')
-+    end
- 
-     -- Convert from LSP style ranges to Neovim style ranges.
-     local e = {
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
 index f0fd4c66e..c4938a537 100755
 --- a/scripts/download-unicode-files.sh
@@ -293,7 +279,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 35af7479b..c45fd44ec 100644
+index fb52a1102..22f39a2eb 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
