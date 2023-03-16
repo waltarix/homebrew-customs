@@ -1,10 +1,10 @@
 class OpensshMinimal < Formula
   desc "OpenBSD freely-licensed SSH connectivity tools"
   homepage "https://www.openssh.com/"
-  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.2p1.tar.gz"
-  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.2p1.tar.gz"
-  version "9.2p1"
-  sha256 "3f66dbf1655fb45f50e1c56da62ab01218c228807b21338d634ebcdf9d71cf46"
+  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.3p1.tar.gz"
+  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.3p1.tar.gz"
+  version "9.3p1"
+  sha256 "e9baba7701a76a51f3d85a62c383a3c9dcd97fa900b859bc7db114c1868af8a8"
   license "SSH-OpenSSH"
 
   livecheck do
@@ -21,7 +21,7 @@ class OpensshMinimal < Formula
   def install
     args = *std_configure_args + %W[
       --sysconfdir=#{etc}/ssh
-      --with-ssl-dir=#{Formula["openssl"].opt_prefix}
+      --with-ssl-dir=#{Formula["openssl@3"].opt_prefix}
       --with-ssl-engine
       --without-ldns
       --without-libedit
