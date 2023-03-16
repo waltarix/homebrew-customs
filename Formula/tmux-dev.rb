@@ -1,9 +1,9 @@
 class TmuxDev < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/archive/b55f34029ac05474dfd993c187b9c61bbcd4e1a1.tar.gz"
-  sha256 "8e5409724cad9c5c906772450af07e5428331e84dc5a4ebdc9f77195c07a042f"
-  version "3.4-82+gb55f3402"
+  url "https://github.com/tmux/tmux/archive/22eb0334c325245e7a49610f91c7842cb6408f4d.tar.gz"
+  sha256 "ea497ba66a542f645074d583fce3cc665f55179622813fdf04f4dbb261ea792b"
+  version "3.4-84+g22eb0334"
   license "ISC"
 
   conflicts_with "tmux", because: "both install a `tmux` binary"
@@ -112,14 +112,14 @@ index 14d8874b..19a92956 100644
  install-exec-hook:
  	if test x@MANFORMAT@ = xmdoc; then \
 diff --git a/configure.ac b/configure.ac
-index 8e846042..60a2300a 100644
+index 8e846042..fd62e4d1 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -1,6 +1,6 @@
  # configure.ac
  
 -AC_INIT([tmux], next-3.4)
-+AC_INIT([tmux], 3.4-82+gb55f3402)
++AC_INIT([tmux], 3.4-84+g22eb0334)
  AC_PREREQ([2.60])
  
  AC_CONFIG_AUX_DIR(etc)
@@ -148,19 +148,6 @@ index 0e0d1d1a..cb374cb1 100644
  /* Log a critical error with error string and die. */
  __dead void
  fatal(const char *msg, ...)
-diff --git a/popup.c b/popup.c
-index f5c6a37c..e29394f4 100644
---- a/popup.c
-+++ b/popup.c
-@@ -259,6 +259,8 @@ popup_draw_cb(struct client *c, void *data, struct screen_redraw_ctx *rctx)
- 	}
- 	c->overlay_check = popup_check_cb;
- 	c->overlay_data = pd;
-+
-+    screen_free(&s);
- }
- 
- static void
 diff --git a/screen-write.c b/screen-write.c
 index b82a43dc..9d7b410a 100644
 --- a/screen-write.c
