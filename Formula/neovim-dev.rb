@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/d1e0f7454b5fc61d26db5af5ce00c1894e7c49fc.tar.gz"
-  sha256 "c46ddeb86836a88f095fcc34ed55328ec2384be99d2b629e276fab20c14e0430"
-  version "0.9.0-dev-1230+gd1e0f7454"
+  url "https://github.com/neovim/neovim/archive/e789d652974226ce3a763e3052a7c3d9898d875e.tar.gz"
+  sha256 "217021e09d5bfc385480fd0a64f6745b5eb42d2bbb2c82750148b73c454958d7"
+  version "0.9.0-dev-1258+ge789d6529"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -30,8 +30,8 @@ class NeovimDev < Formula
   # https://github.com/neovim/neovim/blob/v#{version}/cmake.deps/cmake/BuildLuarocks.cmake
 
   resource "mpack" do
-    url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.9/libmpack-lua-1.0.9.tar.gz"
-    sha256 "0fd07e709c3f6f201c2ffc9f77cef1b303b02c12413f0c15670a32bf6c959e9e"
+    url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.10/libmpack-lua-1.0.10.tar.gz"
+    sha256 "18e202473c9a255f1d2261b019874522a4f1c6b6f989f80da93d7335933e8119"
   end
 
   resource "lpeg" do
@@ -40,8 +40,8 @@ class NeovimDev < Formula
   end
 
   resource "luarocks" do
-    url "https://luarocks.org/releases/luarocks-3.9.1.tar.gz"
-    sha256 "ffafd83b1c42aa38042166a59ac3b618c838ce4e63f4ace9d961a5679ef58253"
+    url "https://luarocks.org/releases/luarocks-3.9.2.tar.gz"
+    sha256 "bca6e4ecc02c203e070acdb5f586045d45c078896f6236eb46aa33ccd9b94edb"
   end
 
   resource "wcwidth9.h" do
@@ -82,7 +82,7 @@ class NeovimDev < Formula
 
     cd "deps-build/build/src" do
       %w[
-        mpack/mpack-1.0.9-0.rockspec
+        mpack/mpack-1.0.10-0.rockspec
         lpeg/lpeg-1.0.2-1.src.rock
       ].each do |rock|
         dir, rock = rock.split("/")
@@ -90,10 +90,6 @@ class NeovimDev < Formula
           output = Utils.safe_popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
           unpack_dir = output.split("\n")[-2]
           cd unpack_dir do
-            on_macos do
-              inreplace "lmpack.c", "#define _XOPEN_SOURCE 500", "#define _C99_SOURCE 1" if dir == "mpack"
-            end
-
             system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"
           end
         end
@@ -131,7 +127,7 @@ end
 
 __END__
 diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
-index 39665a3d4..40305440d 100644
+index 7e8c73ddb..1c2ca1f67 100644
 --- a/runtime/lua/vim/lsp.lua
 +++ b/runtime/lua/vim/lsp.lua
 @@ -59,6 +59,7 @@ lsp._request_name_to_capability = {
