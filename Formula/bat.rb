@@ -2,19 +2,18 @@ class Bat < Formula
   desc "Clone of cat(1) with syntax highlighting and Git integration"
   homepage "https://github.com/sharkdp/bat"
   if OS.linux?
-    url "https://github.com/waltarix/bat/releases/download/v0.22.1-custom-r1/bat-0.22.1-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "9d53955a8ad7d7bea555f16869095d2286eac4a2ccf8ee104b8c6651e869ddfb"
+    url "https://github.com/waltarix/bat/releases/download/v0.23.0-custom/bat-0.23.0-x86_64-unknown-linux-musl.tar.xz"
+    sha256 "c0b30bb5fdbd313576ca4bfa89766d6998afae9f2b6ac561f29f6772ef1e68ed"
   else
     if Hardware::CPU.arm?
-      url "https://github.com/waltarix/bat/releases/download/v0.22.1-custom-r1/bat-0.22.1-aarch64-apple-darwin.tar.xz"
-      sha256 "ddba7d42971b0f9d806dd644f1ef6c46fa309351380866fc9ddf3ca14b0f2c74"
+      url "https://github.com/waltarix/bat/releases/download/v0.23.0-custom/bat-0.23.0-aarch64-apple-darwin.tar.xz"
+      sha256 "ea41c30d571ac68223ac40f12af54f85c74cb9761e7115cdd13a55a2f6a1ea6d"
     else
-      url "https://github.com/waltarix/bat/releases/download/v0.22.1-custom-r1/bat-0.22.1-x86_64-apple-darwin.tar.xz"
-      sha256 "ee198fb9def17c60947e14eb10adb94098294a087c1aab1ae1a35fddcda9deba"
+      url "https://github.com/waltarix/bat/releases/download/v0.23.0-custom/bat-0.23.0-x86_64-apple-darwin.tar.xz"
+      sha256 "ddf0a73791441a0b25b434a1d77ef1c5d93c080493c5140d3ebfcdd5f610b45b"
     end
   end
   license any_of: ["Apache-2.0", "MIT"]
-  revision 1
 
   def install
     bin.install "bat"
