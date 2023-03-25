@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/e789d652974226ce3a763e3052a7c3d9898d875e.tar.gz"
-  sha256 "217021e09d5bfc385480fd0a64f6745b5eb42d2bbb2c82750148b73c454958d7"
-  version "0.9.0-dev-1258+ge789d6529"
+  url "https://github.com/neovim/neovim/archive/2257ade3dc2daab5ee12d27807c0b3bcf103cd29.tar.gz"
+  sha256 "0a58e37fd472253b7a43af765c0495fde6925f88541b28f712fae65faf4c2be2"
+  version "0.9.0-dev-1290+g2257ade3d"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -247,7 +247,7 @@ index f0fd4c66e..c4938a537 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r4/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index a8f5d2e07..c51080cfb 100644
+index 5dd858a6a..ee4459961 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
 @@ -874,9 +874,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
