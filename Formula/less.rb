@@ -1,10 +1,9 @@
 class Less < Formula
   desc "Pager program similar to more"
   homepage "https://www.greenwoodsoftware.com/less/index.html"
-  url "https://github.com/waltarix/less/releases/download/v608-custom-r1/less-608.tar.gz"
-  sha256 "16dd5d56ad6cd7eb2fe16140f74822cf23c0b716d3c429a2410ba6c34be60696"
+  url "https://github.com/waltarix/less/releases/download/v631-custom/less-631.tar.xz"
+  sha256 "f1c40b0d52c999c6c169f170fa6c723ae4820971c11040c0dc8ea823d7eb4881"
   license "GPL-3.0-or-later"
-  revision 1
 
   livecheck do
     url :homepage
@@ -18,6 +17,8 @@ class Less < Formula
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     ENV.append "CFLAGS", "-flto"
+    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append "LDFLAGS", "-Wl,-s"
 
     system "./configure", "--prefix=#{prefix}", "--with-regex=pcre2"
     system "make", "install"
