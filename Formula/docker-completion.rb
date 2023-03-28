@@ -1,17 +1,17 @@
 class DockerCompletion < Formula
   desc "Bash, Zsh and Fish completion for Docker"
   homepage "https://www.docker.com/"
-  "23.0.1".tap do |v|
+  "23.0.2".tap do |v|
     if OS.linux?
       url "https://download.docker.com/linux/static/stable/x86_64/docker-#{v}.tgz"
-      sha256 "ec8a71e79125d3ca76f7cc295f35eea225f4450e0ffe0775f103e2952ff580f6"
+      sha256 "0f3a1f3b7cba049026e86b6b736da990726721ce91d82b88e1e11a170fd754b6"
     else
       if Hardware::CPU.arm?
         url "https://download.docker.com/mac/static/stable/aarch64/docker-#{v}.tgz"
-        sha256 "09c3d2789db3d20f8429b9c4d56c9e2307229777db8347eb4a5d2c5405e77efb"
+        sha256 "a79d36a6d708b62f0509ed7b52b2f36d3f6ecde297f4d8a8fbd7997968e4b771"
       else
         url "https://download.docker.com/mac/static/stable/x86_64/docker-#{v}.tgz"
-        sha256 "2ee26389a9edc59dfa0029c4fd2b79fa15b87943219860302e954660dc63c8c0"
+        sha256 "b59a4083d252c037a6488fe61704d05e8e25e8d136cedb17e4b1fd333138b278"
       end
     end
   end
