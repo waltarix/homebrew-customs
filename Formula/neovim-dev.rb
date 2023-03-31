@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/2257ade3dc2daab5ee12d27807c0b3bcf103cd29.tar.gz"
-  sha256 "0a58e37fd472253b7a43af765c0495fde6925f88541b28f712fae65faf4c2be2"
-  version "0.9.0-dev-1290+g2257ade3d"
+  url "https://github.com/neovim/neovim/archive/83bfd94d1df5eecb8e4069a227c7d24598636d63.tar.gz"
+  sha256 "b860466a5018c68e7e418f5f63be33f5b6100c875c5ccee938e5a554e3be15e1"
+  version "0.9.0-dev-1305+g83bfd94d1"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -158,10 +158,10 @@ index 7e8c73ddb..1c2ca1f67 100644
    vim.schedule(function()
      -- Protect against a race where the buffer disappears
 diff --git a/runtime/lua/vim/lsp/diagnostic.lua b/runtime/lua/vim/lsp/diagnostic.lua
-index b27bf6e42..e178c8cb8 100644
+index 3efa5c51f..fd18323b7 100644
 --- a/runtime/lua/vim/lsp/diagnostic.lua
 +++ b/runtime/lua/vim/lsp/diagnostic.lua
-@@ -206,6 +206,25 @@ function M.on_publish_diagnostics(_, result, ctx, config)
+@@ -236,6 +236,25 @@ function M.on_publish_diagnostics(_, result, ctx, config)
    vim.diagnostic.set(namespace, bufnr, diagnostic_lsp_to_vim(diagnostics, bufnr, client_id))
  end
  
@@ -188,10 +188,10 @@ index b27bf6e42..e178c8cb8 100644
  ---
  --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
 diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index 1686e22c4..357a23eb6 100644
+index f4489ad17..04372cbfa 100644
 --- a/runtime/lua/vim/lsp/protocol.lua
 +++ b/runtime/lua/vim/lsp/protocol.lua
-@@ -805,6 +805,10 @@ function protocol.make_client_capabilities()
+@@ -807,6 +807,10 @@ function protocol.make_client_capabilities()
            end)(),
          },
        },
