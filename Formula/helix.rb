@@ -1,16 +1,18 @@
 class Helix < Formula
   desc "Post-modern modal text editor"
   homepage "https://helix-editor.com"
-  if OS.linux?
-    url "https://github.com/waltarix/helix/releases/download/22.12-custom/helix-22.12-x86_64-unknown-linux-gnu.tar.xz"
-    sha256 "2b1764fd73bb890e43df3266579d1e0f540a932620469ec7fc7cf0f79511aa54"
-  else
-    if Hardware::CPU.arm?
-      url "https://github.com/waltarix/helix/releases/download/22.12-custom/helix-22.12-aarch64-apple-darwin.tar.xz"
-      sha256 "cfebfc4909a6a81d7e0c47fcb44a13b89e72f5c7600dc35c405eb811bebcab0c"
+  "23.03".tap do |v|
+    if OS.linux?
+      url "https://github.com/waltarix/helix/releases/download/#{v}-custom/helix-#{v}-x86_64-unknown-linux-gnu.tar.xz"
+      sha256 "378753107c2bf16cc7890f44a95fece10e3e42cbb715a6a68f03e3ce361b8219"
     else
-      url "https://github.com/waltarix/helix/releases/download/22.12-custom/helix-22.12-x86_64-apple-darwin.tar.xz"
-      sha256 "fb64435440900e8743aa87dbd55b386721945035c1e1396045b7671f31f036ec"
+      if Hardware::CPU.arm?
+        url "https://github.com/waltarix/helix/releases/download/#{v}-custom/helix-#{v}-aarch64-apple-darwin.tar.xz"
+        sha256 "8bcaf4e92b39f58ece6b2c358c0174573333530ebddb74269172fb9b6d98d9c8"
+      else
+        url "https://github.com/waltarix/helix/releases/download/#{v}-custom/helix-#{v}-x86_64-apple-darwin.tar.xz"
+        sha256 "da5f01fb0a089a45913d222282d9f692cb9b68b8e171bb0b10cf9e9bbbd055f7"
+      end
     end
   end
   license "MPL-2.0"
