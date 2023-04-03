@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/83bfd94d1df5eecb8e4069a227c7d24598636d63.tar.gz"
-  sha256 "b860466a5018c68e7e418f5f63be33f5b6100c875c5ccee938e5a554e3be15e1"
-  version "0.9.0-dev-1305+g83bfd94d1"
+  url "https://github.com/neovim/neovim/archive/10baf89712724b4b95f7c641f2012f051737003c.tar.gz"
+  sha256 "11ba33a66c44d714a5c190889731aa10fd717b8a43f4cc3fd484275ad17daacf"
+  version "0.9.0-dev-1319+g10baf8971"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -11,14 +11,10 @@ class NeovimDev < Formula
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "gettext"
-  depends_on "libtermkey"
-  depends_on "libuv"
   depends_on "msgpack"
-  depends_on "unibilium"
   depends_on "waltarix/customs/libtree-sitter"
   depends_on "waltarix/customs/libvterm"
   depends_on "waltarix/customs/luajit"
-  depends_on "waltarix/customs/luv"
 
   uses_from_macos "unzip" => :build
 
@@ -105,6 +101,17 @@ class NeovimDev < Formula
       end
     end
 
+    ENV.deparallelize
+
+    system "cmake", "-S", "cmake.deps", "-B", ".deps", "-G", "Ninja",
+                    "-DUSE_BUNDLED=OFF",
+                    "-DUSE_BUNDLED_LIBTERMKEY=ON",
+                    "-DUSE_BUNDLED_LIBUV=ON",
+                    "-DUSE_BUNDLED_LUV=ON",
+                    "-DUSE_BUNDLED_UNIBILIUM=ON",
+                    *std_cmake_args
+    system "cmake", "--build", ".deps"
+
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja",
                     "-DNVIM_VERSION_MEDIUM=v#{version}",
                     *std_cmake_args
@@ -112,7 +119,6 @@ class NeovimDev < Formula
     # Patch out references to Homebrew shims
     inreplace "build/cmake.config/auto/versiondef-Release.h", Superenv.shims_path/ENV.cc, ENV.cc
 
-    ENV.deparallelize
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -275,7 +281,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index fb52a1102..22f39a2eb 100644
+index c580dc29e..7ac8e38f2 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
