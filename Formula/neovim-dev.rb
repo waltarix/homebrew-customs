@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/9e7426718b678e299f3fd03ef94f81b1e2d01ab0.tar.gz"
-  sha256 "fd36a30f95e8218a8fec7bd15dcd417af1dfdd5ca4732f63445d604b57672107"
-  version "0.9.0-dev-1338+g9e7426718"
+  url "https://github.com/neovim/neovim/archive/bc66b755f61ba0e3383177b2866e05557ffa3966.tar.gz"
+  sha256 "8aecfdda388aef193dc207254bb08ef94c3bdb20e5d259ace72136e938d262a3"
+  version "0.10.0-dev-10+gbc66b755f"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -116,9 +116,6 @@ class NeovimDev < Formula
                     "-DNVIM_VERSION_MEDIUM=v#{version}",
                     *std_cmake_args
 
-    # Patch out references to Homebrew shims
-    inreplace "build/cmake.config/auto/versiondef-Release.h", Superenv.shims_path/ENV.cc, ENV.cc
-
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -133,7 +130,7 @@ end
 
 __END__
 diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
-index 7e8c73ddb..1c2ca1f67 100644
+index 2d39f2d45..b72edede4 100644
 --- a/runtime/lua/vim/lsp.lua
 +++ b/runtime/lua/vim/lsp.lua
 @@ -59,6 +59,7 @@ lsp._request_name_to_capability = {
@@ -253,13 +250,13 @@ index f0fd4c66e..c4938a537 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r4/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 5dd858a6a..ee4459961 100644
+index edf13b073..f166450c8 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
 @@ -874,9 +874,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
-       remote_ui_put(ui, (const char *)chunk[i]);
+       remote_ui_put(ui, chunk[i]);
 -      if (utf_ambiguous_width(utf_ptr2char((char *)chunk[i]))) {
 -        data->client_col = -1;  // force cursor update
 -      }
@@ -281,7 +278,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index c580dc29e..7ac8e38f2 100644
+index ab787524a..4d671833a 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
@@ -290,9 +287,9 @@ index c580dc29e..7ac8e38f2 100644
  
 +#include "wcwidth9.h"
 +
- static char e_list_item_nr_is_not_list[]
+ static const char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
- static char e_list_item_nr_does_not_contain_3_numbers[]
+ static const char e_list_item_nr_does_not_contain_3_numbers[]
 @@ -477,33 +479,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  ///       gen_unicode_tables.lua, which must be manually invoked as needed.
  int utf_char2cells(int c)
