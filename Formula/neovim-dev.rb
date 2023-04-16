@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/bc66b755f61ba0e3383177b2866e05557ffa3966.tar.gz"
-  sha256 "8aecfdda388aef193dc207254bb08ef94c3bdb20e5d259ace72136e938d262a3"
-  version "0.10.0-dev-10+gbc66b755f"
+  url "https://github.com/neovim/neovim/archive/c08b03076167837cff9eb66c19440d727e6dad31.tar.gz"
+  sha256 "9356903f57644ed7b4e53f94f74e93ccf0e60fa755aab5da62a062e36834a822"
+  version "0.10.0-dev-84+gc08b03076"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -130,7 +130,7 @@ end
 
 __END__
 diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
-index 2d39f2d45..b72edede4 100644
+index 5c78bd758..a2d403bd7 100644
 --- a/runtime/lua/vim/lsp.lua
 +++ b/runtime/lua/vim/lsp.lua
 @@ -59,6 +59,7 @@ lsp._request_name_to_capability = {
@@ -191,7 +191,7 @@ index 3efa5c51f..fd18323b7 100644
  ---
  --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
 diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index f4489ad17..04372cbfa 100644
+index 2cb8fc795..3599a81d9 100644
 --- a/runtime/lua/vim/lsp/protocol.lua
 +++ b/runtime/lua/vim/lsp/protocol.lua
 @@ -807,6 +807,10 @@ function protocol.make_client_capabilities()
