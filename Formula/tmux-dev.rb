@@ -1,9 +1,9 @@
 class TmuxDev < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/archive/22eb0334c325245e7a49610f91c7842cb6408f4d.tar.gz"
-  sha256 "ea497ba66a542f645074d583fce3cc665f55179622813fdf04f4dbb261ea792b"
-  version "3.4-84+g22eb0334"
+  url "https://github.com/tmux/tmux/archive/b9524f5b72d16bd634fc47ad1a4a9d3240bd4370.tar.gz"
+  sha256 "b6d730015519794a28fdb6ebd7ce163bbe09f1ed7d6c084e72ee8fcf9bf27867"
+  version "3.4-85+gb9524f5b"
   license "ISC"
 
   conflicts_with "tmux", because: "both install a `tmux` binary"
@@ -94,7 +94,7 @@ end
 
 __END__
 diff --git a/Makefile.am b/Makefile.am
-index 14d8874b..19a92956 100644
+index 14d8874b..df5f6838 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -223,6 +223,13 @@ fuzz_input_fuzzer_LDFLAGS = $(FUZZING_LIBS)
@@ -105,14 +105,14 @@ index 14d8874b..19a92956 100644
 +
 +wcwidth9.h:
 +	curl -sL \
-+		"https://github.com/waltarix/localedata/releases/download/15.0.0-r4/wcwidth9.h" \
++		"https://github.com/waltarix/localedata/releases/download/15.0.0-r5/wcwidth9.h" \
 +		> $@
 +
  # Install tmux.1 in the right format.
  install-exec-hook:
  	if test x@MANFORMAT@ = xmdoc; then \
 diff --git a/configure.ac b/configure.ac
-index 8e846042..fd62e4d1 100644
+index 4b9d75b3..1b85254a 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -1,6 +1,6 @@
