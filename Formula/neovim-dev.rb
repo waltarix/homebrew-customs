@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/c08b03076167837cff9eb66c19440d727e6dad31.tar.gz"
-  sha256 "9356903f57644ed7b4e53f94f74e93ccf0e60fa755aab5da62a062e36834a822"
-  version "0.10.0-dev-84+gc08b03076"
+  url "https://github.com/neovim/neovim/archive/85bc9e897039619327b1de85fcdf13ea65c9bb9b.tar.gz"
+  sha256 "f617d2ceaed6ea3a2850c1bbdf25b8b583aaf27e7563df3d4101c564951fac72"
+  version "0.10.0-dev-102+g85bc9e897"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -41,8 +41,8 @@ class NeovimDev < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r4/wcwidth9.h"
-    sha256 "81974cfee64faece46162923a3ed3a70b9dfb7723005103730718bf2dded6ab5"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r5/wcwidth9.h"
+    sha256 "3272d3b4e3b2068f52093f99609c2ebbe35f60e879daa9ab96481c76f7ce5250"
   end
 
   patch :DATA
@@ -206,7 +206,7 @@ index 2cb8fc795..3599a81d9 100644
          dynamicRegistration = false,
        },
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index f0fd4c66e..c4938a537 100755
+index f0fd4c66e..47f66e45c 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,14 +1,15 @@
@@ -248,7 +248,7 @@ index f0fd4c66e..c4938a537 100755
  
 -git -C "$UNIDIR" commit -m "feat: update unicode tables" .
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
-+  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r4/EastAsianWidth.txt"
++  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
 index edf13b073..f166450c8 100644
 --- a/src/nvim/api/ui.c
