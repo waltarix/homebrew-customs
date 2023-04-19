@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/85bc9e897039619327b1de85fcdf13ea65c9bb9b.tar.gz"
-  sha256 "f617d2ceaed6ea3a2850c1bbdf25b8b583aaf27e7563df3d4101c564951fac72"
-  version "0.10.0-dev-102+g85bc9e897"
+  url "https://github.com/neovim/neovim/archive/c4fb418626187066f213b2cc5cdfe728a40f1fed.tar.gz"
+  sha256 "93450edbde7a573d8ba8610c8b5b9135a65e02aa5c6cd6bbeddbeba4270a6f88"
+  version "0.10.0-dev-136+gc4fb41862"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -11,7 +11,6 @@ class NeovimDev < Formula
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "gettext"
-  depends_on "msgpack"
   depends_on "waltarix/customs/libtree-sitter"
   depends_on "waltarix/customs/libvterm"
   depends_on "waltarix/customs/luajit"
@@ -20,24 +19,6 @@ class NeovimDev < Formula
 
   on_macos do
     depends_on "libiconv"
-  end
-
-  # Keep resources updated according to:
-  # https://github.com/neovim/neovim/blob/v#{version}/cmake.deps/cmake/BuildLuarocks.cmake
-
-  resource "mpack" do
-    url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.10/libmpack-lua-1.0.10.tar.gz"
-    sha256 "18e202473c9a255f1d2261b019874522a4f1c6b6f989f80da93d7335933e8119"
-  end
-
-  resource "lpeg" do
-    url "https://luarocks.org/manifests/gvvaughan/lpeg-1.0.2-1.src.rock"
-    sha256 "e0d0d687897f06588558168eeb1902ac41a11edd1b58f1aa61b99d0ea0abbfbc"
-  end
-
-  resource "luarocks" do
-    url "https://luarocks.org/releases/luarocks-3.9.2.tar.gz"
-    sha256 "bca6e4ecc02c203e070acdb5f586045d45c078896f6236eb46aa33ccd9b94edb"
   end
 
   resource "wcwidth9.h" do
@@ -51,52 +32,22 @@ class NeovimDev < Formula
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     ENV.append "LDFLAGS", "-Wl,-s"
 
-    resource("luarocks").stage do
-      system "./configure", "--prefix=#{buildpath}/luarocks",
-                            "--rocks-tree=#{HOMEBREW_PREFIX}"
-      system "make", "install"
-
-      ENV.append_path "PATH", buildpath/"luarocks/bin"
-    end
-
     resource("wcwidth9.h").stage(buildpath/"src/nvim")
-
-    rocks = resources.map(&:name).to_set - ["luarocks", "wcwidth9.h"]
-    rocks.each do |r|
-      resource(r).stage(buildpath/"deps-build/build/src"/r)
-    end
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
 
     # The path separator for `LUA_PATH` and `LUA_CPATH` is `;`.
-    ENV.prepend "LUA_PATH", buildpath/"deps-build/share/lua/5.1/?.lua", ";"
-    ENV.prepend "LUA_CPATH", buildpath/"deps-build/lib/lua/5.1/?.so", ";"
+    ENV.prepend "LUA_PATH", buildpath/".deps/usr/share/lua/5.1/?.lua", ";"
+    ENV.prepend "LUA_CPATH", buildpath/".deps/usr/lib/lua/5.1/?.so", ";"
     # Don't clobber the default search path
     ENV.append "LUA_PATH", ";", ";"
     ENV.append "LUA_CPATH", ";", ";"
-    lua_path = "--lua-dir=#{Formula["waltarix/customs/luajit"].opt_prefix}"
-
-    cd "deps-build/build/src" do
-      %w[
-        mpack/mpack-1.0.10-0.rockspec
-        lpeg/lpeg-1.0.2-1.src.rock
-      ].each do |rock|
-        dir, rock = rock.split("/")
-        cd dir do
-          output = Utils.safe_popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
-          unpack_dir = output.split("\n")[-2]
-          cd unpack_dir do
-            system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"
-          end
-        end
-      end
-    end
 
     # Point system locations inside `HOMEBREW_PREFIX`.
     inreplace "src/nvim/os/stdpaths.c" do |s|
       s.gsub! "/etc/xdg/", "#{etc}/xdg/:\\0"
 
-      unless HOMEBREW_PREFIX.to_s == HOMEBREW_DEFAULT_PREFIX
+      if HOMEBREW_PREFIX.to_s != HOMEBREW_DEFAULT_PREFIX
         s.gsub! "/usr/local/share/:/usr/share/", "#{HOMEBREW_PREFIX}/share/:\\0"
       end
     end
@@ -107,7 +58,9 @@ class NeovimDev < Formula
                     "-DUSE_BUNDLED=OFF",
                     "-DUSE_BUNDLED_LIBTERMKEY=ON",
                     "-DUSE_BUNDLED_LIBUV=ON",
+                    "-DUSE_BUNDLED_LUAROCKS=ON",
                     "-DUSE_BUNDLED_LUV=ON",
+                    "-DUSE_BUNDLED_MSGPACK=ON",
                     "-DUSE_BUNDLED_UNIBILIUM=ON",
                     *std_cmake_args
     system "cmake", "--build", ".deps"
@@ -250,10 +203,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index edf13b073..f166450c8 100644
+index bd3482c85..bd0b6d23e 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -874,9 +874,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -875,9 +875,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
        remote_ui_put(ui, chunk[i]);
@@ -344,7 +297,7 @@ index ab787524a..4d671833a 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index df7c87ad6..f60ddc756 100644
+index eecaa8c55..4dd733033 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -836,8 +836,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
