@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/c4fb418626187066f213b2cc5cdfe728a40f1fed.tar.gz"
-  sha256 "93450edbde7a573d8ba8610c8b5b9135a65e02aa5c6cd6bbeddbeba4270a6f88"
-  version "0.10.0-dev-136+gc4fb41862"
+  url "https://github.com/neovim/neovim/archive/95839a23581ad678e6dc34bc2935d78f516639e7.tar.gz"
+  sha256 "f665d392a4736ece890b158f86b9589bf5a48b4674962cb0b5427a86f0ee2226"
+  version "0.10.0-dev-208+g95839a235"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -36,12 +36,9 @@ class NeovimDev < Formula
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
 
-    # The path separator for `LUA_PATH` and `LUA_CPATH` is `;`.
-    ENV.prepend "LUA_PATH", buildpath/".deps/usr/share/lua/5.1/?.lua", ";"
-    ENV.prepend "LUA_CPATH", buildpath/".deps/usr/lib/lua/5.1/?.so", ";"
-    # Don't clobber the default search path
-    ENV.append "LUA_PATH", ";", ";"
-    ENV.append "LUA_CPATH", ";", ";"
+    inreplace "cmake.deps/cmake/BuildLpeg.cmake" do |s|
+      s.gsub! "${DEPS_INCLUDE_FLAGS}", "-I${LUAJIT_INCLUDE_DIRS}"
+    end
 
     # Point system locations inside `HOMEBREW_PREFIX`.
     inreplace "src/nvim/os/stdpaths.c" do |s|
@@ -58,6 +55,7 @@ class NeovimDev < Formula
                     "-DUSE_BUNDLED=OFF",
                     "-DUSE_BUNDLED_LIBTERMKEY=ON",
                     "-DUSE_BUNDLED_LIBUV=ON",
+                    "-DUSE_BUNDLED_LPEG=ON",
                     "-DUSE_BUNDLED_LUAROCKS=ON",
                     "-DUSE_BUNDLED_LUV=ON",
                     "-DUSE_BUNDLED_MSGPACK=ON",
@@ -144,7 +142,7 @@ index 3efa5c51f..fd18323b7 100644
  ---
  --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
 diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index 2cb8fc795..3599a81d9 100644
+index a7919f12f..c1236689b 100644
 --- a/runtime/lua/vim/lsp/protocol.lua
 +++ b/runtime/lua/vim/lsp/protocol.lua
 @@ -807,6 +807,10 @@ function protocol.make_client_capabilities()
@@ -231,7 +229,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index ab787524a..4d671833a 100644
+index 7d61b918d..cecda9906 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
@@ -297,7 +295,7 @@ index ab787524a..4d671833a 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index eecaa8c55..4dd733033 100644
+index 2f4ff13bd..a62b0e459 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -836,8 +836,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
