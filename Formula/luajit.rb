@@ -78,6 +78,9 @@ class Luajit < Formula
     # is not set then it's forced to 10.4, which breaks compile on Mojave.
     ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
 
+    # Help the FFI module find Homebrew-installed libraries.
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath(target: HOMEBREW_PREFIX/"lib")}" if HOMEBREW_PREFIX.to_s != "/usr/local"
+
     # Pass `Q= E=@:` to build verbosely.
     verbose_args = %w[Q= E=@:]
 
@@ -120,7 +123,7 @@ class Luajit < Formula
     system bin/"luajit", "-b", "-o", "osx", "-a", "arm64", "empty.lua", "empty.o"
     assert_predicate testpath/"empty.o", :exist?
 
-    # Check that we're not affected by https://github.com/LuaJIT/LuaJIT/issues/865.
+    # Check that we're not affected by LuaJIT/LuaJIT/issues/865.
     require "macho"
     machobj = MachO.open("empty.o")
     assert_kind_of MachO::FatFile, machobj
