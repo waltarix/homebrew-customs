@@ -1,9 +1,9 @@
 class Less < Formula
   desc "Pager program similar to more"
   homepage "https://www.greenwoodsoftware.com/less/index.html"
-  "632".tap do |v|
+  "633".tap do |v|
     url "https://github.com/waltarix/less/releases/download/v#{v}-custom/less-#{v}.tar.xz"
-    sha256 "53dceb1377ca183a8739fb4551274511c509345faf592a57350ebbc290051643"
+    sha256 "b3d587b2d091435ad4705b40086c2d394e87bfa90b1ae83f4c00d80ccdeeae6e"
   end
   license "GPL-3.0-or-later"
 
