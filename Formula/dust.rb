@@ -1,16 +1,18 @@
 class Dust < Formula
   desc "More intuitive version of du in rust"
   homepage "https://github.com/bootandy/dust"
-  if OS.linux?
-    url "https://github.com/waltarix/dust/releases/download/v0.8.5-custom/dust-0.8.5-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "5fab3a133a79fd6a07d0681cb767f40e1db49e12137d096beb4fe4210bb320e2"
-  else
-    if Hardware::CPU.arm?
-      url "https://github.com/waltarix/dust/releases/download/v0.8.5-custom/dust-0.8.5-aarch64-apple-darwin.tar.xz"
-      sha256 "cb768d44ab18797925f3821782582af1765efe0e7c048e5abc07960c520fa24a"
+  "0.8.6".tap do |v|
+    if OS.linux?
+      url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "62f1a5f4910c675db963e79bb06a9811197a4e46e92d35d7cc3707c755b8fbac"
     else
-      url "https://github.com/waltarix/dust/releases/download/v0.8.5-custom/dust-0.8.5-x86_64-apple-darwin.tar.xz"
-      sha256 "28242961518e30a504fa16a2e14c6450bd4f85c0d5a664b70b17935a67a99f19"
+      if Hardware::CPU.arm?
+        url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-aarch64-apple-darwin.tar.xz"
+        sha256 "024e80dc204701366a8e856b343c9886e81ea78aac80467d23f95e8db1bb8a83"
+      else
+        url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-x86_64-apple-darwin.tar.xz"
+        sha256 "8c8735c7b27f20600d34948ff83bc22e5c3f21218ec2e1010748846363e10660"
+      end
     end
   end
   license "Apache-2.0"
