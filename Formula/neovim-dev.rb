@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/1975062d3cd9775a6bdecbf471aa5f8b281692b1.tar.gz"
-  sha256 "66a42834f13fadc98e50a419c895327637ec53b0b0b3cc8714b10d13b4ceb5c2"
-  version "0.10.0-dev-255+g1975062d3"
+  url "https://github.com/neovim/neovim/archive/106922898ad1510954737d38e7f8db78559ae6bd.tar.gz"
+  sha256 "f4e85b97c994579a3f9c6d8b9a001a46e7c01e549e4ccb50c7d9cedc377aaa29"
+  version "0.10.0-dev-487+g106922898"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -37,7 +37,7 @@ class NeovimDev < Formula
     system "sh", buildpath/"scripts/download-unicode-files.sh"
 
     inreplace "cmake.deps/cmake/BuildLpeg.cmake" do |s|
-      s.gsub! "${DEPS_INCLUDE_FLAGS}", "-I${LUAJIT_INCLUDE_DIRS}"
+      s.gsub! "${DEPS_INCLUDE_FLAGS}", "-I${LUAJIT_INCLUDE_DIR}"
     end
 
     # Point system locations inside `HOMEBREW_PREFIX`.
@@ -81,10 +81,10 @@ end
 
 __END__
 diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
-index 5c78bd758..a2d403bd7 100644
+index 6ddbfc6df..a81704a78 100644
 --- a/runtime/lua/vim/lsp.lua
 +++ b/runtime/lua/vim/lsp.lua
-@@ -59,6 +59,7 @@ lsp._request_name_to_capability = {
+@@ -56,6 +56,7 @@ lsp._request_name_to_capability = {
    ['textDocument/references'] = { 'referencesProvider' },
    ['textDocument/rangeFormatting'] = { 'documentRangeFormattingProvider' },
    ['textDocument/formatting'] = { 'documentFormattingProvider' },
@@ -92,7 +92,7 @@ index 5c78bd758..a2d403bd7 100644
    ['textDocument/completion'] = { 'completionProvider' },
    ['textDocument/documentHighlight'] = { 'documentHighlightProvider' },
    ['textDocument/semanticTokens/full'] = { 'semanticTokensProvider' },
-@@ -607,6 +608,9 @@ do
+@@ -603,6 +604,9 @@ do
            },
            contentChanges = changes,
          })
@@ -102,7 +102,7 @@ index 5c78bd758..a2d403bd7 100644
        end
      end
    end
-@@ -722,6 +726,8 @@ local function text_document_did_open_handler(bufnr, client)
+@@ -718,6 +722,8 @@ local function text_document_did_open_handler(bufnr, client)
    client.notify('textDocument/didOpen', params)
    util.buf_versions[bufnr] = params.textDocument.version
  
@@ -142,10 +142,10 @@ index 3efa5c51f..fd18323b7 100644
  ---
  --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
 diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index a7919f12f..c1236689b 100644
+index 172d43e48..0ec1e450c 100644
 --- a/runtime/lua/vim/lsp/protocol.lua
 +++ b/runtime/lua/vim/lsp/protocol.lua
-@@ -807,6 +807,10 @@ function protocol.make_client_capabilities()
+@@ -820,6 +820,10 @@ function protocol.make_client_capabilities()
            end)(),
          },
        },
@@ -201,7 +201,7 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index bd3482c85..bd0b6d23e 100644
+index e98c58918..241839b37 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
 @@ -875,9 +875,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
@@ -229,7 +229,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 7d61b918d..cecda9906 100644
+index 66c26275f..f5c7d44fb 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
@@ -295,7 +295,7 @@ index 7d61b918d..cecda9906 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 975ad375a..fd8735ac1 100644
+index 098366769..78f94da37 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -838,8 +838,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
