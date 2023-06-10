@@ -1,16 +1,18 @@
 class Delta < Formula
   desc "Syntax-highlighting pager for git and diff output"
   homepage "https://github.com/dandavison/delta"
-  if OS.linux?
-    url "https://github.com/waltarix/delta/releases/download/0.15.1-custom/delta-0.15.1-x86_64-unknown-linux-musl.tar.xz"
-    sha256 "2050472410e36106a23580a38eac64b49200c5829cba803ead443743add2c4fc"
-  else
-    if Hardware::CPU.arm?
-      url "https://github.com/waltarix/delta/releases/download/0.15.1-custom/delta-0.15.1-aarch64-apple-darwin.tar.xz"
-      sha256 "e7a956bef36373d3edba1afb618a7d922838ffad9284a91d071f1f24c76ddcde"
+  "0.16.5".tap do |v|
+    if OS.linux?
+      url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "b378e24fcaa489dc6c45af44bb7b89e43ca0d0ca33496d470bb68266b1cdb934"
     else
-      url "https://github.com/waltarix/delta/releases/download/0.15.1-custom/delta-0.15.1-x86_64-apple-darwin.tar.xz"
-      sha256 "9f7e4023c3595d096d567fe6ef9239dad75631d39bfcd63cade223109a37ff54"
+      if Hardware::CPU.arm?
+        url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-aarch64-apple-darwin.tar.xz"
+        sha256 "f07af8d7c5b997fc7455f137e71434043b1e24605af1904ae577e90a69ceb89d"
+      else
+        url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-x86_64-apple-darwin.tar.xz"
+        sha256 "091d7430aa08ef69696e69d89259a9c411e6cd26f58c1ccdae302106538471c1"
+      end
     end
   end
   license "MIT"
