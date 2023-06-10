@@ -9,12 +9,12 @@ class Luajit < Formula
   # Update this to the tip of the `v2.1` branch at the start of every month.
   # Get the latest commit with:
   #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
-  url "https://github.com/LuaJIT/LuaJIT/archive/224129a8e64bfa219d35cd03055bf03952f167f6.tar.gz"
+  url "https://github.com/LuaJIT/LuaJIT/archive/51fb2f2c3af778f03258fccee9092401ee4a0215.tar.gz"
   # Use the version scheme `2.1.0-beta3-yyyymmdd.x` where `yyyymmdd` is the date of the
   # latest commit at the time of updating, and `x` is the number of commits on that date.
   # `brew livecheck luajit` will generate the correct version for you automatically.
-  version "2.1.0-beta3-20230430.1"
-  sha256 "a9bcd9e646e2b188e1d7e3fb594e04c61dda3b332dfd0378d41be19c1eae9d09"
+  version "2.1.0-beta3-20230602.5"
+  sha256 "d081eaa1a5bca419763712397f4696e0dd10db8d9b2e091e15c71d9fc50c24c9"
   license "MIT"
   head "https://luajit.org/git/luajit-2.0.git", branch: "v2.1"
 
@@ -76,7 +76,7 @@ class Luajit < Formula
 
     # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
     # is not set then it's forced to 10.4, which breaks compile on Mojave.
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
 
     # Help the FFI module find Homebrew-installed libraries.
     ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath(target: HOMEBREW_PREFIX/"lib")}" if HOMEBREW_PREFIX.to_s != "/usr/local"
