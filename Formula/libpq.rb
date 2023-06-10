@@ -1,8 +1,8 @@
 class Libpq < Formula
   desc "Postgres C API library"
   homepage "https://www.postgresql.org/docs/15/libpq.html"
-  url "https://ftp.postgresql.org/pub/source/v15.2/postgresql-15.2.tar.bz2"
-  sha256 "99a2171fc3d6b5b5f56b757a7a3cb85d509a38e4273805def23941ed2b8468c7"
+  url "https://ftp.postgresql.org/pub/source/v15.3/postgresql-15.3.tar.bz2"
+  sha256 "ffc7d4891f00ffbf5c3f4eab7fbbced8460b8c0ee63c5a5167133b9e6599d932"
   license "PostgreSQL"
 
   livecheck do
@@ -21,8 +21,8 @@ class Libpq < Formula
   depends_on "zlib"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r3/wcwidth9.h"
-    sha256 "a7e90c1b49e1ef09126838876febb7d5da5451004d4800c2e4cf99e401d2ff8a"
+    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r5/wcwidth9.h"
+    sha256 "3272d3b4e3b2068f52093f99609c2ebbe35f60e879daa9ab96481c76f7ce5250"
   end
 
   def install
