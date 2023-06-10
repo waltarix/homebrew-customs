@@ -4,7 +4,7 @@ class Mosh < Formula
   url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r4/mosh-1.4.0-custom.tar.xz"
   sha256 "dc5c7243992668618eaa9f2ece538f9cf11b34ece8719213cb352858a2e7846e"
   license "GPL-3.0-or-later"
-  revision 4
+  revision 5
 
   livecheck do
     url :homepage
