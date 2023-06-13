@@ -1,17 +1,17 @@
 class Erdtree < Formula
   desc "Multi-threaded file-tree visualizer and disk usage analyzer"
   homepage "https://github.com/solidiquis/erdtree"
-  "2.0.0".tap do |v|
+  "3.0.2".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/erdtree/releases/download/v#{v}-custom/erd-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "bf0e8ecab623c9ceb8fb4d8f5218ce3ff76e4a9a6f240579e8749d2570e60cee"
+      sha256 "d8e78e6cb33ea90d85bdaac6e2f0bd12e8eafcaf6a6d25bcbce470d83cf41710"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/erdtree/releases/download/v#{v}-custom/erd-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "c668a2a3c04db1ea433c753f6e32616e74a7055a2dc8e0b00c598264870bb03e"
+        sha256 "60568dc34ca1009a2caef69a7e3ddb24611100f60df55ce762541dc53da90351"
       else
         url "https://github.com/waltarix/erdtree/releases/download/v#{v}-custom/erd-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "f86d7862f3024ae1db2505b6a4f5afba2fbda67d0aa76b72bafc7d5dd5bdcd88"
+        sha256 "f46cc42e0f25389f7dc83787231ed30787f6e5cdefe78584602d7aa60e4c752f"
       end
     end
   end
