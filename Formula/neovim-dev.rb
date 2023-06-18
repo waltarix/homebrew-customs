@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/106922898ad1510954737d38e7f8db78559ae6bd.tar.gz"
-  sha256 "f4e85b97c994579a3f9c6d8b9a001a46e7c01e549e4ccb50c7d9cedc377aaa29"
-  version "0.10.0-dev-487+g106922898"
+  url "https://github.com/neovim/neovim/archive/7e301ed5b9f72a98086c7004d090ad9aef137485.tar.gz"
+  sha256 "ba10ba4e5ba5dd4256c4c767632325a21e8692ab63fe1d5c7c3a9e6627955da7"
+  version "0.10.0-dev-533+g7e301ed5b"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -81,10 +81,10 @@ end
 
 __END__
 diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
-index 6ddbfc6df..a81704a78 100644
+index 9118e7e2e..53c062b09 100644
 --- a/runtime/lua/vim/lsp.lua
 +++ b/runtime/lua/vim/lsp.lua
-@@ -56,6 +56,7 @@ lsp._request_name_to_capability = {
+@@ -57,6 +57,7 @@ lsp._request_name_to_capability = {
    ['textDocument/references'] = { 'referencesProvider' },
    ['textDocument/rangeFormatting'] = { 'documentRangeFormattingProvider' },
    ['textDocument/formatting'] = { 'documentFormattingProvider' },
@@ -92,7 +92,7 @@ index 6ddbfc6df..a81704a78 100644
    ['textDocument/completion'] = { 'completionProvider' },
    ['textDocument/documentHighlight'] = { 'documentHighlightProvider' },
    ['textDocument/semanticTokens/full'] = { 'semanticTokensProvider' },
-@@ -603,6 +604,9 @@ do
+@@ -606,6 +607,9 @@ do
            },
            contentChanges = changes,
          })
@@ -102,7 +102,7 @@ index 6ddbfc6df..a81704a78 100644
        end
      end
    end
-@@ -718,6 +722,8 @@ local function text_document_did_open_handler(bufnr, client)
+@@ -721,6 +725,8 @@ local function text_document_did_open_handler(bufnr, client)
    client.notify('textDocument/didOpen', params)
    util.buf_versions[bufnr] = params.textDocument.version
  
@@ -142,10 +142,10 @@ index 3efa5c51f..fd18323b7 100644
  ---
  --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
 diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index 172d43e48..0ec1e450c 100644
+index b3a790342..687042d27 100644
 --- a/runtime/lua/vim/lsp/protocol.lua
 +++ b/runtime/lua/vim/lsp/protocol.lua
-@@ -820,6 +820,10 @@ function protocol.make_client_capabilities()
+@@ -826,6 +826,10 @@ function protocol.make_client_capabilities()
            end)(),
          },
        },
