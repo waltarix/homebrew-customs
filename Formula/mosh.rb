@@ -23,12 +23,11 @@ class Mosh < Formula
     ENV.append "CFLAGS", "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
-    ENV.cxx11
-
     # https://github.com/protocolbuffers/protobuf/issues/9947
     ENV.append_to_cflags "-DNDEBUG"
-    # Keep C++ standard in sync with abseil.rb
-    ENV.append "CXXFLAGS", "-std=c++17"
+    # Keep C++ standard in sync with abseil.rb.
+    # Use `gnu++17` since Mosh allows use of GNU extensions (-std=gnu++11).
+    ENV.append "CXXFLAGS", "-std=gnu++17"
 
     # teach mosh to locate mosh-client without referring
     # PATH to support launching outside shell e.g. via launcher
@@ -37,6 +36,7 @@ class Mosh < Formula
     args = %W[
       --prefix=#{prefix}
       --enable-completion
+      --disable-silent-rules
       --enable-syslog
       --with-crypto-library=openssl-with-openssl-ocb
     ]
