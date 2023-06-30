@@ -1,9 +1,9 @@
 class TmuxDev < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/archive/b9524f5b72d16bd634fc47ad1a4a9d3240bd4370.tar.gz"
-  sha256 "b6d730015519794a28fdb6ebd7ce163bbe09f1ed7d6c084e72ee8fcf9bf27867"
-  version "3.4-85+gb9524f5b"
+  url "https://github.com/tmux/tmux/archive/237ee6f2311b351b8a3bb3b46e17622f6e3b6bb9.tar.gz"
+  sha256 "88631761614000d0fab07d3109216b3474d1b06a3466f085d35a332c183423aa"
+  version "3.4-101-g237ee6f2"
   license "ISC"
 
   conflicts_with "tmux", because: "both install a `tmux` binary"
@@ -94,10 +94,10 @@ end
 
 __END__
 diff --git a/Makefile.am b/Makefile.am
-index 14d8874b..df5f6838 100644
+index a6fbfd7a..80d58ce9 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -223,6 +223,13 @@ fuzz_input_fuzzer_LDFLAGS = $(FUZZING_LIBS)
+@@ -224,6 +224,13 @@ fuzz_input_fuzzer_LDFLAGS = $(FUZZING_LIBS)
  fuzz_input_fuzzer_LDADD = $(LDADD) $(tmux_OBJECTS)
  endif
  
@@ -112,14 +112,14 @@ index 14d8874b..df5f6838 100644
  install-exec-hook:
  	if test x@MANFORMAT@ = xmdoc; then \
 diff --git a/configure.ac b/configure.ac
-index 4b9d75b3..1b85254a 100644
+index 0d43485f..b07156c8 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -1,6 +1,6 @@
  # configure.ac
  
 -AC_INIT([tmux], next-3.4)
-+AC_INIT([tmux], 3.4-84+g22eb0334)
++AC_INIT([tmux], 3.4-101-g237ee6f2)
  AC_PREREQ([2.60])
  
  AC_CONFIG_AUX_DIR(etc)
@@ -149,10 +149,10 @@ index 0e0d1d1a..cb374cb1 100644
  __dead void
  fatal(const char *msg, ...)
 diff --git a/screen-write.c b/screen-write.c
-index b82a43dc..9d7b410a 100644
+index 8a440052..4414c5d0 100644
 --- a/screen-write.c
 +++ b/screen-write.c
-@@ -2027,7 +2027,7 @@ screen_write_combine(struct screen_write_ctx *ctx, const struct utf8_data *ud,
+@@ -2033,7 +2033,7 @@ screen_write_combine(struct screen_write_ctx *ctx, const struct utf8_data *ud,
  	    memcmp(ud->data, "\357\270\217", 3) == 0) {
  		grid_view_set_padding(gd, (*xx) + 1, s->cy);
  		gc.data.width = 2;
@@ -162,7 +162,7 @@ index b82a43dc..9d7b410a 100644
  
  	/* Set the new cell. */
 diff --git a/tmux.h b/tmux.h
-index ff77f780..f2c70f13 100644
+index 8de328c4..b4df28e7 100644
 --- a/tmux.h
 +++ b/tmux.h
 @@ -71,6 +71,8 @@ struct tmuxpeer;
