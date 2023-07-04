@@ -1,10 +1,10 @@
 class SystemdCompletion < Formula
   desc "System and service manager"
   homepage "https://wiki.freedesktop.org/www/Software/systemd/"
-  url "https://github.com/systemd/systemd/archive/v253.tar.gz"
-  sha256 "acbd86d42ebc2b443722cb469ad215a140f504689c7a9133ecf91b235275a491"
+  url "https://github.com/systemd/systemd-stable/archive/refs/tags/v253.5.tar.gz"
+  sha256 "544220ae46d96919dbb1d67a4bbbf7b4c054f0099d8bbc8b0c0ae3af492ee493"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
-  revision 1
+  head "https://github.com/systemd/systemd.git", branch: "main"
 
   depends_on "jinja2-cli" => :build
 
