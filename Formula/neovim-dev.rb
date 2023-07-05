@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/2493815290c4cb5b1fb97b6d010c10bdf2d47a58.tar.gz"
-  sha256 "a58f3cad52122b68b31cd8034098d45d3c23aed50383cf369d37a72981d5499d"
-  version "0.10.0-dev-605+g249381529"
+  url "https://github.com/neovim/neovim/archive/8a788e2daa5c62201f2bb278522eddd42f315d41.tar.gz"
+  sha256 "8948f9e601f0c38ee6dbc03304420c31aa57f7f5b016090d4da3273d3f96dd23"
+  version "0.10.0-dev-633+g8a788e2da"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -142,7 +142,7 @@ index 3efa5c51f..fd18323b7 100644
  ---
  --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
 diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index ea38bfe23..4eeec8e3e 100644
+index 27da89165..4d0517900 100644
 --- a/runtime/lua/vim/lsp/protocol.lua
 +++ b/runtime/lua/vim/lsp/protocol.lua
 @@ -826,6 +826,10 @@ function protocol.make_client_capabilities()
@@ -201,10 +201,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index e98c58918..241839b37 100644
+index 861ce100c..48161c81b 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -875,9 +875,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -884,9 +884,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
        remote_ui_put(ui, chunk[i]);
