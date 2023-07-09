@@ -1,21 +1,22 @@
 class Dive < Formula
   desc "Tool for exploring each layer in a docker image"
   homepage "https://github.com/wagoodman/dive"
-  if OS.linux?
-    url "https://github.com/waltarix/dive/releases/download/v0.10.0-custom-r1/dive-0.10.0-linux_amd64.tar.xz"
-    sha256 "dca975f5c8a9d37526784a3361151726263458b587c67e96c4c9822d1e623ba9"
-  else
-    if Hardware::CPU.arm?
-      url "https://github.com/waltarix/dive/releases/download/v0.10.0-custom-r1/dive-0.10.0-darwin_arm64.tar.xz"
-      sha256 "d00d1072a4c4fec862bc92402985f3712ba9ff9a13355706f33a89969607db72"
+  "0.11.0".tap do |v|
+    if OS.linux?
+      url "https://github.com/waltarix/dive/releases/download/v#{v}-custom/dive-#{v}-linux_amd64.tar.xz"
+      sha256 "1d9a4bec157c0c745f3344834e845a397c1ccbc4437fea1830f9abf042c488f9"
     else
-      url "https://github.com/waltarix/dive/releases/download/v0.10.0-custom-r1/dive-0.10.0-darwin_amd64.tar.xz"
-      sha256 "7c0a83ea1c68bc0994d1d1a97347730971b3c1e36a92010ba649faa08cf3d108"
+      if Hardware::CPU.arm?
+        url "https://github.com/waltarix/dive/releases/download/v#{v}-custom/dive-#{v}-darwin_arm64.tar.xz"
+        sha256 "f8c6fa8bba875eff6e3e35987eb29caae609e2ff14f9c2802635609136282d05"
+      else
+        url "https://github.com/waltarix/dive/releases/download/v#{v}-custom/dive-#{v}-darwin_amd64.tar.xz"
+        sha256 "bb7f283ebbd5482e768f5a1bc904a90be32258673bfe970cd16181f2760b957f"
+      end
     end
+    version v
   end
-  version "0.10.0"
   license "MIT"
-  revision 1
 
   on_linux do
     depends_on "device-mapper"
