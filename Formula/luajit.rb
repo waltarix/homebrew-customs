@@ -9,12 +9,12 @@ class Luajit < Formula
   # Update this to the tip of the `v2.1` branch at the start of every month.
   # Get the latest commit with:
   #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
-  url "https://github.com/LuaJIT/LuaJIT/archive/0cc5fdfbc0810073485150eb184dc358dab507d9.tar.gz"
+  url "https://github.com/LuaJIT/LuaJIT/archive/8fbd576fb9414a5fa70dfa6069733d3416a78269.tar.gz"
   # Use the version scheme `2.1.0-beta3-yyyymmdd.x` where `yyyymmdd` is the date of the
   # latest commit at the time of updating, and `x` is the number of commits on that date.
   # `brew livecheck luajit` will generate the correct version for you automatically.
-  version "2.1.0-beta3-20230708.6"
-  sha256 "a4f89240dd22738ff72c28360da5c69d3fcef2dcbeae58880c050fd78264d9f3"
+  version "2.1.0-beta3-20230709.3"
+  sha256 "a1bb0c22aa58c5fcaf4f8397723fada43a8ef5ec81d703bf3afa56b564507e16"
   license "MIT"
   head "https://luajit.org/git/luajit-2.0.git", branch: "v2.1"
 
@@ -39,33 +39,17 @@ class Luajit < Formula
     end
   end
 
+  bottle do
+    sha256 cellar: :any,                 arm64_ventura:  "462d5bdd10151a37207044c7f0ceb627d5a30bf727fcf612b4e0ae7a0f93ec0c"
+    sha256 cellar: :any,                 arm64_monterey: "0cd08df0f9da84866708e21944a284596cc61865ad572f1485a86f5160b2f5be"
+    sha256 cellar: :any,                 arm64_big_sur:  "33f6c13243ffbc3696221c2ba618f0cfb6d7e557c3da3bc8b1f25034a093ca92"
+    sha256 cellar: :any,                 ventura:        "1a29c75417ec9885b8bf99a8e09ee9e1ccd8dceb709d762bfdf37084fa5c8b80"
+    sha256 cellar: :any,                 monterey:       "c399eebc6f474711da1ba29a88a314ac487d23e565787d7d4472dc21b064c81f"
+    sha256 cellar: :any,                 big_sur:        "ef6210f01267cbf61e51b44f1cbc02fd4732e4d14283ed65dc45b3d3b77b99dc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "929b7b53a1c638b66330154508645bd8d703c88fffab75225b41d7834068a9eb"
+  end
+
   def install
-    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "LDFLAGS", "-Wl,-s"
-
-    on_linux do
-      ENV.append "CFLAGS", "-flto"
-      ENV.append "CFLAGS", "-ffat-lto-objects"
-    end
-
-    inreplace "src/lj_jit.h" do |s|
-      tbl = {
-        "maxtrace"  => 8000,
-        "maxrecord" => 16000,
-        "minstitch" => 3,
-        "maxmcode"  => 40960,
-      }
-
-      # s.gsub!(/\b(?<name>(?:max(?:trace|record|mcode)|minstitch)),\s*\d+/) do
-      #   name = Regexp.last_match[:name]
-      #   [name, tbl[name]].join(",\t")
-      # end
-
-      tbl.each do |name, value|
-        s.gsub! /\b#{name},\s*\d+/, "#{name},\t#{value}"
-      end
-    end
-
     # 1 - Override the hardcoded gcc.
     # 2 - Remove the "-march=i686" so we can set the march in cflags.
     # Both changes should persist and were discussed upstream.
