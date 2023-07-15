@@ -1,9 +1,9 @@
 class TmuxDev < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/archive/237ee6f2311b351b8a3bb3b46e17622f6e3b6bb9.tar.gz"
-  sha256 "88631761614000d0fab07d3109216b3474d1b06a3466f085d35a332c183423aa"
-  version "3.4-101-g237ee6f2"
+  url "https://github.com/tmux/tmux/archive/715f39a53a93394ab5d697228c7a41661357948b.tar.gz"
+  sha256 "6db11e013b732cf2900602e58a5e97076fe28ea0ee753bd03839a1067a58256c"
+  version "3.4-112-g715f39a5"
   license "ISC"
 
   conflicts_with "tmux", because: "both install a `tmux` binary"
@@ -112,14 +112,14 @@ index a6fbfd7a..80d58ce9 100644
  install-exec-hook:
  	if test x@MANFORMAT@ = xmdoc; then \
 diff --git a/configure.ac b/configure.ac
-index 0d43485f..b07156c8 100644
+index 0d43485f..d3be80ff 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -1,6 +1,6 @@
  # configure.ac
  
 -AC_INIT([tmux], next-3.4)
-+AC_INIT([tmux], 3.4-101-g237ee6f2)
++AC_INIT([tmux], 3.4-112-g715f39a5)
  AC_PREREQ([2.60])
  
  AC_CONFIG_AUX_DIR(etc)
@@ -149,10 +149,10 @@ index 0e0d1d1a..cb374cb1 100644
  __dead void
  fatal(const char *msg, ...)
 diff --git a/screen-write.c b/screen-write.c
-index 8a440052..4414c5d0 100644
+index d7c196e1..c251909d 100644
 --- a/screen-write.c
 +++ b/screen-write.c
-@@ -2033,7 +2033,7 @@ screen_write_combine(struct screen_write_ctx *ctx, const struct utf8_data *ud,
+@@ -2035,7 +2035,7 @@ screen_write_combine(struct screen_write_ctx *ctx, const struct utf8_data *ud,
  	    memcmp(ud->data, "\357\270\217", 3) == 0) {
  		grid_view_set_padding(gd, (*xx) + 1, s->cy);
  		gc.data.width = 2;
@@ -162,7 +162,7 @@ index 8a440052..4414c5d0 100644
  
  	/* Set the new cell. */
 diff --git a/tmux.h b/tmux.h
-index 8de328c4..b4df28e7 100644
+index 76dd60dc..da4961df 100644
 --- a/tmux.h
 +++ b/tmux.h
 @@ -71,6 +71,8 @@ struct tmuxpeer;
@@ -175,7 +175,7 @@ index 8de328c4..b4df28e7 100644
  #ifndef TMUX_CONF
  #define TMUX_CONF "/etc/tmux.conf:~/.tmux.conf"
 diff --git a/utf8.c b/utf8.c
-index 042ddf89..578c6256 100644
+index 38f1a89a..bc95e8b0 100644
 --- a/utf8.c
 +++ b/utf8.c
 @@ -26,6 +26,8 @@
