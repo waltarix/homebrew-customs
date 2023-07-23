@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/2ecba65b4ba741618ecbfd2a50a939987078bc98.tar.gz"
-  sha256 "e5a4743775acbde0d0ab78617902e19a9d40c84b5f67548ebc8dc5e8782918cc"
-  version "0.10.0-dev-670+g2ecba65b4"
+  url "https://github.com/neovim/neovim/archive/aaa151d506dffa01506619fbdf57537cd2318675.tar.gz"
+  sha256 "328d6e805f72c15a78078311d60d7e0f28c2329e8dbf0e1b0ba4308d391d3546"
+  version "0.10.0-dev-725+gaaa151d50"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -80,82 +80,6 @@ class NeovimDev < Formula
 end
 
 __END__
-diff --git a/runtime/lua/vim/lsp.lua b/runtime/lua/vim/lsp.lua
-index 1f9b6c436..c87b58917 100644
---- a/runtime/lua/vim/lsp.lua
-+++ b/runtime/lua/vim/lsp.lua
-@@ -56,6 +56,7 @@ lsp._request_name_to_capability = {
-   ['textDocument/references'] = { 'referencesProvider' },
-   ['textDocument/rangeFormatting'] = { 'documentRangeFormattingProvider' },
-   ['textDocument/formatting'] = { 'documentFormattingProvider' },
-+  ['textDocument/diagnostic'] = { 'diagnosticProvider' },
-   ['textDocument/completion'] = { 'completionProvider' },
-   ['textDocument/documentHighlight'] = { 'documentHighlightProvider' },
-   ['textDocument/semanticTokens/full'] = { 'semanticTokensProvider' },
-@@ -605,6 +606,9 @@ do
-           },
-           contentChanges = changes,
-         })
-+        vim.schedule(function()
-+          vim.lsp.diagnostic.pull_diagnostic(bufnr, client)
-+        end)
-       end
-     end
-   end
-@@ -720,6 +724,8 @@ local function text_document_did_open_handler(bufnr, client)
-   client.notify('textDocument/didOpen', params)
-   util.buf_versions[bufnr] = params.textDocument.version
- 
-+  vim.lsp.diagnostic.pull_diagnostic(bufnr, client)
-+
-   -- Next chance we get, we should re-do the diagnostics
-   vim.schedule(function()
-     -- Protect against a race where the buffer disappears
-diff --git a/runtime/lua/vim/lsp/diagnostic.lua b/runtime/lua/vim/lsp/diagnostic.lua
-index 3efa5c51f..fd18323b7 100644
---- a/runtime/lua/vim/lsp/diagnostic.lua
-+++ b/runtime/lua/vim/lsp/diagnostic.lua
-@@ -236,6 +236,25 @@ function M.on_publish_diagnostics(_, result, ctx, config)
-   vim.diagnostic.set(namespace, bufnr, diagnostic_lsp_to_vim(diagnostics, bufnr, client_id))
- end
- 
-+function M.pull_diagnostic(bufnr, client)
-+  if not client.supports_method('textDocument/diagnostic') then
-+    return
-+  end
-+
-+  client.request(
-+    'textDocument/diagnostic',
-+    { textDocument = { uri = vim.uri_from_bufnr(bufnr) } },
-+    function(err, result)
-+      if err or result == nil then
-+        return
-+      end
-+
-+      local namespace = M.get_namespace(client.id)
-+      vim.diagnostic.set(namespace, bufnr, diagnostic_lsp_to_vim(result.items, bufnr, client.id))
-+    end
-+  )
-+end
-+
- --- Clear diagnostics and diagnostic cache.
- ---
- --- Diagnostic producers should prefer |vim.diagnostic.reset()|. However,
-diff --git a/runtime/lua/vim/lsp/protocol.lua b/runtime/lua/vim/lsp/protocol.lua
-index 5bc0baf24..492a8fac3 100644
---- a/runtime/lua/vim/lsp/protocol.lua
-+++ b/runtime/lua/vim/lsp/protocol.lua
-@@ -826,6 +826,10 @@ function protocol.make_client_capabilities()
-           end)(),
-         },
-       },
-+      diagnostic = {
-+        dynamicRegistration = false,
-+        relatedDocumentSupport = false,
-+      },
-       callHierarchy = {
-         dynamicRegistration = false,
-       },
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
 index f0fd4c66e..47f66e45c 100755
 --- a/scripts/download-unicode-files.sh
@@ -201,10 +125,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 861ce100c..48161c81b 100644
+index 9fa5a8940..ed0421c89 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -884,9 +884,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -890,9 +890,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
        remote_ui_put(ui, chunk[i]);
