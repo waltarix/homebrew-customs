@@ -1,17 +1,17 @@
 class Hexyl < Formula
   desc "Command-line hex viewer"
   homepage "https://github.com/sharkdp/hexyl"
-  "0.13.0".tap do |v|
+  "0.13.1".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/hexyl/releases/download/v#{v}-custom/hexyl-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "d3c54763fcb705a2da5dd1168bdaceba8369a3172d1ca878f075d9cbb80e84af"
+      sha256 "42543ba5529b399a053077d5b36dcec79af08801470c6a9ae841c7b6bcd3a429"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/hexyl/releases/download/v#{v}-custom/hexyl-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "7a8c78d2acfc90a041cdac36c2f9f962fc409a5cc9a4894c2c383e1e14dd4bb2"
+        sha256 "d6ea2a24c45ae2cfd03dcef169005ff7d459ab82b24719c3ca27c61e99b04d49"
       else
         url "https://github.com/waltarix/hexyl/releases/download/v#{v}-custom/hexyl-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "db51fd2466d9f7ef0ea0f313ce8322e6d5c0c816aa608b501533dae922b0b371"
+        sha256 "07fc2071f8ac1b4d824da49ebae884c6b152ded64581d6ab4da094a35493b3a4"
       end
     end
   end
