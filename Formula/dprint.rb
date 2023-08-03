@@ -1,17 +1,17 @@
 class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
-  "0.40.0".tap do |v|
+  "0.40.2".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/dprint/releases/download/#{v}-custom/dprint-#{v}-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "60cb06f5abf692d8b3ef895138c9c8189852c9129b1449e27b2076867bb9ddc3"
+      sha256 "3ff5ab1a3a94187779a4d11625a06625725d5dacefbeccc2a097fc66f6117583"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dprint/releases/download/#{v}-custom/dprint-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "cb9412918ac89285940168c22f85d2bb7de5a312637d9aa1beee670ed16bc1e5"
+        sha256 "095f3dc3eea5c555c917a0152d3c39abf563a6fc2a0708bcae9f15a2e9b8d379"
       else
         url "https://github.com/waltarix/dprint/releases/download/#{v}-custom/dprint-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "6bef1e55eedeac33c734dea6174db1e66916643b62bb3bf32de6f8f33fb25eaf"
+        sha256 "4580dc3157160cb1f11622aa1b7402fb33a736053686c258499cc938a7e3cad6"
       end
     end
   end
