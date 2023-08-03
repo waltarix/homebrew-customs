@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/aaa151d506dffa01506619fbdf57537cd2318675.tar.gz"
-  sha256 "328d6e805f72c15a78078311d60d7e0f28c2329e8dbf0e1b0ba4308d391d3546"
-  version "0.10.0-dev-725+gaaa151d50"
+  url "https://github.com/neovim/neovim/archive/f1772272b4fda43c093fc495f54b5e7c11968d62.tar.gz"
+  sha256 "55c096ff7b468a83fba1639b0ae73e758588491cf83ad86a53cebdfacc8fd840"
+  version "0.10.0-dev-755+gf1772272b"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -36,16 +36,14 @@ class NeovimDev < Formula
 
     system "sh", buildpath/"scripts/download-unicode-files.sh"
 
-    inreplace "cmake.deps/cmake/BuildLpeg.cmake" do |s|
-      s.gsub! "${DEPS_INCLUDE_FLAGS}", "-I${LUAJIT_INCLUDE_DIR}"
-    end
+    inreplace "cmake.deps/cmake/BuildLpeg.cmake", "${DEPS_INCLUDE_FLAGS}", "-I${LUAJIT_INCLUDE_DIR}"
 
     # Point system locations inside `HOMEBREW_PREFIX`.
-    inreplace "src/nvim/os/stdpaths.c" do |s|
-      s.gsub! "/etc/xdg/", "#{etc}/xdg/:\\0"
+    "src/nvim/os/stdpaths.c".tap do |file|
+      inreplace file, "/etc/xdg/", "#{etc}/xdg/:\\0"
 
       if HOMEBREW_PREFIX.to_s != HOMEBREW_DEFAULT_PREFIX
-        s.gsub! "/usr/local/share/:/usr/share/", "#{HOMEBREW_PREFIX}/share/:\\0"
+        inreplace file, "/usr/local/share/:/usr/share/", "#{HOMEBREW_PREFIX}/share/:\\0"
       end
     end
 
