@@ -1,8 +1,8 @@
 class Libvterm < Formula
   desc "C99 library which implements a VT220 or xterm terminal emulator"
   homepage "http://www.leonerd.org.uk/code/libvterm/"
-  url "http://www.leonerd.org.uk/code/libvterm/libvterm-0.3.2.tar.gz"
-  sha256 "91eb5088069f4e6edab69e14c4212f6da0192e65695956dc048016a0dab8bcf6"
+  url "https://launchpad.net/libvterm/trunk/v0.3/+download/libvterm-0.3.3.tar.gz"
+  sha256 "09156f43dd2128bd347cbeebe50d9a571d32c64e0cf18d211197946aff7226e0"
   license "MIT"
   version_scheme 1
 
