@@ -1,15 +1,10 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r4/mosh-1.4.0-custom.tar.xz"
-  sha256 "dc5c7243992668618eaa9f2ece538f9cf11b34ece8719213cb352858a2e7846e"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r5/mosh-1.4.0-custom.tar.xz"
+  sha256 "3435a5ee2616899cdef7ce5adfac779d8537b336bfc78082ab3eab5b0da68be4"
   license "GPL-3.0-or-later"
-  revision 5
-
-  livecheck do
-    url :homepage
-    regex(/href=.*?mosh[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
+  revision 6
 
   depends_on "pkg-config" => :build
   depends_on "ncurses"
@@ -25,9 +20,6 @@ class Mosh < Formula
 
     # https://github.com/protocolbuffers/protobuf/issues/9947
     ENV.append_to_cflags "-DNDEBUG"
-    # Keep C++ standard in sync with abseil.rb.
-    # Use `gnu++17` since Mosh allows use of GNU extensions (-std=gnu++11).
-    ENV.append "CXXFLAGS", "-std=gnu++17"
 
     # teach mosh to locate mosh-client without referring
     # PATH to support launching outside shell e.g. via launcher
