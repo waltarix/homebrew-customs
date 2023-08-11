@@ -1,9 +1,9 @@
 class TmuxDev < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/archive/715f39a53a93394ab5d697228c7a41661357948b.tar.gz"
-  sha256 "6db11e013b732cf2900602e58a5e97076fe28ea0ee753bd03839a1067a58256c"
-  version "3.4-112-g715f39a5"
+  url "https://github.com/tmux/tmux/archive/11e69f6025f5783fe17d43247de1c3f659a19b69.tar.gz"
+  sha256 "e62fc32a11f850d6baf3d2a09f6d20472928496a7e0e75f43d1bd8d311356977"
+  version "3.4-118-g11e69f60"
   license "ISC"
 
   conflicts_with "tmux", because: "both install a `tmux` binary"
@@ -112,14 +112,14 @@ index a6fbfd7a..80d58ce9 100644
  install-exec-hook:
  	if test x@MANFORMAT@ = xmdoc; then \
 diff --git a/configure.ac b/configure.ac
-index 0d43485f..d3be80ff 100644
+index 0d43485f..bbcfb702 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -1,6 +1,6 @@
  # configure.ac
  
 -AC_INIT([tmux], next-3.4)
-+AC_INIT([tmux], 3.4-112-g715f39a5)
++AC_INIT([tmux], 3.4-118-g11e69f60)
  AC_PREREQ([2.60])
  
  AC_CONFIG_AUX_DIR(etc)
@@ -149,10 +149,10 @@ index 0e0d1d1a..cb374cb1 100644
  __dead void
  fatal(const char *msg, ...)
 diff --git a/screen-write.c b/screen-write.c
-index d7c196e1..c251909d 100644
+index 25158ee5..41a0b936 100644
 --- a/screen-write.c
 +++ b/screen-write.c
-@@ -2035,7 +2035,7 @@ screen_write_combine(struct screen_write_ctx *ctx, const struct utf8_data *ud,
+@@ -2054,7 +2054,7 @@ screen_write_combine(struct screen_write_ctx *ctx, const struct utf8_data *ud,
  	    memcmp(ud->data, "\357\270\217", 3) == 0) {
  		grid_view_set_padding(gd, (*xx) + 1, s->cy);
  		gc.data.width = 2;
@@ -162,7 +162,7 @@ index d7c196e1..c251909d 100644
  
  	/* Set the new cell. */
 diff --git a/tmux.h b/tmux.h
-index 76dd60dc..da4961df 100644
+index 1af4fa9e..3b492403 100644
 --- a/tmux.h
 +++ b/tmux.h
 @@ -71,6 +71,8 @@ struct tmuxpeer;
