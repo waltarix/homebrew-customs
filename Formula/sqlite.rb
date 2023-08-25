@@ -1,11 +1,10 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.42.0-custom/sqlite-autoconf-3420000.tar.xz"
-  version "3.42.0"
-  sha256 "d335511473ee7a1936f60fbf1d1a224f7d3a3ab61d0b2a6017a09b35df94d5a1"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.43.0-custom/sqlite-autoconf-3430000.tar.xz"
+  version "3.43.0"
+  sha256 "a863c17e5c87118f14d5c5b7fa82082e872faf4a3a2dc1b2787731426630dd8b"
   license "blessing"
-  revision 1
 
   livecheck do
     url :homepage
