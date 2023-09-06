@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/ae7ab9015999ba417642a5e0c785709f104d75cf.tar.gz"
-  sha256 "5bc156ca815e310f88c48c662d9182e8ca3909d9d2bdbf782167fedc0181126b"
-  version "0.10.0-dev-985+gae7ab9015"
+  url "https://github.com/neovim/neovim/archive/2ef7b6a433c61837bcef0fca297a665551835423.tar.gz"
+  sha256 "1c64b253e8683869fd3b166288d604789f400bd59a4d2c89a4e7f3a4f51c6b7c"
+  version "0.10.0-dev-1041+g2ef7b6a43"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -123,10 +123,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 9fa5a8940..ed0421c89 100644
+index 891c81d47..9425d245a 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -890,9 +890,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -894,9 +894,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        remote_ui_cursor_goto(ui, row, startcol + i);
        remote_ui_highlight_set(ui, attrs[i]);
        remote_ui_put(ui, chunk[i]);
@@ -151,7 +151,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 92e70350b..35d3945b0 100644
+index fd9efb138..6945c6d7b 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
