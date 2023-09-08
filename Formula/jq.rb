@@ -1,11 +1,9 @@
 class Jq < Formula
   desc "Lightweight and flexible command-line JSON processor"
-  homepage "https://stedolan.github.io/jq/"
-  url "https://github.com/waltarix/jq.git",
-    revision: "ef6b7fc2ab742e465c10e00be0ace2e5c5308718"
-  version "1.6-152-gcff5336"
+  homepage "https://jqlang.github.io/jq/"
+  url "https://github.com/waltarix/jq/releases/download/jq-1.7-custom/jq-1.7-custom.tar.xz"
+  sha256 "ce40c01ee0e27dfc89ea27f184522404d5f7dc36bd1a1d8701ec35206660bc45"
   license "MIT"
-  revision 1
 
   depends_on "libtool" => :build
   depends_on "oniguruma" => :build
@@ -24,14 +22,11 @@ class Jq < Formula
 
     (buildpath/"scripts/version").write_env_script("echo", version, {})
 
-    system "autoreconf", "-iv"
-    system "./configure", "--disable-dependency-tracking",
+    system "./configure", *std_configure_args,
                           "--disable-silent-rules",
-                          "--disable-maintainer-mode",
                           "--enable-all-static",
                           "--with-oniguruma=#{Formula["oniguruma"].opt_prefix}",
-                          "--with-migemo",
-                          "--prefix=#{prefix}"
+                          "--with-migemo"
     system "make", "install"
   end
 
