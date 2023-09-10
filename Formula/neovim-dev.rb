@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/2ef7b6a433c61837bcef0fca297a665551835423.tar.gz"
-  sha256 "1c64b253e8683869fd3b166288d604789f400bd59a4d2c89a4e7f3a4f51c6b7c"
-  version "0.10.0-dev-1041+g2ef7b6a43"
+  url "https://github.com/neovim/neovim/archive/676e1d490066a5289ba05df128c8710253fc1cf9.tar.gz"
+  sha256 "677e58be7a24e3e4a49918d54c9c3d104608ad49aebdfdf37a5ba9a0d8f97f96"
+  version "0.10.0-dev-1080+g676e1d490"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -54,7 +54,6 @@ class NeovimDev < Formula
                     "-DUSE_BUNDLED_LIBTERMKEY=ON",
                     "-DUSE_BUNDLED_LIBUV=ON",
                     "-DUSE_BUNDLED_LPEG=ON",
-                    "-DUSE_BUNDLED_LUAROCKS=ON",
                     "-DUSE_BUNDLED_LUV=ON",
                     "-DUSE_BUNDLED_MSGPACK=ON",
                     "-DUSE_BUNDLED_UNIBILIUM=ON",
@@ -123,7 +122,7 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 891c81d47..9425d245a 100644
+index 70c97be98..f1857b785 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
 @@ -894,9 +894,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
@@ -151,7 +150,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index fd9efb138..6945c6d7b 100644
+index 6182646fe..bf9117f60 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
