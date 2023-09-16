@@ -1,8 +1,8 @@
 class Libpq < Formula
   desc "Postgres C API library"
   homepage "https://www.postgresql.org/docs/15/libpq.html"
-  url "https://ftp.postgresql.org/pub/source/v15.4/postgresql-15.4.tar.bz2"
-  sha256 "baec5a4bdc4437336653b6cb5d9ed89be5bd5c0c58b94e0becee0a999e63c8f9"
+  url "https://ftp.postgresql.org/pub/source/v16.0/postgresql-16.0.tar.bz2"
+  sha256 "df9e823eb22330444e1d48e52cc65135a652a6fdb3ce325e3f08549339f51b99"
   license "PostgreSQL"
 
   livecheck do
@@ -12,10 +12,11 @@ class Libpq < Formula
 
   keg_only "conflicts with postgres formula"
 
+  depends_on "pkg-config" => :build
+  depends_on "icu4c"
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
   depends_on "krb5"
-
   depends_on "openssl@3"
   depends_on "readline"
   depends_on "zlib"
