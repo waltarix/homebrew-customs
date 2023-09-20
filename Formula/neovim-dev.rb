@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/f5a09f1b035254f6ee773a1f88f79ab5913b48a0.tar.gz"
-  sha256 "9aef8f99aee8ffc264d0b6d279428216f78b80bfc30001e4699bd20288714faa"
-  version "0.10.0-dev-1113+gf5a09f1b0"
+  url "https://github.com/neovim/neovim/archive/5e43a4ce4d973677172519a50e4f6f49e6dd4a2b.tar.gz"
+  sha256 "d8b94815462d3b012035cd4afda0fed143f063dc6940d19aba723f53c7e15100"
+  version "0.10.0-dev-1174+g5e43a4ce4"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -122,14 +122,14 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 70c97be98..f1857b785 100644
+index 0ea231004..4a63f7371 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -894,9 +894,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
-       remote_ui_cursor_goto(ui, row, startcol + i);
-       remote_ui_highlight_set(ui, attrs[i]);
-       remote_ui_put(ui, chunk[i]);
--      if (utf_ambiguous_width(utf_ptr2char((char *)chunk[i]))) {
+@@ -897,9 +897,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+       char sc_buf[MAX_SCHAR_SIZE];
+       schar_get(sc_buf, chunk[i]);
+       remote_ui_put(ui, sc_buf);
+-      if (utf_ambiguous_width(utf_ptr2char(sc_buf))) {
 -        data->client_col = -1;  // force cursor update
 -      }
      }
@@ -216,23 +216,23 @@ index 6182646fe..bf9117f60 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 098366769..78f94da37 100644
+index 4097b770c..afb687887 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -838,8 +838,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -853,8 +853,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
-   cursor_goto(tui, row, col);
- 
--  bool is_ambiwidth = utf_ambiguous_width(utf_ptr2char(cell->data));
+   char buf[MAX_SCHAR_SIZE];
+   schar_get(buf, cell->data);
+-  bool is_ambiwidth = utf_ambiguous_width(utf_ptr2char(buf));
 -  if (is_ambiwidth && is_doublewidth) {
 +  if (is_doublewidth) {
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -848,11 +847,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -863,11 +862,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
-   print_cell(tui, cell);
+   print_cell(tui, buf, cell->attr);
 -
 -  if (is_ambiwidth) {
 -    // Force repositioning cursor after printing an ambiguous-width character.
