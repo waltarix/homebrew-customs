@@ -9,12 +9,12 @@ class Luajit < Formula
   # Update this to the tip of the `v2.1` branch at the start of every month.
   # Get the latest commit with:
   #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
-  url "https://github.com/LuaJIT/LuaJIT/archive/e897c5743f97a6b05c59852709092e7da4119914.tar.gz"
+  url "https://github.com/LuaJIT/LuaJIT/archive/d1a2fef8a8f53b0055ee041f7f63d83a27444ffa.tar.gz"
   # Use the version scheme `2.1.0-beta3-yyyymmdd.x` where `yyyymmdd` is the date of the
   # latest commit at the time of updating, and `x` is the number of commits on that date.
   # `brew livecheck luajit` will generate the correct version for you automatically.
-  version "2.1-20230917.3"
-  sha256 "f28030c61602bffd28a445f3fef23198264a845aab94d909587bac6c12c8b874"
+  version "2.1-20230921.11"
+  sha256 "7d4dd85cbf224c70f2014203903202a90f3cfe7b1c6e7b1b36f8ae472dfc7fba"
   license "MIT"
   head "https://luajit.org/git/luajit-2.0.git", branch: "v2.1"
 
