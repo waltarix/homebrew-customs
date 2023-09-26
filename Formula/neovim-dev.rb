@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/5e43a4ce4d973677172519a50e4f6f49e6dd4a2b.tar.gz"
-  sha256 "d8b94815462d3b012035cd4afda0fed143f063dc6940d19aba723f53c7e15100"
-  version "0.10.0-dev-1174+g5e43a4ce4"
+  url "https://github.com/neovim/neovim/archive/fe95037cdb9b0294ca24dbd0ff82c8462d051307.tar.gz"
+  sha256 "f5835932c0147595125335a97292e4c4e584e035e44e3d5ebc2fadfa6bc57278"
+  version "0.10.0-dev-1221+gfe95037cd"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -216,10 +216,10 @@ index 6182646fe..bf9117f60 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 4097b770c..afb687887 100644
+index db15cdb05..92c16a337 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -853,8 +853,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -856,8 +856,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
@@ -229,7 +229,7 @@ index 4097b770c..afb687887 100644
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -863,11 +862,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -866,11 +865,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
