@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/fe95037cdb9b0294ca24dbd0ff82c8462d051307.tar.gz"
-  sha256 "f5835932c0147595125335a97292e4c4e584e035e44e3d5ebc2fadfa6bc57278"
-  version "0.10.0-dev-1221+gfe95037cd"
+  url "https://github.com/neovim/neovim/archive/08aea256c8330f482319b0579944a56707cc5bbe.tar.gz"
+  sha256 "b137157ecc57941fe1465a9598ee4e81d8e9a35a106668bbf405062c00a302ef"
+  version "0.10.0-dev-1274+g08aea256c"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -122,10 +122,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 0ea231004..4a63f7371 100644
+index e0b5e6ea5..5af8168b5 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -897,9 +897,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -898,9 +898,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        char sc_buf[MAX_SCHAR_SIZE];
        schar_get(sc_buf, chunk[i]);
        remote_ui_put(ui, sc_buf);
@@ -150,10 +150,10 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 6182646fe..bf9117f60 100644
+index 4191b4dcc..4da3f6159 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
-@@ -87,6 +87,8 @@ struct interval {
+@@ -89,6 +89,8 @@ struct interval {
  #endif
  // uncrustify:on
  
@@ -162,7 +162,7 @@ index 6182646fe..bf9117f60 100644
  static const char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
  static const char e_list_item_nr_does_not_contain_3_numbers[]
-@@ -477,33 +479,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+@@ -479,33 +481,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  ///       gen_unicode_tables.lua, which must be manually invoked as needed.
  int utf_char2cells(int c)
  {
@@ -202,7 +202,7 @@ index 6182646fe..bf9117f60 100644
    }
  
    return 1;
-@@ -1162,12 +1148,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1164,12 +1150,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
    return 2;
  }
  
@@ -216,10 +216,10 @@ index 6182646fe..bf9117f60 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index db15cdb05..92c16a337 100644
+index 944c1d14c..058007f7d 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -856,8 +856,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -855,8 +855,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
@@ -229,7 +229,7 @@ index db15cdb05..92c16a337 100644
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -866,11 +865,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -865,11 +864,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
