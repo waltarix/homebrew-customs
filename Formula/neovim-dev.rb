@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/08aea256c8330f482319b0579944a56707cc5bbe.tar.gz"
-  sha256 "b137157ecc57941fe1465a9598ee4e81d8e9a35a106668bbf405062c00a302ef"
-  version "0.10.0-dev-1274+g08aea256c"
+  url "https://github.com/neovim/neovim/archive/37da0bc0c63083f79d2fbf4622a9b3fd47c415df.tar.gz"
+  sha256 "5b95d260de8497ca27946fe5d732350fc6edccc70c97d173a3b4139592478c1c"
+  version "0.10.0-dev-1328+g37da0bc0c"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -150,7 +150,7 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 4191b4dcc..4da3f6159 100644
+index a3cd56984..0614e686c 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -89,6 +89,8 @@ struct interval {
@@ -216,7 +216,7 @@ index 4191b4dcc..4da3f6159 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 944c1d14c..058007f7d 100644
+index 260bf5509..ea47ccd6b 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
 @@ -855,8 +855,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
