@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/752c6ce4ad717620f34cc27e788fd9665c488565.tar.gz"
-  sha256 "0456003bae5d3d9d170b77e0333236d79413fec9ced5b27cd44de0ac477852be"
-  version "0.10.0-dev-1396+g752c6ce4a"
+  url "https://github.com/neovim/neovim/archive/d2e7cc68e99019587a4c5184a47677a6837bbee9.tar.gz"
+  sha256 "9688db6d84a3822f8e2e5d34451bbe3ead8c9339702d969867eb06b2085e1d49"
+  version "0.10.0-dev-1425+gd2e7cc68e"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
