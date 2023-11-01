@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/d2e7cc68e99019587a4c5184a47677a6837bbee9.tar.gz"
-  sha256 "9688db6d84a3822f8e2e5d34451bbe3ead8c9339702d969867eb06b2085e1d49"
-  version "0.10.0-dev-1425+gd2e7cc68e"
+  url "https://github.com/neovim/neovim/archive/20dd9f3a26e45a1b4c95ba33d6c9f300184fc361.tar.gz"
+  sha256 "ba3cdabb49e7608b9e6ffd31cf43bf05a2eff8c31b3375b21aca02adab8501a0"
+  version "0.10.0-dev-1451+g20dd9f3a2"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -122,10 +122,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index e0b5e6ea5..5af8168b5 100644
+index b508a3ee9..9cec97715 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -898,9 +898,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -904,9 +904,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        char sc_buf[MAX_SCHAR_SIZE];
        schar_get(sc_buf, chunk[i]);
        remote_ui_put(ui, sc_buf);
