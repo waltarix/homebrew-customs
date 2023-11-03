@@ -11,13 +11,12 @@ class Zsh < Formula
     url "https://sourceforge.net/projects/zsh/rss?path=/zsh"
   end
 
-  head do
-    url "https://git.code.sf.net/p/zsh/code.git", branch: "master"
-    depends_on "autoconf" => :build
-  end
-
   depends_on "ncurses"
   depends_on "pcre2"
+
+  on_macos do
+    depends_on "autoconf" => :build
+  end
 
   resource "htmldoc" do
     url "https://downloads.sourceforge.net/project/zsh/zsh-doc/5.9/zsh-5.9-doc.tar.xz"
@@ -37,7 +36,6 @@ class Zsh < Formula
       patches/further-mitigate-test-suite-hangs.patch
       patches/update-debian-sections.patch
       patches/use-pager-instead-of-more-by-default.patch
-      patches/fix-typos-in-man-pages.patch
       patches/cherry-pick-3e3cfabc-revert-38150-and-fix-in-calling-function-cfp_matcher_range-instead.patch
       patches/cherry-pick-4b7a9fd0-additional-typset--p--m-fix-for-namespaces.patch
       patches/cherry-pick-b62e91134-51723-migrate-pcre-module-to-pcre2.patch
@@ -63,7 +61,7 @@ class Zsh < Formula
     # https://github.com/Homebrew/homebrew-core/issues/64921
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1200
 
-    system "Util/preconfig" if build.head?
+    system "Util/preconfig"
 
     system "./configure", "--prefix=#{prefix}",
            "--enable-fndir=#{pkgshare}/functions",
@@ -86,17 +84,10 @@ class Zsh < Formula
     inreplace ["Makefile", "Src/Makefile"],
               "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
-    if build.head?
-      # disable target install.man, because the required yodl comes neither with macOS nor Homebrew
-      # also disable install.runhelp and install.info because they would also fail or have no effect
-      system "make", "install.bin", "install.modules", "install.fns"
-    else
-      system "make"
-      system "make", "install"
+    system "make", "install"
 
-      resource("htmldoc").stage do
-        (pkgshare/"htmldoc").install Dir["Doc/*.html"]
-      end
+    resource("htmldoc").stage do
+      (pkgshare/"htmldoc").install Dir["Doc/*.html"]
     end
   end
 
