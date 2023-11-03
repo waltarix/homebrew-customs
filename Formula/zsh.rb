@@ -5,7 +5,7 @@ class Zsh < Formula
   mirror "https://www.zsh.org/pub/zsh-5.9.tar.xz"
   sha256 "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5"
   license "MIT-Modern-Variant"
-  revision 3
+  revision 4
 
   livecheck do
     url "https://sourceforge.net/projects/zsh/rss?path=/zsh"
@@ -17,7 +17,7 @@ class Zsh < Formula
   end
 
   depends_on "ncurses"
-  depends_on "pcre"
+  depends_on "pcre2"
 
   resource "htmldoc" do
     url "https://downloads.sourceforge.net/project/zsh/zsh-doc/5.9/zsh-5.9-doc.tar.xz"
@@ -26,18 +26,22 @@ class Zsh < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r4/wcwidth9.h"
-    sha256 "81974cfee64faece46162923a3ed3a70b9dfb7723005103730718bf2dded6ab5"
+    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
+    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
   end
 
   patch do
-    url "https://deb.debian.org/debian/pool/main/z/zsh/zsh_5.9-4.debian.tar.xz"
-    sha256 "44ff8339a70cc3aaad2d336f23fc5903fe73fa7d7d3518a7af9205275ca72ac8"
+    url "https://deb.debian.org/debian/pool/main/z/zsh/zsh_5.9-5.debian.tar.xz"
+    sha256 "f7ca24eb97ab9fbd9dad26b1e5f7eb863b621d11893bb6f2d87b269d0e6db581"
     apply %w[
       patches/further-mitigate-test-suite-hangs.patch
       patches/update-debian-sections.patch
-      patches/completion-dscverify.diff
+      patches/use-pager-instead-of-more-by-default.patch
+      patches/fix-typos-in-man-pages.patch
       patches/cherry-pick-3e3cfabc-revert-38150-and-fix-in-calling-function-cfp_matcher_range-instead.patch
+      patches/cherry-pick-4b7a9fd0-additional-typset--p--m-fix-for-namespaces.patch
+      patches/cherry-pick-b62e91134-51723-migrate-pcre-module-to-pcre2.patch
+      patches/cherry-pick-10bdbd8b-51877-do-not-build-pcre-module-if-pcre2-config-is-not-found.patch
     ]
   end
 
@@ -45,19 +49,19 @@ class Zsh < Formula
     resource("wcwidth9.h").stage(buildpath/"Src")
 
     Formula["ncurses"].tap do |ncurses|
+      ENV.append_to_cflags "-I#{ncurses.include}"
       ENV.append "LDFLAGS", "-L#{ncurses.lib}"
-      ENV.append "CPPFLAGS", "-I#{ncurses.include}"
     end
 
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append_to_cflags "-flto"
+    ENV.append_to_cflags "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
-    # Work around configure issues with Xcode 12
+    # Fix compile with newer Clang
     # https://www.zsh.org/mla/workers/2020/index.html
     # https://github.com/Homebrew/homebrew-core/issues/64921
-    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1200
 
     system "Util/preconfig" if build.head?
 
@@ -71,6 +75,7 @@ class Zsh < Formula
            "--enable-maildir-support",
            "--enable-multibyte",
            "--enable-pcre",
+           "--enable-readnullcmd=pager",
            "--enable-unicode9",
            "--enable-etcdir=/etc",
            "--with-tcsetpgrp",
@@ -86,6 +91,7 @@ class Zsh < Formula
       # also disable install.runhelp and install.info because they would also fail or have no effect
       system "make", "install.bin", "install.modules", "install.fns"
     else
+      system "make"
       system "make", "install"
 
       resource("htmldoc").stage do
