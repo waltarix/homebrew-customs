@@ -1,17 +1,17 @@
 class Helix < Formula
   desc "Post-modern modal text editor"
   homepage "https://helix-editor.com"
-  "23.05".tap do |v|
+  "23.10".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/helix/releases/download/#{v}-custom/helix-#{v}-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "9ee3d44c9bc8b7d057ba593d4c06c46451a774aea9169fe81d9fb583237e6d3a"
+      sha256 "8531ff38fa8f4282a25c21966815fa4424306af7ef856d61161905a94a089096"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/helix/releases/download/#{v}-custom/helix-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "778d0d08f90da9e40b7c5c6de48fcd33d22347efdc91cb06fe7813610bab77fc"
+        sha256 "b9efbd89ddd06f8e255eb482e1f06a823918590128b8d3e9530db4a89bdbd5e0"
       else
         url "https://github.com/waltarix/helix/releases/download/#{v}-custom/helix-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "b25f5ea6983a80d1b069e37ac89cd09e1c18d651f54434b5713e1aafdb1dcbbc"
+        sha256 "1bfd98275597e3a2d2b83ca4ac2d6996df8f582699d16562b88af9f090a7e401"
       end
     end
   end
