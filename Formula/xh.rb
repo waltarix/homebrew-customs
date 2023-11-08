@@ -1,19 +1,21 @@
 class Xh < Formula
   desc "Friendly and fast tool for sending HTTP requests"
   homepage "https://github.com/ducaale/xh"
-  "0.19.4".tap do |v|
+  ["0.19.4", 1].tap do |(v, r)|
+    rev = r ? "-r#{r}" : ""
     if OS.linux?
-      url "https://github.com/waltarix/xh/releases/download/v#{v}-custom/xh-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "c73ebcce8a1683038bde677979d289deb8670ff70d3203ba367fdbe140d15656"
+      url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "4a11cfab3815abf2ed8dd16d6d9babe779296d5e4286922804267b3ac40098b7"
     else
       if Hardware::CPU.arm?
-        url "https://github.com/waltarix/xh/releases/download/v#{v}-custom/xh-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "66a787cdd28c1c13bc9b3ad9f5a72bd173b3722f4736ef5c0a0f2f95733169fb"
+        url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-aarch64-apple-darwin.tar.xz"
+        sha256 "20d7655b2eabb26bc33b9ccbaab0498d2dd8844811669fab2e677b17fc106b5b"
       else
-        url "https://github.com/waltarix/xh/releases/download/v#{v}-custom/xh-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "827e5ccc54f894a2a7ea912e65775e356c09144c3e23386e8351db77cfb31af6"
+        url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-x86_64-apple-darwin.tar.xz"
+        sha256 "92f9d15006901a3490c8ae121f6d3779b7afff29485231e82a58c45506fd4ef7"
       end
     end
+    revision r if r
   end
   license "MIT"
 
