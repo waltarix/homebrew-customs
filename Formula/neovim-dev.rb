@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/ae8ca79920a8d0e928ac1502a10d1d063a06cae5.tar.gz"
-  sha256 "773bce27c98104747bf6c9a85298e230fd3f41bb6076082a1e42243f6dc27643"
-  version "0.10.0-dev-1508+gae8ca7992"
+  url "https://github.com/neovim/neovim/archive/d1b2a5cf5fa583b556457d34a46ce7b940913a66.tar.gz"
+  sha256 "1ee14f77f57a010a1d09fdb84f345d36ed32b7d376744a5cb62464907f194251"
+  version "0.10.0-dev-1520+gd1b2a5cf5"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -22,8 +22,8 @@ class NeovimDev < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r5/wcwidth9.h"
-    sha256 "3272d3b4e3b2068f52093f99609c2ebbe35f60e879daa9ab96481c76f7ce5250"
+    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
+    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
   end
 
   patch :DATA
