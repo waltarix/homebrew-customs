@@ -1,10 +1,10 @@
 class Mosh < Formula
   desc "Remote terminal application"
   homepage "https://mosh.org"
-  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r5/mosh-1.4.0-custom.tar.xz"
-  sha256 "3435a5ee2616899cdef7ce5adfac779d8537b336bfc78082ab3eab5b0da68be4"
+  url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r6/mosh-1.4.0-custom.tar.xz"
+  sha256 "72765e602803bb04caf7d8ef73e23cff2b60e0578de02cbc7bb0b5decbac3fc5"
   license "GPL-3.0-or-later"
-  revision 11
+  revision 12
 
   depends_on "pkg-config" => :build
   depends_on "ncurses"
@@ -14,8 +14,8 @@ class Mosh < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append_to_cflags "-flto"
+    ENV.append_to_cflags "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     # https://github.com/protocolbuffers/protobuf/issues/9947
