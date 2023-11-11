@@ -1,9 +1,9 @@
 class TmuxDev < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/archive/11e69f6025f5783fe17d43247de1c3f659a19b69.tar.gz"
-  sha256 "e62fc32a11f850d6baf3d2a09f6d20472928496a7e0e75f43d1bd8d311356977"
-  version "3.4-118-g11e69f60"
+  url "https://github.com/tmux/tmux/archive/381c00a74ea1eb136a97c86da9a7713190b10a62.tar.gz"
+  sha256 "395c43d406e9a83641210935de5382f59714a5f7aacb6c3b20d433d496e07994"
+  version "3.4-149-g381c00a7"
   license "ISC"
 
   conflicts_with "tmux", because: "both install a `tmux` binary"
@@ -39,8 +39,8 @@ class TmuxDev < Formula
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
 
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append_to_cflags "-flto"
+    ENV.append_to_cflags "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     ENV.append "LDFLAGS", "-lresolv"
@@ -94,10 +94,10 @@ end
 
 __END__
 diff --git a/Makefile.am b/Makefile.am
-index a6fbfd7a..80d58ce9 100644
+index 8e5f72b1..4c34b725 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -224,6 +224,13 @@ fuzz_input_fuzzer_LDFLAGS = $(FUZZING_LIBS)
+@@ -228,6 +228,13 @@ fuzz_input_fuzzer_LDFLAGS = $(FUZZING_LIBS)
  fuzz_input_fuzzer_LDADD = $(LDADD) $(tmux_OBJECTS)
  endif
  
@@ -105,21 +105,21 @@ index a6fbfd7a..80d58ce9 100644
 +
 +wcwidth9.h:
 +	curl -sL \
-+		"https://github.com/waltarix/localedata/releases/download/15.0.0-r5/wcwidth9.h" \
++		"https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h" \
 +		> $@
 +
  # Install tmux.1 in the right format.
  install-exec-hook:
  	if test x@MANFORMAT@ = xmdoc; then \
 diff --git a/configure.ac b/configure.ac
-index 0d43485f..bbcfb702 100644
+index 020f21e5..1400f774 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -1,6 +1,6 @@
  # configure.ac
  
 -AC_INIT([tmux], next-3.4)
-+AC_INIT([tmux], 3.4-118-g11e69f60)
++AC_INIT([tmux], 3.3-149-g381c00a7)
  AC_PREREQ([2.60])
  
  AC_CONFIG_AUX_DIR(etc)
@@ -148,24 +148,11 @@ index 0e0d1d1a..cb374cb1 100644
  /* Log a critical error with error string and die. */
  __dead void
  fatal(const char *msg, ...)
-diff --git a/screen-write.c b/screen-write.c
-index 25158ee5..41a0b936 100644
---- a/screen-write.c
-+++ b/screen-write.c
-@@ -2054,7 +2054,7 @@ screen_write_combine(struct screen_write_ctx *ctx, const struct utf8_data *ud,
- 	    memcmp(ud->data, "\357\270\217", 3) == 0) {
- 		grid_view_set_padding(gd, (*xx) + 1, s->cy);
- 		gc.data.width = 2;
--		width += 2;
-+		width = 2;
- 	}
- 
- 	/* Set the new cell. */
 diff --git a/tmux.h b/tmux.h
-index 1af4fa9e..3b492403 100644
+index 53f73b20..990d9202 100644
 --- a/tmux.h
 +++ b/tmux.h
-@@ -71,6 +71,8 @@ struct tmuxpeer;
+@@ -77,6 +77,8 @@ struct tmuxpeer;
  struct tmuxproc;
  struct winlink;
  
@@ -175,7 +162,7 @@ index 1af4fa9e..3b492403 100644
  #ifndef TMUX_CONF
  #define TMUX_CONF "/etc/tmux.conf:~/.tmux.conf"
 diff --git a/utf8.c b/utf8.c
-index 38f1a89a..bc95e8b0 100644
+index 5053e459..d1bfb16e 100644
 --- a/utf8.c
 +++ b/utf8.c
 @@ -26,6 +26,8 @@
@@ -184,20 +171,19 @@ index 38f1a89a..bc95e8b0 100644
  
 +#include "wcwidth9.h"
 +
- struct utf8_item {
- 	RB_ENTRY(utf8_item)	index_entry;
- 	u_int			index;
-@@ -229,22 +231,8 @@ utf8_width(struct utf8_data *ud, int *width)
- 	case 0:
- 		return (UTF8_ERROR);
+ static const wchar_t utf8_force_wide[] = {
+ 	0x0261D,
+ 	0x026F9,
+@@ -409,21 +411,8 @@ utf8_width(struct utf8_data *ud, int *width)
+ 		*width = 2;
+ 		return (UTF8_DONE);
  	}
--	log_debug("UTF-8 %.*s is %08X", (int)ud->size, ud->data, (u_int)wc);
 -#ifdef HAVE_UTF8PROC
 -	*width = utf8proc_wcwidth(wc);
--	log_debug("utf8proc_wcwidth(%08X) returned %d", (u_int)wc, *width);
+-	log_debug("utf8proc_wcwidth(%05X) returned %d", (u_int)wc, *width);
 -#else
 -	*width = wcwidth(wc);
--	log_debug("wcwidth(%08X) returned %d", (u_int)wc, *width);
+-	log_debug("wcwidth(%05X) returned %d", (u_int)wc, *width);
 -	if (*width < 0) {
 -		/*
 -		 * C1 control characters are nonprintable, so they are always
