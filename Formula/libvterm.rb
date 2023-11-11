@@ -1,9 +1,10 @@
 class Libvterm < Formula
   desc "C99 library which implements a VT220 or xterm terminal emulator"
   homepage "http://www.leonerd.org.uk/code/libvterm/"
-  url "https://launchpad.net/libvterm/trunk/v0.3/+download/libvterm-0.3.3.tar.gz"
-  sha256 "09156f43dd2128bd347cbeebe50d9a571d32c64e0cf18d211197946aff7226e0"
+  url "https://github.com/neovim/libvterm/archive/v0.3.3.tar.gz"
+  sha256 "0babe3ab42c354925dadede90d352f054aa9c4ae6842ea803a20c9741e172e56"
   license "MIT"
+  revision 1
   version_scheme 1
 
   livecheck do
@@ -14,8 +15,8 @@ class Libvterm < Formula
   depends_on "libtool" => :build
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r5/wcwidth9.h"
-    sha256 "3272d3b4e3b2068f52093f99609c2ebbe35f60e879daa9ab96481c76f7ce5250"
+    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
+    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
   end
 
   patch :DATA
