@@ -1,8 +1,8 @@
 class Pspg < Formula
   desc "Unix pager optimized for psql"
   homepage "https://github.com/okbob/pspg"
-  url "https://github.com/okbob/pspg/archive/5.8.0.tar.gz"
-  sha256 "e1043e61aa18916f0c02627a32059e0f0d68f5050a38fc36ea578d517ebb12ce"
+  url "https://github.com/okbob/pspg/archive/refs/tags/5.8.1.tar.gz"
+  sha256 "57f086f91927e0c1c2cfe1660049d7bed03b075c742a40c16bea5702a22169d0"
   license "BSD-2-Clause"
   head "https://github.com/okbob/pspg.git", branch: "master"
 
@@ -11,14 +11,14 @@ class Pspg < Formula
   depends_on "readline"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.0.0-r5/wcwidth9.h"
-    sha256 "3272d3b4e3b2068f52093f99609c2ebbe35f60e879daa9ab96481c76f7ce5250"
+    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
+    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
   end
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append_to_cflags "-flto"
+    ENV.append_to_cflags "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     resource("wcwidth9.h").stage(buildpath/"src")
