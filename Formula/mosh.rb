@@ -4,7 +4,7 @@ class Mosh < Formula
   url "https://github.com/waltarix/mosh/releases/download/mosh-1.4.0-custom-r6/mosh-1.4.0-custom.tar.xz"
   sha256 "72765e602803bb04caf7d8ef73e23cff2b60e0578de02cbc7bb0b5decbac3fc5"
   license "GPL-3.0-or-later"
-  revision 12
+  revision 13
 
   depends_on "pkg-config" => :build
   depends_on "ncurses"
