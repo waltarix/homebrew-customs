@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.44.0-custom/sqlite-autoconf-3440000.tar.xz"
-  version "3.44.0"
-  sha256 "475d2b8f5c2ec81c8f22881270ffe9978b9991d05d991100a687175c5e18b9dd"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.44.2-custom/sqlite-autoconf-3440200.tar.xz"
+  version "3.44.2"
+  sha256 "131f1b68922dac75d79cd4b09f723a95e034d6b4968091d54a313e9c6f8c137e"
   license "blessing"
 
   livecheck do
@@ -23,8 +23,8 @@ class Sqlite < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append_to_cflags "-flto"
+    ENV.append_to_cflags "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
