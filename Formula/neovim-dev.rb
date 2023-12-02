@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/6a2a37b1e102394d99b4891dc9807868f0fa3c97.tar.gz"
-  sha256 "8c1eba11a955cb015c4462a73f03ee3d24479cc18f422e8b4b5da23edf42f7f4"
-  version "0.10.0-dev-1642+g6a2a37b1e"
+  url "https://github.com/neovim/neovim/archive/17f3a3ae31d91944a5a4e56aa743745cff7fdf07.tar.gz"
+  sha256 "659c50ba5996c33edf394fb88aa0d5692b02d42301d9742175ce7ae4c6920568"
+  version "0.10.0-dev-1742+g17f3a3ae3"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -51,7 +51,6 @@ class NeovimDev < Formula
 
     system "cmake", "-S", "cmake.deps", "-B", ".deps", "-G", "Ninja",
                     "-DUSE_BUNDLED=OFF",
-                    "-DUSE_BUNDLED_LIBTERMKEY=ON",
                     "-DUSE_BUNDLED_LIBUV=ON",
                     "-DUSE_BUNDLED_LPEG=ON",
                     "-DUSE_BUNDLED_LUV=ON",
@@ -122,10 +121,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index c1fc98602..0d98fb085 100644
+index b73c026d5..9ab459d8b 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -920,9 +920,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -933,9 +933,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        char sc_buf[MAX_SCHAR_SIZE];
        schar_get(sc_buf, chunk[i]);
        remote_ui_put(ui, sc_buf);
@@ -150,10 +149,10 @@ index 9ad99c802..e6c3569b1 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index 92eddb3cf..f22379482 100644
+index f2883cc5c..8c15fda9c 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
-@@ -87,6 +87,8 @@ struct interval {
+@@ -85,6 +85,8 @@ struct interval {
  #endif
  // uncrustify:on
  
@@ -162,7 +161,7 @@ index 92eddb3cf..f22379482 100644
  static const char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
  static const char e_list_item_nr_does_not_contain_3_numbers[]
-@@ -477,33 +479,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
+@@ -475,33 +477,17 @@ static bool intable(const struct interval *table, size_t n_items, int c)
  ///       gen_unicode_tables.lua, which must be manually invoked as needed.
  int utf_char2cells(int c)
  {
@@ -202,7 +201,7 @@ index 92eddb3cf..f22379482 100644
    }
  
    return 1;
-@@ -1137,12 +1123,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1135,12 +1121,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
    return 2;
  }
  
@@ -216,10 +215,10 @@ index 92eddb3cf..f22379482 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 323227d4c..d46e27abc 100644
+index c71eb633e..7f6333043 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -899,8 +899,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -900,8 +900,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
@@ -229,7 +228,7 @@ index 323227d4c..d46e27abc 100644
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -909,11 +908,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -910,11 +909,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
