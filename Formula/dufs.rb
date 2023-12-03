@@ -1,17 +1,17 @@
 class Dufs < Formula
   desc "Static file server"
   homepage "https://github.com/sigoden/dufs"
-  "0.36.0".tap do |v|
+  "0.38.0".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom/dufs-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "a59638ab2ece614be3200d5d34a1ed8a7812cc2c43efdb7af007fb1c58dd74b5"
+      sha256 "5fb7153ceca2c24fcd4b5225597a3b5303a16005571e075f7103b558e72026d8"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom/dufs-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "26d50b251a25ed244d74b18313028bca75e627a5c6e5b5a72fa7d6bbf17f76d2"
+        sha256 "4775742d8b34c028954cf00b91e3bb6afa1de4f6ae12a6fe5a0d4818a899b0b5"
       else
         url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom/dufs-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "cd5fced184dfbabe6306907918c12b8ac99d9a5e5ad179e1276f1922954e98e6"
+        sha256 "023d7798dd0161f26027c203a628acced5af5d0d5954a94a74224ee753d3adc2"
       end
     end
   end
