@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/2ded2e75f4a6d9a575eeb1600e92c6bb333f8060.tar.gz"
-  sha256 "48b1ba514e4dd5caf8ee9f7439c5473e062ead150756b46afde5592d87b8961c"
-  version "0.10.0-dev-1915+g2ded2e75f"
+  url "https://github.com/neovim/neovim/archive/1ef60ea6513be72a03958ed6239bfe474c85a7a3.tar.gz"
+  sha256 "6c463003d6f1a5d15d5ba04c13b2ecd95894ed2deb2f8af494e75b0da51449e0"
+  version "0.10.0-dev-1988+g1ef60ea65"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -121,10 +121,10 @@ index f0fd4c66e..47f66e45c 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r5/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 678d23fbe..f200102b3 100644
+index 82d42d652..f9659755f 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -933,9 +933,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
+@@ -934,9 +934,6 @@ void remote_ui_raw_line(UI *ui, Integer grid, Integer row, Integer startcol, Int
        char sc_buf[MAX_SCHAR_SIZE];
        schar_get(sc_buf, chunk[i]);
        remote_ui_put(ui, sc_buf);
@@ -148,7 +148,7 @@ index 6cedb5db5..92840147c 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index a992bf3cd..ef3234fdb 100644
+index b788d7aa6..ff74bcbf3 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -85,6 +85,8 @@ struct interval {
@@ -214,10 +214,10 @@ index a992bf3cd..ef3234fdb 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 6c0b00f01..6f6d00ca1 100644
+index 934b498df..32896780d 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -901,8 +901,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -900,8 +900,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
  
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
@@ -227,7 +227,7 @@ index 6c0b00f01..6f6d00ca1 100644
      // Clear the two screen cells.
      // If the character is single-width in the host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -911,11 +910,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -910,11 +909,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
