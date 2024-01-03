@@ -1,9 +1,9 @@
 class NeovimDev < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/1ef60ea6513be72a03958ed6239bfe474c85a7a3.tar.gz"
-  sha256 "6c463003d6f1a5d15d5ba04c13b2ecd95894ed2deb2f8af494e75b0da51449e0"
-  version "0.10.0-dev-1988+g1ef60ea65"
+  url "https://github.com/neovim/neovim/archive/bdfea2a8919963dfe24052635883f0213cff83e8.tar.gz"
+  sha256 "b4139cf4fbe118cc9b26348bbacffae37e52b2b9e4697d491bb965e83357bbc3"
+  version "0.10.0-dev-2026+gbdfea2a89"
   license "Apache-2.0"
 
   conflicts_with "neovim", because: "both install a `nvim` binary"
@@ -148,7 +148,7 @@ index 6cedb5db5..92840147c 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index b788d7aa6..ff74bcbf3 100644
+index 75e38c59f..587ec3eed 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -85,6 +85,8 @@ struct interval {
