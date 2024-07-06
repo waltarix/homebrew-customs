@@ -1,16 +1,16 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.44.2-custom/sqlite-autoconf-3440200.tar.xz"
-  version "3.44.2"
-  sha256 "131f1b68922dac75d79cd4b09f723a95e034d6b4968091d54a313e9c6f8c137e"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.46.0-custom/sqlite-autoconf-3460000.tar.xz"
+  version "3.46.0"
+  sha256 "f6bec5598af4c675066640c4923460e4fa7563df536bf7d38675d462195ebe9e"
   license "blessing"
 
   livecheck do
     url :homepage
     regex(%r{href=.*?releaselog/v?(\d+(?:[._]\d+)+)\.html}i)
     strategy :page_match do |page, regex|
-      page.scan(regex).map { |match| match&.first&.gsub("_", ".") }
+      page.scan(regex).map { |match| match&.first&.tr("_", ".") }
     end
   end
 
