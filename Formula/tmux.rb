@@ -1,17 +1,12 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.3a-custom-r2/tmux-3.3a.tar.xz"
-  sha256 "0fbbd7ab934e59530390402d9f55cddde2252dd9e3ad9185feeba64294987b82"
+  url "https://github.com/waltarix/tmux/releases/download/3.4-custom/tmux-3.4.tar.xz"
+  sha256 "06b310cb6e122ec4794453084a60efaf006a9cb806a8405f6ea61bddf782ce71"
   license "ISC"
-  revision 3
+  revision 1
 
-  livecheck do
-    url :stable
-    strategy :github_latest
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+[a-z]?)["' >]}i)
-  end
-
+  depends_on "bison" => :build
   depends_on "pkg-config" => :build
   depends_on "jemalloc"
   depends_on "libevent"
@@ -22,33 +17,26 @@ class Tmux < Formula
     sha256 "b5f7bbd78f9790026bbff16fc6e3fe4070d067f58f943e156bd1a8c3c99f6a6f"
   end
 
-  patch do
-    url "https://raw.githubusercontent.com/NixOS/nixpkgs/2821a121dc2acf2fe07d9636ee35ff61807087ea/pkgs/tools/misc/tmux/CVE-2022-47016.patch"
-    sha256 "c1284aace9231e736ace52333ec91726d3dfda58d3a3404b67c6f40bf5ed28a4"
-  end
+  patch :DATA
 
   def install
     args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+      --enable-sixel
+      --disable-utf8proc
       --sysconfdir=#{etc}
     ]
-
-    on_macos do
-      args << "--disable-utf8proc"
-    end
 
     ncurses = Formula["ncurses"]
     ENV.append "CPPFLAGS", "-I#{ncurses.include}/ncursesw"
     ENV.append "LDFLAGS", "-L#{ncurses.lib} -lncursesw"
 
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    ENV.append_to_cflags "-flto"
+    ENV.append_to_cflags "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     ENV.append "LDFLAGS", "-lresolv"
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
 
     system "make", "install"
 
