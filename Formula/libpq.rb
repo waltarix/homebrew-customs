@@ -1,10 +1,9 @@
 class Libpq < Formula
   desc "Postgres C API library"
   homepage "https://www.postgresql.org/docs/current/libpq.html"
-  url "https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.bz2"
-  sha256 "ce3c4d85d19b0121fe0d3f8ef1fa601f71989e86f8a66f7dc3ad546dd5564fec"
+  url "https://ftp.postgresql.org/pub/source/v16.3/postgresql-16.3.tar.bz2"
+  sha256 "331963d5d3dc4caf4216a049fa40b66d6bcb8c730615859411b9518764e60585"
   license "PostgreSQL"
-  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
@@ -90,91 +89,3 @@ class Libpq < Formula
     assert_equal "Connection to database attempted and failed", shell_output("./libpqtest")
   end
 end
-
-__END__
-diff --git a/src/backend/libpq/be-secure-openssl.c b/src/backend/libpq/be-secure-openssl.c
-index e9c86d08df..49dca0cda9 100644
---- a/src/backend/libpq/be-secure-openssl.c
-+++ b/src/backend/libpq/be-secure-openssl.c
-@@ -844,11 +844,6 @@ be_tls_write(Port *port, void *ptr, size_t len, int *waitfor)
-  * to retry; do we need to adopt their logic for that?
-  */
-
--#ifndef HAVE_BIO_GET_DATA
--#define BIO_get_data(bio) (bio->ptr)
--#define BIO_set_data(bio, data) (bio->ptr = data)
--#endif
--
- static BIO_METHOD *my_bio_methods = NULL;
-
- static int
-@@ -858,7 +853,7 @@ my_sock_read(BIO *h, char *buf, int size)
-
- 	if (buf != NULL)
- 	{
--		res = secure_raw_read(((Port *) BIO_get_data(h)), buf, size);
-+		res = secure_raw_read(((Port *) BIO_get_app_data(h)), buf, size);
- 		BIO_clear_retry_flags(h);
- 		if (res <= 0)
- 		{
-@@ -878,7 +873,7 @@ my_sock_write(BIO *h, const char *buf, int size)
- {
- 	int			res = 0;
-
--	res = secure_raw_write(((Port *) BIO_get_data(h)), buf, size);
-+	res = secure_raw_write(((Port *) BIO_get_app_data(h)), buf, size);
- 	BIO_clear_retry_flags(h);
- 	if (res <= 0)
- 	{
-@@ -954,7 +949,7 @@ my_SSL_set_fd(Port *port, int fd)
- 		SSLerr(SSL_F_SSL_SET_FD, ERR_R_BUF_LIB);
- 		goto err;
- 	}
--	BIO_set_data(bio, port);
-+	BIO_set_app_data(bio, port);
-
- 	BIO_set_fd(bio, fd, BIO_NOCLOSE);
- 	SSL_set_bio(port->ssl, bio, bio);
-diff --git a/src/interfaces/libpq/fe-secure-openssl.c b/src/interfaces/libpq/fe-secure-openssl.c
-index 390c888c96..b730352b86 100644
---- a/src/interfaces/libpq/fe-secure-openssl.c
-+++ b/src/interfaces/libpq/fe-secure-openssl.c
-@@ -1830,11 +1830,6 @@ PQsslAttribute(PGconn *conn, const char *attribute_name)
-  * to retry; do we need to adopt their logic for that?
-  */
-
--#ifndef HAVE_BIO_GET_DATA
--#define BIO_get_data(bio) (bio->ptr)
--#define BIO_set_data(bio, data) (bio->ptr = data)
--#endif
--
- static BIO_METHOD *my_bio_methods;
-
- static int
-@@ -1842,7 +1837,7 @@ my_sock_read(BIO *h, char *buf, int size)
- {
- 	int			res;
-
--	res = pqsecure_raw_read((PGconn *) BIO_get_data(h), buf, size);
-+	res = pqsecure_raw_read((PGconn *) BIO_get_app_data(h), buf, size);
- 	BIO_clear_retry_flags(h);
- 	if (res < 0)
- 	{
-@@ -1872,7 +1867,7 @@ my_sock_write(BIO *h, const char *buf, int size)
- {
- 	int			res;
-
--	res = pqsecure_raw_write((PGconn *) BIO_get_data(h), buf, size);
-+	res = pqsecure_raw_write((PGconn *) BIO_get_app_data(h), buf, size);
- 	BIO_clear_retry_flags(h);
- 	if (res < 0)
- 	{
-@@ -1963,7 +1958,7 @@ my_SSL_set_fd(PGconn *conn, int fd)
- 		SSLerr(SSL_F_SSL_SET_FD, ERR_R_BUF_LIB);
- 		goto err;
- 	}
--	BIO_set_data(bio, conn);
-+	BIO_set_app_data(bio, conn);
-
- 	SSL_set_bio(conn->ssl, bio, bio);
- 	BIO_set_fd(bio, fd, BIO_NOCLOSE);
