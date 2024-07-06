@@ -1,8 +1,8 @@
 class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
-  url "https://hpjansson.org/chafa/releases/chafa-1.12.5.tar.xz"
-  sha256 "0f5490d52a500a6b386f15cc04c6e8702afd0285d422b9575b332e0c683957f2"
+  url "https://hpjansson.org/chafa/releases/chafa-1.14.1.tar.xz"
+  sha256 "24707f59e544cec85d7a1993854672136b05271f86954248c5d8a42e221f6f25"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -28,15 +28,14 @@ class Chafa < Formula
     ENV.append "LDFLAGS", "-Wl,-s"
 
     system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
-                          "--without-imagemagick"
+                          "--disable-silent-rules"
     system "make", "install"
     man1.install "docs/chafa.1"
   end
 
   test do
     output = shell_output("#{bin}/chafa #{test_fixtures("test.png")}")
-    assert_equal 2, output.lines.count
+    assert_equal 3, output.lines.count
     output = shell_output("#{bin}/chafa --version")
     expected_loaders = ["JPEG", "TIFF", "WebP"]
     expected_loaders << "SVG" if OS.mac?
