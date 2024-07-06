@@ -9,33 +9,21 @@ class Luajit < Formula
   # Update this to the tip of the `v2.1` branch at the start of every month.
   # Get the latest commit with:
   #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
-  url "https://github.com/LuaJIT/LuaJIT/archive/c525bcb9024510cad9e170e12b6209aedb330f83.tar.gz"
-  # Use the version scheme `2.1.0-beta3-yyyymmdd.x` where `yyyymmdd` is the date of the
-  # latest commit at the time of updating, and `x` is the number of commits on that date.
+  # This is a rolling release model so take care not to ignore CI failures that may be regressions.
+  url "https://github.com/LuaJIT/LuaJIT/archive/93e87998b24021b94de8d1c8db244444c46fb6e9.tar.gz"
+  # Use the version scheme `2.1.timestamp` where `timestamp` is the Unix timestamp of the
+  # latest commit at the time of updating.
   # `brew livecheck luajit` will generate the correct version for you automatically.
-  version "2.1.1703358377"
-  sha256 "eb20affc70a9e97a8a0e1e0b10456f220fca7637a198e4a937b5fc827dd1ef95"
+  version "2.1.1716656478"
+  sha256 "026eb4531cddff20acc72ec97378ccfc30326173c491d6c01834b48b42a80518"
   license "MIT"
-  head "https://luajit.org/git/luajit-2.0.git", branch: "v2.1"
+  head "https://luajit.org/git/luajit.git", branch: "v2.1"
 
   livecheck do
-    url "https://github.com/LuaJIT/LuaJIT/commits/v2.1"
-    regex(/<relative-time[^>]+?datetime=["']?(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)["' >]/im)
-    strategy :page_match do |page, regex|
-      newest_date = nil
-      commit_count = 0
-      page.scan(regex).map do |match|
-        date = Date.parse(match[0])
-        newest_date ||= date
-        break if date != newest_date
-
-        commit_count += 1
-      end
-      next if newest_date.blank? || commit_count.zero?
-
-      # The main LuaJIT version is rarely updated, so we recycle it from the
-      # `version` to avoid having to fetch another page.
-      version.to_s.sub(/\d+\.\d+$/, "#{newest_date.strftime("%Y%m%d")}.#{commit_count}")
+    url "https://api.github.com/repos/LuaJIT/LuaJIT/branches/v2.1"
+    strategy :json do |json|
+      date = json.dig("commit", "commit", "author", "date")
+      "2.1.#{DateTime.parse(date).strftime("%s")}"
     end
   end
 
@@ -76,7 +64,7 @@ class Luajit < Formula
 
     # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
     # is not set then it's forced to 10.4, which breaks compile on Mojave.
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s if OS.mac?
 
     # Help the FFI module find Homebrew-installed libraries.
     ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath(target: HOMEBREW_PREFIX/"lib")}" if HOMEBREW_PREFIX.to_s != "/usr/local"
@@ -89,11 +77,6 @@ class Luajit < Formula
     system "make", "amalg", "PREFIX=#{HOMEBREW_PREFIX}", *verbose_args
     system "make", "install", "PREFIX=#{prefix}", *verbose_args
     doc.install (buildpath/"doc").children
-
-    relver = (buildpath/"src/luajit_relver.txt").read.chomp
-    # v2.1 branch doesn't install symlink for luajit.
-    # This breaks tools like `luarocks` that require the `luajit` bin to be present.
-    bin.install_symlink "luajit-2.1.#{relver}" => "luajit"
 
     # LuaJIT doesn't automatically symlink unversioned libraries:
     # https://github.com/Homebrew/homebrew/issues/45854.
@@ -111,6 +94,8 @@ class Luajit < Formula
   end
 
   test do
+    assert_includes shell_output("#{bin}/luajit -v"), " #{version} " if stable?
+
     system bin/"luajit", "-e", <<~EOS
       local ffi = require("ffi")
       ffi.cdef("int printf(const char *fmt, ...);")
@@ -119,18 +104,16 @@ class Luajit < Formula
 
     # Check that LuaJIT can find its own `jit.*` modules
     touch "empty.lua"
-    system bin/"luajit", "-b", "-o", "osx", "-a", "arm64", "empty.lua", "empty.o"
+    system bin/"luajit", "-b", "-o", "osx", "empty.lua", "empty.o"
     assert_predicate testpath/"empty.o", :exist?
 
     # Check that we're not affected by LuaJIT/LuaJIT/issues/865.
     require "macho"
     machobj = MachO.open("empty.o")
-    assert_kind_of MachO::FatFile, machobj
+    # always generate 64 bit non-FAT Mach-O object files
+    # per https://github.com/LuaJIT/LuaJIT/commit/7110b935672489afd6ba3eef3e5139d2f3bd05b6
+    assert_kind_of MachO::MachOFile, machobj
     assert_predicate machobj, :object?
-
-    cputypes = machobj.machos.map(&:cputype)
-    assert_includes cputypes, :arm64
-    assert_includes cputypes, :x86_64
-    assert_equal 2, cputypes.length
+    assert_equal Hardware::CPU.arch, machobj.cputype
   end
 end
