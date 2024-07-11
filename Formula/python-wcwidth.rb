@@ -1,4 +1,4 @@
-class LibpythonWcwidth < Formula
+class PythonWcwidth < Formula
   desc "Pretty-print tabular data in Python"
   homepage "https://pypi.org/project/tabulate/"
   url "https://github.com/waltarix/python-wcwidth/archive/0.2.8-custom-r1.tar.gz"

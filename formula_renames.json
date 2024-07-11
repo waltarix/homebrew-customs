@@ -1,3 +1,4 @@
 {
-  "systemd-completion-zsh": "systemd-completion"
+  "systemd-completion-zsh": "systemd-completion",
+  "libpython-wcwidth": "python-wcwidth"
 }
