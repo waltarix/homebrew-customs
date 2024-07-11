@@ -1,18 +1,18 @@
 class Xh < Formula
   desc "Friendly and fast tool for sending HTTP requests"
   homepage "https://github.com/ducaale/xh"
-  ["0.20.1", nil].tap do |(v, r)|
+  ["0.22.2", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     if OS.linux?
       url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "f25fd411e66c4d5aa32114c5182767e36bb063aaac43ddeadedc475dab11f6f6"
+      sha256 "a3a190a508d1e45b44ffbe3b6cc317b56b0d4f6a8c3f43ad58beb88e9936e7b8"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "d7d3f01c31f8134ea91403cdc59b6b4e69a87c25d3d1f5fc74f4ec0fef1ee6d1"
+        sha256 "60344c5a3f908558cc2123c9dce0b329402917d80bc445b001feb8a2ab465d10"
       else
         url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "7152a0a9a2f8b831b9c3dcc9afaae93c1397211b16f1f24e52f12d0b13940a17"
+        sha256 "b2452baccf44f0f793dc60748413dafce1bfa02d5091a8134aeb31ffad16d542"
       end
     end
     revision r if r
