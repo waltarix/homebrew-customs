@@ -1,18 +1,23 @@
 class Uni < Formula
   desc "Unicode database query tool for the command-line"
   homepage "https://github.com/arp242/uni"
-  ["2.6.0", nil].tap do |(v, r)|
+  ["2.7.0", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     if OS.linux?
-      url "https://github.com/waltarix/uni/releases/download/v#{v}-custom#{rev}/uni-#{v}-linux_amd64.tar.xz"
-      sha256 "93b4d223df8c2ea100362f2fc45c5d09a7ff6eb7f3948c63814d750034a3dfdb"
+      if Hardware::CPU.flags.grep(/\Aavx512/).size.zero?
+        url "https://github.com/waltarix/uni/releases/download/v#{v}-custom#{rev}/uni-#{v}-linux_amd64_v2.tar.xz"
+        sha256 "213bd4005129fb2bd28d52bb11972bbd75888a0415d6879b3e42fcd83fe15a8b"
+      else
+        url "https://github.com/waltarix/uni/releases/download/v#{v}-custom#{rev}/uni-#{v}-linux_amd64_v4.tar.xz"
+        sha256 "394b43e30310d387ecfac9673fc6c7de8b869154003d62a43011a9467e133c01"
+      end
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/uni/releases/download/v#{v}-custom#{rev}/uni-#{v}-darwin_arm64.tar.xz"
-        sha256 "9923fc2a55289da36adf03536ffa7c3dc3b592de3358cf633f910f0a48fea811"
+        sha256 "f4efc1e8a5e5beb31a2edfd62968d59158ba97dafb9004b66fc71eb2e55e0375"
       else
-        url "https://github.com/waltarix/uni/releases/download/v#{v}-custom#{rev}/uni-#{v}-darwin_amd64.tar.xz"
-        sha256 "9541248a0be18830cdb4abe494c818bae655f76a3e02ab616ceb513ae9e4fdfc"
+        url "https://github.com/waltarix/uni/releases/download/v#{v}-custom#{rev}/uni-#{v}-darwin_amd64_v3.tar.xz"
+        sha256 "610f0450950ba474aad2208d920bf7760d0b236a7c6b6b68185c82ca5edc2136"
       end
     end
     version v
