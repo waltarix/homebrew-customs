@@ -1,27 +1,27 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.53.0.tar.gz"
-  sha256 "d45abbfb64f21913c633d46818d9d3eb3d7ebc7e94bd16f45941958aa5480e1d"
+  url "https://github.com/junegunn/fzf/archive/refs/tags/v0.54.0.tar.gz"
+  sha256 "ce658b153254e25cf4244365d639cf3ac5b91230a20f76bd6845d88e1267a2db"
   license "MIT"
 
   resource "binary" do
-    "0.53.0".tap do |v|
+    "0.54.0".tap do |v|
       if OS.linux?
         if Hardware::CPU.flags.grep(/\Aavx512/).size.zero?
-          url "https://github.com/waltarix/fzf/releases/download/#{v}-custom/fzf-#{v}-linux_amd64_v2.tar.xz"
-          sha256 "e6f23ee617d2bb2f21d544a21975d92e08c61682c02f487d02c3fecc024b21ce"
+          url "https://github.com/waltarix/fzf/releases/download/v#{v}-custom/fzf-#{v}-linux_amd64_v2.tar.xz"
+          sha256 "b4a3e6c0081d265e977a17113c4cba81f447eb216978f405e2ae3544288500ac"
         else
-          url "https://github.com/waltarix/fzf/releases/download/#{v}-custom/fzf-#{v}-linux_amd64_v4.tar.xz"
-          sha256 "810304b9cda84a2313f5ed21782cf8294f4eeae4865c1b68694f34ff6245595f"
+          url "https://github.com/waltarix/fzf/releases/download/v#{v}-custom/fzf-#{v}-linux_amd64_v4.tar.xz"
+          sha256 "fb3e1d402aface49039ec1aa3821ba2ac112bdbf1a505fd7c759040992ad7c26"
         end
       else
         if Hardware::CPU.arm?
-          url "https://github.com/waltarix/fzf/releases/download/#{v}-custom/fzf-#{v}-darwin_arm64.tar.xz"
-          sha256 "d8f9357bbded3004ca0f68dbd3158cb43da788ae77528bfc128e4a1aab0b8678"
+          url "https://github.com/waltarix/fzf/releases/download/v#{v}-custom/fzf-#{v}-darwin_arm64.tar.xz"
+          sha256 "e4d2caf10c66687f425c8e143491a509f6a48f52957fc1a22af9f1996d63643b"
         else
-          url "https://github.com/waltarix/fzf/releases/download/#{v}-custom/fzf-#{v}-darwin_amd64_v3.tar.xz"
-          sha256 "7bf1c63e1d7cde452fdb20bb6c6ee01f3cc6569c005e225d1622d8568976fef4"
+          url "https://github.com/waltarix/fzf/releases/download/v#{v}-custom/fzf-#{v}-darwin_amd64_v3.tar.xz"
+          sha256 "33d2e645d4fae0bee32b09b2af18672c30f6b2657bb883d9e0e6934b43203196"
         end
       end
     end
