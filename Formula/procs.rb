@@ -1,17 +1,17 @@
 class Procs < Formula
   desc "Modern replacement for ps written by Rust"
   homepage "https://github.com/dalance/procs"
-  "0.14.4".tap do |v|
+  "0.14.5".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/procs/releases/download/v#{v}-custom/procs-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "28013507dee2e241a26d5ceb809014158af96e31e016f023b5607a2db8c383fc"
+      sha256 "64d25e0d2ce900bc61b27ca86f0a3b0684cb7393007dacaa3526e2c65cf6fbb5"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/procs/releases/download/v#{v}-custom/procs-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "1f22f3d2b8709071d383b0c3d33a3f7cd1b3966e564ed00a812225518763f880"
+        sha256 "df3aa47bf61c997459a501a800fe367cf2e4e3957dab94ce7f526d0119372385"
       else
         url "https://github.com/waltarix/procs/releases/download/v#{v}-custom/procs-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "f82d225f7c0691650ddee4ca369f357bd3acc5411035d3c0672836ec5227b9ba"
+        sha256 "89a0693c3966c30f6f4ce2276331822f9ca3f549926761d6a90f6d0390798caa"
       end
     end
   end
