@@ -1,19 +1,21 @@
 class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
-  "0.47.2".tap do |v|
+  ["0.47.2", 1].tap do |(v, r)|
+    rev = r ? "-r#{r}" : ""
     if OS.linux?
-      url "https://github.com/waltarix/dprint/releases/download/#{v}-custom/dprint-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "b5a2542fd0fdae6a4efc1bfde70b4cefc091920f78fc7880c7ab1734f3fb2182"
+      url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "e20c24750e26f3b63278961fd39fa643225921c295b9c5694df62e8881022ab9"
     else
       if Hardware::CPU.arm?
-        url "https://github.com/waltarix/dprint/releases/download/#{v}-custom/dprint-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "391c1c2dd80f0b974857c384b91c33347008976383129155184277243774da48"
+        url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-aarch64-apple-darwin.tar.xz"
+        sha256 "4d78210769330dfdc17eeb361a12308a4734990e55f0eb445ccb6047e73bd9c6"
       else
-        url "https://github.com/waltarix/dprint/releases/download/#{v}-custom/dprint-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "4014e78cd4af01cf6d591efb87f98f3a2dfc1fc2c22a0eebc05b0eb9e2bb17c7"
+        url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-x86_64-apple-darwin.tar.xz"
+        sha256 "d082de05a3c38535c13f1e34888e940b9b1d866de352599e739ad839926dd41d"
       end
     end
+    revision r if r
   end
   license "MIT"
   head "https://github.com/dprint/dprint.git", branch: "main"
