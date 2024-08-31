@@ -1,9 +1,8 @@
 class LibtreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/46af27796a76c72d8466627d499f2bca4af958ee.tar.gz"
-  version "0.20.10-alpha.20230912"
-  sha256 "2e35fa4c4d66c34d04fdb4a3a6c3abe01a05dff571ed9553b15aabf25d870f69"
+  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.23.0.tar.gz"
+  sha256 "6403b361b0014999e96f61b9c84d6950d42f0c7d6e806be79382e0232e48a11b"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
@@ -21,6 +20,7 @@ class LibtreeSitter < Formula
 
   test do
     (testpath/"test_program.c").write <<~EOS
+      #include <stdio.h>
       #include <string.h>
       #include <tree_sitter/api.h>
       int main(int argc, char* argv[]) {
