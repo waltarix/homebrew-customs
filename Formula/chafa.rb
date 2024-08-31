@@ -1,8 +1,8 @@
 class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
-  url "https://hpjansson.org/chafa/releases/chafa-1.14.1.tar.xz"
-  sha256 "24707f59e544cec85d7a1993854672136b05271f86954248c5d8a42e221f6f25"
+  url "https://hpjansson.org/chafa/releases/chafa-1.14.2.tar.xz"
+  sha256 "8a28d308074e25597e21bf280747461ac695ae715f2f327eb0e0f0435967f8b3"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -27,8 +27,7 @@ class Chafa < Formula
     ENV.append "CFLAGS", "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
     man1.install "docs/chafa.1"
   end
