@@ -5,20 +5,16 @@ class PythonWcwidth < Formula
   version "0.2.13"
   sha256 "62c676a02b9da3afc704b5409f5d5006f8fa9d7ea12dc9ac6308cac67fb3337c"
   license "MIT"
+  revision 1
 
-  depends_on "python@3.11" => [:build, :test]
-  depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13"
 
-  def pythons
-    deps.map(&:to_formula)
-        .select { |f| f.name.start_with?("python@") }
-        .map { |f| f.opt_libexec/"bin/python" }
+  def python3
+    "python3.13"
   end
 
   def install
-    pythons.each do |python|
-      system python, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
-    end
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
   end
 
   test do
