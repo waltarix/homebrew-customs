@@ -1,10 +1,9 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.4-custom/tmux-3.4.tar.xz"
-  sha256 "06b310cb6e122ec4794453084a60efaf006a9cb806a8405f6ea61bddf782ce71"
+  url "https://github.com/waltarix/tmux/releases/download/3.5a-custom/tmux-3.5a.tar.xz"
+  sha256 "5b6d3644c524d72cc0c86ee17e0cace8704677e8395fb645b45ff9827e7b5403"
   license "ISC"
-  revision 1
 
   depends_on "bison" => :build
   depends_on "pkg-config" => :build
@@ -13,8 +12,8 @@ class Tmux < Formula
   depends_on "ncurses"
 
   resource "completion" do
-    url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/f5d53239f7658f8e8fbaf02535cc369009c436d6/completions/tmux"
-    sha256 "b5f7bbd78f9790026bbff16fc6e3fe4070d067f58f943e156bd1a8c3c99f6a6f"
+    url "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/8da7f797245970659b259b85e5409f197b8afddd/completions/tmux"
+    sha256 "4e2179053376f4194b342249d75c243c1573c82c185bfbea008be1739048e709"
   end
 
   patch :DATA
