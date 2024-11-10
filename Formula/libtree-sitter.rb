@@ -1,8 +1,8 @@
 class LibtreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.23.0.tar.gz"
-  sha256 "6403b361b0014999e96f61b9c84d6950d42f0c7d6e806be79382e0232e48a11b"
+  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.24.3.tar.gz"
+  sha256 "0a8d0cf8e09caba22ed0d8439f7fa1e3d8453800038e43ccad1f34ef29537da1"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
@@ -14,12 +14,11 @@ class LibtreeSitter < Formula
     ENV.append "CFLAGS", "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
-    system "make", "AMALGAMATED=1"
-    system "make", "install", "PREFIX=#{prefix}"
+    system "make", "install", "AMALGAMATED=1", "PREFIX=#{prefix}"
   end
 
   test do
-    (testpath/"test_program.c").write <<~EOS
+    (testpath/"test_program.c").write <<~C
       #include <stdio.h>
       #include <string.h>
       #include <tree_sitter/api.h>
@@ -45,7 +44,7 @@ class LibtreeSitter < Formula
         ts_parser_delete(parser);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test_program.c", "-L#{lib}", "-ltree-sitter", "-o", "test_program"
     assert_equal "tree creation failed", shell_output("./test_program")
   end
