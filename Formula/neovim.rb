@@ -1,10 +1,10 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
+  url "https://github.com/neovim/neovim/archive/refs/tags/v0.10.2.tar.gz"
+  sha256 "546cb2da9fffbb7e913261344bbf4cf1622721f6c5a67aa77609e976e78b8e89"
   license "Apache-2.0"
-
-  url "https://github.com/neovim/neovim/archive/refs/tags/v0.10.1.tar.gz"
-  sha256 "edce96e79903adfcb3c41e9a8238511946325ea9568fde177a70a614501af689"
+  revision 1
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
@@ -81,7 +81,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index f0fd4c66e..c84753796 100755
+index f0fd4c66ea..c84753796e 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,14 +1,15 @@
@@ -125,7 +125,7 @@ index f0fd4c66e..c84753796 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r1/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 852b8b9b4..7207bb9e7 100644
+index 852b8b9b48..7207bb9e7a 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
 @@ -848,9 +848,6 @@ void remote_ui_raw_line(RemoteUI *ui, Integer grid, Integer row, Integer startco
@@ -139,7 +139,7 @@ index 852b8b9b4..7207bb9e7 100644
      if (endcol < clearcol) {
        remote_ui_cursor_goto(ui, row, endcol);
 diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
-index 6cedb5db5..92840147c 100644
+index 6cedb5db50..92840147ce 100644
 --- a/src/nvim/generators/gen_unicode_tables.lua
 +++ b/src/nvim/generators/gen_unicode_tables.lua
 @@ -312,7 +312,7 @@ eaw_fp:close()
@@ -152,7 +152,7 @@ index 6cedb5db5..92840147c 100644
  local emoji_fp = io.open(emoji_fname, 'r')
  local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index a345795bb..aafcd9f6a 100644
+index e47901fde4..4249410157 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
 @@ -87,6 +87,8 @@ struct interval {
@@ -213,10 +213,10 @@ index a345795bb..aafcd9f6a 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index c74f5a526..c2eb95388 100644
+index 7a02bfca57..5ac2438647 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -992,11 +992,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -998,11 +998,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
    int c = utf_ptr2char(buf);
@@ -229,7 +229,7 @@ index c74f5a526..c2eb95388 100644
      // Clear the two screen cells.
      // If the char is single-width in host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -1005,11 +1001,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -1011,11 +1007,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
