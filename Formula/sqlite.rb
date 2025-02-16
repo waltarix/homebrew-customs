@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://github.com/waltarix/sqlite/releases/download/version-3.47.0-custom/sqlite-autoconf-3470000.tar.xz"
-  version "3.47.0"
-  sha256 "377231d01bf92f1c34b013415424e37743823e85afa27c27b2f5ca96ca01ee03"
+  url "https://github.com/waltarix/sqlite/releases/download/version-3.49.0-custom/sqlite-autoconf-3490000.tar.xz"
+  version "3.49.0"
+  sha256 "d14ffaf31bd3f0d5e5b397cb1c812f10a1ea727bb32e0fa13704fbdb1e71bfc6"
   license "blessing"
 
   livecheck do
@@ -20,6 +20,12 @@ class Sqlite < Formula
   depends_on "readline"
   depends_on "waltarix/customs/cmigemo"
   depends_on "zlib"
+
+  # add macos linker patch, upstream discussion, https://sqlite.org/forum/forumpost/a179331cbb
+  # patch do
+  #   url "https://raw.githubusercontent.com/Homebrew/formula-patches/c797b2d7779960ba443c498c04c02e8a47626f33/sqlite/3.49.0-macos-linker.patch"
+  #   sha256 "d284149cc327be3e5e9a0a7150ce584f5da584e44645ad036b6d2cd143e3e638"
+  # end
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
@@ -45,17 +51,16 @@ class Sqlite < Formula
       -DSQLITE_USE_URI=1
     ].join(" ")
 
-    args = %W[
-      --prefix=#{prefix}
-      --disable-dependency-tracking
-      --enable-dynamic-extensions
-      --enable-readline
-      --disable-editline
-      --enable-session
-      --enable-migemo
+    args = [
+      "--enable-readline",
+      "--disable-editline",
+      "--enable-session",
+      "--with-readline-cflags=-I#{Formula["readline"].opt_include}",
+      "--with-readline-ldflags=-L#{Formula["readline"].opt_lib} -lreadline",
+      "--migemo",
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     # Avoid rebuilds of dependants that hardcode this path.
@@ -64,24 +69,24 @@ class Sqlite < Formula
 
   test do
     path = testpath/"school.sql"
-    path.write <<~EOS
+    path.write <<~SQL
       create table students (name text, age integer);
       insert into students (name, age) values ('Bob', 14);
       insert into students (name, age) values ('Sue', 12);
       insert into students (name, age) values ('Tim', 13);
       select name from students order by age asc;
-    EOS
+    SQL
     names = shell_output("#{bin}/sqlite3 < #{path}").strip.split("\n")
     assert_equal %w[Sue Tim Bob], names
 
     path = testpath/"school-migemo.sql"
-    path.write <<~EOS
+    path.write <<~SQL
       create table students (name text, age integer);
       insert into students (name, age) values ('ボブ', 14);
       insert into students (name, age) values ('スー', 12);
       insert into students (name, age) values ('ティム', 13);
       select name from students where MIGEMO('bob', name);
-    EOS
+    SQL
     names = shell_output("#{bin}/sqlite3 < #{path}").strip.split("\n")
     assert_equal %w[ボブ], names
   end
