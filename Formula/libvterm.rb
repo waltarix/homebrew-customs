@@ -4,7 +4,7 @@ class Libvterm < Formula
   url "https://github.com/neovim/libvterm/archive/v0.3.3.tar.gz"
   sha256 "0babe3ab42c354925dadede90d352f054aa9c4ae6842ea803a20c9741e172e56"
   license "MIT"
-  revision 1
+  revision 2
   version_scheme 1
 
   livecheck do
@@ -15,8 +15,8 @@ class Libvterm < Formula
   depends_on "libtool" => :build
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
-    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
+    url "https://github.com/waltarix/localedata/releases/download/16.0.0/wcwidth9.h"
+    sha256 "a9ddb9059f0a17dc0efee89e7ed73c9b0412b10111987090068f49ba708bfa70"
   end
 
   patch :DATA
