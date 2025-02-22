@@ -10,12 +10,12 @@ class Luajit < Formula
   # Get the latest commit with:
   #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
   # This is a rolling release model so take care not to ignore CI failures that may be regressions.
-  url "https://github.com/LuaJIT/LuaJIT/archive/fe71d0fb54ceadfb5b5f3b6baf29e486d97f6059.tar.gz"
+  url "https://github.com/LuaJIT/LuaJIT/archive/a4f56a459a588ae768801074b46ba0adcfb49eb1.tar.gz"
   # Use the version scheme `2.1.timestamp` where `timestamp` is the Unix timestamp of the
   # latest commit at the time of updating.
   # `brew livecheck luajit` will generate the correct version for you automatically.
-  version "2.1.1731601260"
-  sha256 "92325f209b21aaf0a67b099bc73cf9bbac5789a9749bdc3898d4a990abb4f36e"
+  version "2.1.1736781742"
+  sha256 "b4120332a4191db9c9da2d81f9f11f0d4504fc4cff2dea0f642d3d8f1fcebd0e"
   license "MIT"
   head "https://luajit.org/git/luajit.git", branch: "v2.1"
 
@@ -105,7 +105,7 @@ class Luajit < Formula
     # Check that LuaJIT can find its own `jit.*` modules
     touch "empty.lua"
     system bin/"luajit", "-b", "-o", "osx", "empty.lua", "empty.o"
-    assert_predicate testpath/"empty.o", :exist?
+    assert_path_exists testpath/"empty.o"
 
     # Check that we're not affected by LuaJIT/LuaJIT/issues/865.
     require "macho"
