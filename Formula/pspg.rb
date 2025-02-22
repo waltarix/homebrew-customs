@@ -1,8 +1,8 @@
 class Pspg < Formula
   desc "Unix pager optimized for psql"
   homepage "https://github.com/okbob/pspg"
-  url "https://github.com/okbob/pspg/archive/refs/tags/5.8.6.tar.gz"
-  sha256 "ed7c1d43c813b2415d5ce0099ae34381c10f82f211de10a4d8ed0ffcf4f2a938"
+  url "https://github.com/okbob/pspg/archive/refs/tags/5.8.7.tar.gz"
+  sha256 "cbbd13898f321aab645569e32808dc3aa4c9529ea008b321f21e7a0d8360fcc9"
   license "BSD-2-Clause"
   head "https://github.com/okbob/pspg.git", branch: "master"
 
@@ -11,8 +11,8 @@ class Pspg < Formula
   depends_on "readline"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
-    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
+    url "https://github.com/waltarix/localedata/releases/download/16.0.0/wcwidth9.h"
+    sha256 "a9ddb9059f0a17dc0efee89e7ed73c9b0412b10111987090068f49ba708bfa70"
   end
 
   def install
