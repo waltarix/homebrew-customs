@@ -1,10 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/refs/tags/v0.10.2.tar.gz"
-  sha256 "546cb2da9fffbb7e913261344bbf4cf1622721f6c5a67aa77609e976e78b8e89"
+  url "https://github.com/neovim/neovim/archive/refs/tags/v0.10.4.tar.gz"
+  sha256 "10413265a915133f8a853dc757571334ada6e4f0aa15f4c4cc8cc48341186ca2"
   license "Apache-2.0"
-  revision 1
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
@@ -20,8 +19,8 @@ class Neovim < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
-    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
+    url "https://github.com/waltarix/localedata/releases/download/16.0.0/wcwidth9.h"
+    sha256 "a9ddb9059f0a17dc0efee89e7ed73c9b0412b10111987090068f49ba708bfa70"
   end
 
   patch :DATA
@@ -81,7 +80,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index f0fd4c66ea..c84753796e 100755
+index f0fd4c66ea..9376ffd5f4 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,14 +1,15 @@
@@ -95,7 +94,7 @@ index f0fd4c66ea..c84753796e 100755
  
  UNIDIR_DEFAULT=src/unicode
 -DOWNLOAD_URL_BASE_DEFAULT='http://unicode.org/Public'
-+UNIDIR_VERSION=15.1.0
++UNIDIR_VERSION=16.0.0
 +DOWNLOAD_URL_BASE_DEFAULT="https://www.unicode.org/Public/$UNIDIR_VERSION/ucd"
  
 -if test "$1" = '--help' ; then
@@ -123,7 +122,7 @@ index f0fd4c66ea..c84753796e 100755
  
 -git -C "$UNIDIR" commit -m "feat: update unicode tables" .
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
-+  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}-r1/EastAsianWidth.txt"
++  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
 index 852b8b9b48..7207bb9e7a 100644
 --- a/src/nvim/api/ui.c
@@ -213,10 +212,10 @@ index e47901fde4..4249410157 100644
  // Return the converted equivalent of "a", which is a UCS-4 character.  Use
  // the given conversion "table".  Uses binary search on "table".
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 7a02bfca57..5ac2438647 100644
+index 2f512f15ed..13a9e33c7c 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -998,11 +998,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -1000,11 +1000,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
    int c = utf_ptr2char(buf);
@@ -229,7 +228,7 @@ index 7a02bfca57..5ac2438647 100644
      // Clear the two screen cells.
      // If the char is single-width in host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -1011,11 +1007,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -1013,11 +1009,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
