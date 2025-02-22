@@ -4,8 +4,13 @@ class Zsh < Formula
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.9/zsh-5.9.tar.xz"
   mirror "https://www.zsh.org/pub/zsh-5.9.tar.xz"
   sha256 "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5"
-  license "MIT-Modern-Variant"
-  revision 4
+  license all_of: [
+    "MIT-Modern-Variant",
+    "GPL-2.0-only", # Completion/Linux/Command/_qdbus, Completion/openSUSE/Command/{_osc,_zypper}
+    "GPL-2.0-or-later", # Completion/Unix/Command/_darcs
+    "ISC", # Src/openssh_bsd_setres_id.c
+  ]
+  revision 5
 
   livecheck do
     url "https://sourceforge.net/projects/zsh/rss?path=/zsh"
@@ -25,13 +30,13 @@ class Zsh < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/15.1.0-r1/wcwidth9.h"
-    sha256 "5afe09e6986233b517c05e4c82dbb228bb6ed64ba4be6fd7bf3185b7d3e72eb0"
+    url "https://github.com/waltarix/localedata/releases/download/16.0.0/wcwidth9.h"
+    sha256 "a9ddb9059f0a17dc0efee89e7ed73c9b0412b10111987090068f49ba708bfa70"
   end
 
   patch do
-    url "https://deb.debian.org/debian/pool/main/z/zsh/zsh_5.9-5.debian.tar.xz"
-    sha256 "f7ca24eb97ab9fbd9dad26b1e5f7eb863b621d11893bb6f2d87b269d0e6db581"
+    url "https://deb.debian.org/debian/pool/main/z/zsh/zsh_5.9-8.debian.tar.xz"
+    sha256 "001e005ed93c3c93fd3474ddbd473c06770ce470188a299a58aeb73106f1bcb2"
     apply %w[
       patches/further-mitigate-test-suite-hangs.patch
       patches/update-debian-sections.patch
@@ -40,6 +45,11 @@ class Zsh < Formula
       patches/cherry-pick-4b7a9fd0-additional-typset--p--m-fix-for-namespaces.patch
       patches/cherry-pick-b62e91134-51723-migrate-pcre-module-to-pcre2.patch
       patches/cherry-pick-10bdbd8b-51877-do-not-build-pcre-module-if-pcre2-config-is-not-found.patch
+      patches/cherry-pick-ecd3f9c9-1057610-support-texinfo-7.0.patch
+      patches/cherry-pick-4c89849c-50641-use-int-main-in-test-C-codes-in-configure.patch
+      patches/cherry-pick-ab4d62eb-52383-Avoid-incompatible-pointer-types-in-terminfo-global.patch
+      patches/cherry-pick-0bb140f9-52999-import-OLDPWD-from-environment-if-set.patch
+      patches/cherry-pick-727b493e-50736-silence-use-after-free-warning.patch
     ]
   end
 
