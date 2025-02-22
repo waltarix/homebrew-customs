@@ -1,12 +1,13 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.5a-custom/tmux-3.5a.tar.xz"
-  sha256 "5b6d3644c524d72cc0c86ee17e0cace8704677e8395fb645b45ff9827e7b5403"
+  url "https://github.com/waltarix/tmux/releases/download/3.5a-custom-r1/tmux-3.5a.tar.xz"
+  sha256 "a5e871d94cc3c2f0d9c43a75d74cf50b1710aa3d2f1b9bbae1324b4553e9ca35"
   license "ISC"
+  revision 1
 
   depends_on "bison" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "jemalloc"
   depends_on "libevent"
   depends_on "ncurses"
@@ -73,10 +74,10 @@ class Tmux < Formula
     require "pty"
 
     socket = testpath/tap.user
-    PTY.spawn bin/"tmux", "-S", socket, "-f", "/dev/null"
+    PTY.spawn bin/"tmux", "-S", socket, "-f", File::NULL
     sleep 10
 
-    assert_predicate socket, :exist?
+    assert_path_exists socket
     assert_predicate socket, :socket?
     assert_equal "no server running on #{socket}", shell_output("#{bin}/tmux -S#{socket} list-sessions 2>&1", 1).chomp
   end
