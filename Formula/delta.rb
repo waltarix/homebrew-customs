@@ -1,17 +1,17 @@
 class Delta < Formula
   desc "Syntax-highlighting pager for git and diff output"
   homepage "https://github.com/dandavison/delta"
-  "0.16.5".tap do |v|
+  "0.18.2".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "b378e24fcaa489dc6c45af44bb7b89e43ca0d0ca33496d470bb68266b1cdb934"
+      sha256 "86981260f34b992a46ab12b3e66461390ccecaa1a92da1fb95085f158ff0e32b"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "f07af8d7c5b997fc7455f137e71434043b1e24605af1904ae577e90a69ceb89d"
+        sha256 "a0e69300a3de64b1d21464a905caa2b21b5bd752fbd19f66c5b64574ed6d721f"
       else
         url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "091d7430aa08ef69696e69d89259a9c411e6cd26f58c1ccdae302106538471c1"
+        sha256 "52c7f197dc7b10cadc31d2853b0d727b67ebeae28ad9681b3168e0eb16477bdf"
       end
     end
   end
@@ -22,9 +22,7 @@ class Delta < Formula
   def install
     bin.install "delta"
     man1.install "manual/delta.1"
-    bash_completion.install "etc/completion/completion.bash" => "delta"
-    fish_completion.install "etc/completion/completion.fish" => "delta.fish"
-    zsh_completion.install "etc/completion/completion.zsh" => "_delta"
+    generate_completions_from_executable(bin/"delta", "--generate-completion")
   end
 
   test do
