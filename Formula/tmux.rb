@@ -4,7 +4,7 @@ class Tmux < Formula
   url "https://github.com/waltarix/tmux/releases/download/3.5a-custom-r1/tmux-3.5a.tar.xz"
   sha256 "a5e871d94cc3c2f0d9c43a75d74cf50b1710aa3d2f1b9bbae1324b4553e9ca35"
   license "ISC"
-  revision 1
+  revision 2
 
   depends_on "bison" => :build
   depends_on "pkgconf" => :build
@@ -17,11 +17,10 @@ class Tmux < Formula
     sha256 "4e2179053376f4194b342249d75c243c1573c82c185bfbea008be1739048e709"
   end
 
-  patch :DATA
-
   def install
     args = %W[
       --enable-sixel
+      --enable-jemalloc
       --disable-utf8proc
       --sysconfdir=#{etc}
     ]
@@ -40,10 +39,6 @@ class Tmux < Formula
 
     system "make", "install"
 
-    (libexec/"bin").install bin/"tmux"
-    (bin/"tmux").write_env_script libexec/"bin/tmux",
-                                  ld_preload => Formula["jemalloc"].lib/shared_library("libjemalloc")
-
     pkgshare.install "example_tmux.conf"
     bash_completion.install resource("completion")
   end
@@ -52,20 +47,7 @@ class Tmux < Formula
     <<~EOS
       Example configuration has been installed to:
         #{opt_pkgshare}
-
-      To prevent jemalloc from being injected into child processes,
-      add the following to your tmux.conf:
-        set-environment -g -r #{ld_preload}
     EOS
-  end
-
-  def ld_preload
-    on_macos do
-      return :DYLD_INSERT_LIBRARIES
-    end
-    on_linux do
-      return :LD_PRELOAD
-    end
   end
 
   test do
