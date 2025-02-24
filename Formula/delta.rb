@@ -1,19 +1,21 @@
 class Delta < Formula
   desc "Syntax-highlighting pager for git and diff output"
   homepage "https://github.com/dandavison/delta"
-  "0.18.2".tap do |v|
+  ["0.18.2", 1].tap do |(v, r)|
+    rev = r ? "-r#{r}" : ""
     if OS.linux?
-      url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "86981260f34b992a46ab12b3e66461390ccecaa1a92da1fb95085f158ff0e32b"
+      url "https://github.com/waltarix/delta/releases/download/#{v}-custom#{rev}/delta-#{v}-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "2a1860751a25883e5a09e70e0e47092846e3e046f2a5dc00c614e568de03da55"
     else
       if Hardware::CPU.arm?
-        url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "a0e69300a3de64b1d21464a905caa2b21b5bd752fbd19f66c5b64574ed6d721f"
+        url "https://github.com/waltarix/delta/releases/download/#{v}-custom#{rev}/delta-#{v}-aarch64-apple-darwin.tar.xz"
+        sha256 "3cde8ec359e20d847020765ee4aadb182faa724ae31878d76543ed859a653551"
       else
-        url "https://github.com/waltarix/delta/releases/download/#{v}-custom/delta-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "52c7f197dc7b10cadc31d2853b0d727b67ebeae28ad9681b3168e0eb16477bdf"
+        url "https://github.com/waltarix/delta/releases/download/#{v}-custom#{rev}/delta-#{v}-x86_64-apple-darwin.tar.xz"
+        sha256 "daf93ee908899a6694c32b6c0f98b21515f869cd912609d190ae8e20820014e9"
       end
     end
+    revision r if r
   end
   license "MIT"
 
