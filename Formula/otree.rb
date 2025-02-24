@@ -1,17 +1,17 @@
 class Otree < Formula
   desc "Command-line tool to view objects (JSON/YAML/TOML) in TUI tree widget"
   homepage "https://github.com/fioncat/otree"
-  "0.2.0".tap do |v|
+  "0.3.1".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/otree/releases/download/v#{v}-custom/otree-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "966ed2ef854c4bdd57c8d53cfeb015f6932dc1f8838514fe3506660ed22e87a6"
+      sha256 "e4396420ed5d989e42d746b2927c998627e6bff951589fd337bc8de0da5d1a61"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/otree/releases/download/v#{v}-custom/otree-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "2e25fc7162d2c2d1cd986d249e75b12b8b9048eb76c07ed9ba39e88cdf48ad30"
+        sha256 "8152d2d7a82e7fcc069b26f2705458c71cf03fecacbf05e4a9621c5b9afcb860"
       else
         url "https://github.com/waltarix/otree/releases/download/v#{v}-custom/otree-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "c87bf8fe2b2085fa1c9876acfd5724f38b60ff126a1004544848509ae4a90415"
+        sha256 "2bab1a5a745f7c513fd63b34d8bbea56b261eadaefa8c5d6c0b3843c89bae24a"
       end
     end
   end
