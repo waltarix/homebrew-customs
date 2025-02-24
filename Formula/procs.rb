@@ -1,17 +1,17 @@
 class Procs < Formula
   desc "Modern replacement for ps written by Rust"
   homepage "https://github.com/dalance/procs"
-  "0.14.5".tap do |v|
+  "0.14.9".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/procs/releases/download/v#{v}-custom/procs-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "64d25e0d2ce900bc61b27ca86f0a3b0684cb7393007dacaa3526e2c65cf6fbb5"
+      sha256 "31abf911b6c232c02f0f35388ce22f33d4543fd095142ba8b70346e885e2955d"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/procs/releases/download/v#{v}-custom/procs-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "df3aa47bf61c997459a501a800fe367cf2e4e3957dab94ce7f526d0119372385"
+        sha256 "4bb1fb05745d80802283a580ee44b7f9f3c3b5511446dbe6a58a69bac88ca8a6"
       else
         url "https://github.com/waltarix/procs/releases/download/v#{v}-custom/procs-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "89a0693c3966c30f6f4ce2276331822f9ca3f549926761d6a90f6d0390798caa"
+        sha256 "2c0aca12e0bc0a0b4acd08c5628276dacf393165b8ab88094d37ae8e1e61304d"
       end
     end
   end
@@ -19,7 +19,6 @@ class Procs < Formula
 
   def install
     bin.install "procs"
-
     generate_completions_from_executable(bin/"procs", "--gen-completion-out")
   end
 
