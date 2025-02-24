@@ -1,18 +1,18 @@
 class Xh < Formula
   desc "Friendly and fast tool for sending HTTP requests"
   homepage "https://github.com/ducaale/xh"
-  ["0.22.2", nil].tap do |(v, r)|
+  ["0.24.0", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     if OS.linux?
       url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "a3a190a508d1e45b44ffbe3b6cc317b56b0d4f6a8c3f43ad58beb88e9936e7b8"
+      sha256 "130b540a98b66bbdbc1668ee66e12ae4dce3e8c87149134c82033a30262a859f"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "60344c5a3f908558cc2123c9dce0b329402917d80bc445b001feb8a2ab465d10"
+        sha256 "6d9e38a5465d849d779adfb887d9b411c79607a05b514477bdb2ff2d7b8ac549"
       else
         url "https://github.com/waltarix/xh/releases/download/v#{v}-custom#{rev}/xh-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "b2452baccf44f0f793dc60748413dafce1bfa02d5091a8134aeb31ffad16d542"
+        sha256 "91c3b53b6cc938eaa6eceebed663790f7b142eeb1fea5af5c45087e0ed7712b1"
       end
     end
     revision r if r
@@ -24,7 +24,7 @@ class Xh < Formula
     bin.install_symlink "xh" => "xhs"
 
     man1.install "man/xh.1"
-    bash_completion.install "completions/xh.bash"
+    bash_completion.install "completions/xh.bash" => "xh"
     fish_completion.install "completions/xh.fish"
     zsh_completion.install "completions/_xh"
   end
