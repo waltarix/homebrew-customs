@@ -4,6 +4,7 @@ class Neovim < Formula
   url "https://github.com/neovim/neovim/archive/refs/tags/v0.10.4.tar.gz"
   sha256 "10413265a915133f8a853dc757571334ada6e4f0aa15f4c4cc8cc48341186ca2"
   license "Apache-2.0"
+  revision 1
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
