@@ -1,17 +1,17 @@
 class Dust < Formula
   desc "More intuitive version of du in rust"
   homepage "https://github.com/bootandy/dust"
-  "1.1.1".tap do |v|
+  "1.1.2".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "0128074ad4890183387f7023e88902d53de98e2ffca506f72c44b300aabfc8e9"
+      sha256 "42fdceb87d5dde0ce7481d313308f91b2c203b6bda48912de4d56b5ddd7aff70"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "0b016370ef01cc5d6ff7e672da42b368823420ff32c3fbe4ad95bcc26c25dd21"
+        sha256 "5f022ad7be81c90b0906b63680515b55a0efecf87218d24528fe1b9b33fb5365"
       else
         url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "9d5c20bf390aedb2ae8736a3fc34de3f0488d89997270774de63fce97026cd16"
+        sha256 "e045b377a098742ef8cc67be8239cf0c7dbb9c78e6e06ae8ad76e0384c569ae5"
       end
     end
   end
@@ -25,7 +25,7 @@ class Dust < Formula
   def install
     bin.install "dust"
     man1.install "manual/dust.1"
-    bash_completion.install "etc/completions/dust.bash"
+    bash_completion.install "etc/completions/dust.bash" => "dust"
     fish_completion.install "etc/completions/dust.fish"
     zsh_completion.install "etc/completions/_dust"
   end
