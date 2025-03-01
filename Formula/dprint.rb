@@ -1,18 +1,18 @@
 class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
-  ["0.47.2", 1].tap do |(v, r)|
+  ["0.49.0", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     if OS.linux?
       url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "e20c24750e26f3b63278961fd39fa643225921c295b9c5694df62e8881022ab9"
+      sha256 "46e71c29d8b8a90be74f4ea3420d868edbb868519a85112e647de013cf4e594f"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "4d78210769330dfdc17eeb361a12308a4734990e55f0eb445ccb6047e73bd9c6"
+        sha256 "ac9bcb681c9a663fdd7261dbea93a8240f3e8788abf83ba9ed0c09159682a836"
       else
         url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "d082de05a3c38535c13f1e34888e940b9b1d866de352599e739ad839926dd41d"
+        sha256 "792af42de8dccfa52eee2b23026cdb908b7a9153e09d255f96711cad4bb5c21a"
       end
     end
     revision r if r
@@ -25,7 +25,7 @@ class Dprint < Formula
   end
 
   test do
-    (testpath/"dprint.json").write <<~EOS
+    (testpath/"dprint.json").write <<~JSON
       {
         "$schema": "https://dprint.dev/schemas/v0.json",
         "projectType": "openSource",
@@ -51,7 +51,7 @@ class Dprint < Formula
           "https://plugins.dprint.dev/rustfmt-0.3.0.wasm"
         ]
       }
-    EOS
+    JSON
 
     (testpath/"test.js").write("const arr = [1,2];")
     system bin/"dprint", "fmt", testpath/"test.js"
