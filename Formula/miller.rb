@@ -1,22 +1,22 @@
 class Miller < Formula
   desc "Like sed, awk, cut, join & sort for name-indexed data such as CSV"
   homepage "https://github.com/johnkerl/miller"
-  "6.12.0".tap do |v|
+  "6.13.0".tap do |v|
     if OS.linux?
       if Hardware::CPU.flags.grep(/\Aavx512/).size.zero?
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-linux_amd64_v2.tar.xz"
-        sha256 "71bd79593031aeff2faacb85e8551faae9235be43db4c85797743c86fb208e31"
+        sha256 "963640cd2a4c0c9610bf232694a4c86f05d392c4a6a61a31d854c407964f6dd7"
       else
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-linux_amd64_v4.tar.xz"
-        sha256 "296cec7fc0c45efe5d24c973b8dbdf4dc6152f152e3c1d63880b7e496b676c6d"
+        sha256 "4415a788fd318852f2882ba8a70c18d090e298e47a5f29adce6d3e0751e34857"
       end
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-darwin_arm64.tar.xz"
-        sha256 "56f355c60278aa02236f3c0d5e46ca69870d8c5b320b962f72e0fb8f9a413c9c"
+        sha256 "cbbaedd906850d8ea983c6175b1e227174cbace5f0aa12f90e428e4b5f27022b"
       else
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-darwin_amd64_v3.tar.xz"
-        sha256 "b12eb8d02a278123d1e54fd2b776ee124e1833a3a184a8124ba00d621947f0fc"
+        sha256 "3d384d93f3f2138b813cf2f109a457d348c2b1c799030f44cc7c2977838d55ec"
       end
     end
     version v
@@ -29,11 +29,11 @@ class Miller < Formula
   end
 
   test do
-    (testpath/"test.csv").write <<~EOS
+    (testpath/"test.csv").write <<~CSV
       one,two,three
       …,……,………
       ...,......,.........
-    EOS
+    CSV
     result = <<~EOS
       ╭─────┬────────┬───────────╮
       │ one │ two    │ three     │
