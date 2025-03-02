@@ -1,17 +1,17 @@
 class Dufs < Formula
   desc "Static file server"
   homepage "https://github.com/sigoden/dufs"
-  "0.41.0".tap do |v|
+  "0.43.0".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom/dufs-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "1951ab2192adb1acd798a02c70389926152ff6b04007af4325b145fea185b00f"
+      sha256 "3b7770eb348ab5fa4babc3fea8e42c23ad217a2e4501db47d78272b60e1ab170"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom/dufs-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "4fc68d85b335c7887e96d0033b11d92b15e4506c710cc4191bd277a9b0770a34"
+        sha256 "2feb31b4263dc58c5a1d966f0669e4ab0cf30446d39c6cc0cdaf7bf45fb63598"
       else
         url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom/dufs-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "43124e142f63eabac3aef50787ea2deae94b888809ad15ca215c524c39443748"
+        sha256 "fdb21738291cc4812a31f35e56f31be5a6c74e8778440d0f588f7049d5ca8205"
       end
     end
   end
@@ -26,7 +26,7 @@ class Dufs < Formula
   test do
     port = free_port
     pid = fork do
-      exec "#{bin}/dufs", bin.to_s, "-b", "127.0.0.1", "--port", port.to_s
+      exec bin/"dufs", bin.to_s, "-b", "127.0.0.1", "--port", port.to_s
     end
 
     sleep 2
