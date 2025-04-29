@@ -1,10 +1,9 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/refs/tags/v0.10.4.tar.gz"
-  sha256 "10413265a915133f8a853dc757571334ada6e4f0aa15f4c4cc8cc48341186ca2"
+  url "https://github.com/neovim/neovim/archive/refs/tags/v0.11.0.tar.gz"
+  sha256 "6826c4812e96995d29a98586d44fbee7c9b2045485d50d174becd6d5242b3319"
   license "Apache-2.0"
-  revision 1
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
@@ -32,7 +31,7 @@ class Neovim < Formula
 
     resource("wcwidth9.h").stage(buildpath/"src/nvim")
 
-    system "sh", buildpath/"scripts/download-unicode-files.sh"
+    # system "sh", buildpath/"scripts/download-unicode-files.sh"
 
     # Point system locations inside `HOMEBREW_PREFIX`.
     inreplace "src/nvim/os/stdpaths.c" do |s|
@@ -50,6 +49,7 @@ class Neovim < Formula
                     "-DUSE_BUNDLED_LUV=ON",
                     "-DUSE_BUNDLED_MSGPACK=ON",
                     "-DUSE_BUNDLED_UNIBILIUM=ON",
+                    "-DUSE_BUNDLED_UTF8PROC=ON",
                     *std_cmake_args
     system "cmake", "--build", ".deps"
 
@@ -81,7 +81,7 @@ end
 
 __END__
 diff --git a/scripts/download-unicode-files.sh b/scripts/download-unicode-files.sh
-index f0fd4c66ea..9376ffd5f4 100755
+index f0fd4c66ea..a4f8d372cb 100755
 --- a/scripts/download-unicode-files.sh
 +++ b/scripts/download-unicode-files.sh
 @@ -1,14 +1,15 @@
@@ -125,37 +125,24 @@ index f0fd4c66ea..9376ffd5f4 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index 852b8b9b48..7207bb9e7a 100644
+index aa9dc1098e..1605f57efb 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -848,9 +848,6 @@ void remote_ui_raw_line(RemoteUI *ui, Integer grid, Integer row, Integer startco
+@@ -852,9 +852,6 @@ void remote_ui_raw_line(RemoteUI *ui, Integer grid, Integer row, Integer startco
        char sc_buf[MAX_SCHAR_SIZE];
        schar_get(sc_buf, chunk[i]);
        remote_ui_put(ui, sc_buf);
--      if (utf_ambiguous_width(utf_ptr2char(sc_buf))) {
+-      if (utf_ambiguous_width(sc_buf)) {
 -        ui->client_col = -1;  // force cursor update
 -      }
      }
      if (endcol < clearcol) {
        remote_ui_cursor_goto(ui, row, endcol);
-diff --git a/src/nvim/generators/gen_unicode_tables.lua b/src/nvim/generators/gen_unicode_tables.lua
-index 6cedb5db50..92840147ce 100644
---- a/src/nvim/generators/gen_unicode_tables.lua
-+++ b/src/nvim/generators/gen_unicode_tables.lua
-@@ -312,7 +312,7 @@ eaw_fp:close()
- 
- local doublewidth =
-   build_width_table(ut_fp, dataprops, widthprops, { W = true, F = true }, 'doublewidth')
--local ambiwidth = build_width_table(ut_fp, dataprops, widthprops, { A = true }, 'ambiguous')
-+local ambiwidth = {}
- 
- local emoji_fp = io.open(emoji_fname, 'r')
- local emojiprops = parse_emoji_props(emoji_fp)
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index e47901fde4..4249410157 100644
+index add650e7a9..57551f5c58 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
-@@ -87,6 +87,8 @@ struct interval {
+@@ -88,6 +88,8 @@ struct interval {
  #endif
  // uncrustify:on
  
@@ -164,7 +151,7 @@ index e47901fde4..4249410157 100644
  static const char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
  static const char e_list_item_nr_does_not_contain_3_numbers[]
-@@ -483,25 +485,18 @@ int utf_char2cells(int c)
+@@ -460,30 +462,18 @@ int utf_char2cells(int c)
      return 1;
    }
  
@@ -185,13 +172,18 @@ index e47901fde4..4249410157 100644
      return n;
    }
  
--  if (intable(doublewidth, ARRAY_SIZE(doublewidth), c)) {
+-  const utf8proc_property_t *prop = utf8proc_get_property(c);
+-
+-  if (prop->charwidth == 2) {
 -    return 2;
 -  }
--  if (p_emoji && intable(emoji_wide, ARRAY_SIZE(emoji_wide), c)) {
+-  if (*p_ambw == 'd' && prop->ambiguous_width) {
 -    return 2;
 -  }
--  if (*p_ambw == 'd' && intable(ambiguous, ARRAY_SIZE(ambiguous), c)) {
+-
+-  // Characters below 1F000 may be considered single width traditionally,
+-  // making them double width causes problems.
+-  if (p_emoji && c >= 0x1f000 && !prop->ambiguous_width && prop_is_emojilike(prop)) {
 -    return 2;
 +  if (!vim_isprintc(c)) {
 +    // unprintable, displays <xx>
@@ -199,28 +191,42 @@ index e47901fde4..4249410157 100644
    }
  
    return 1;
-@@ -1276,12 +1271,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1343,26 +1333,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
    return 2;
  }
  
--bool utf_ambiguous_width(int c)
+-bool utf_ambiguous_width(const char *p)
 -{
--  return c >= 0x80 && (intable(ambiguous, ARRAY_SIZE(ambiguous), c)
--                       || intable(emoji_all, ARRAY_SIZE(emoji_all), c));
+-  // be quick if there is nothing to print or ASCII-only
+-  if (p[0] == NUL || p[1] == NUL) {
+-    return false;
+-  }
+-
+-  CharInfo info = utf_ptr2CharInfo(p);
+-  if (info.value >= 0x80) {
+-    const utf8proc_property_t *prop = utf8proc_get_property(info.value);
+-    if (prop->ambiguous_width || prop_is_emojilike(prop)) {
+-      return true;
+-    }
+-  }
+-
+-  // check if second sequence is 0xFE0F VS-16 which can turn things into emoji,
+-  // safe with NUL (no second sequence)
+-  return memcmp(p + info.len, "\xef\xb8\x8f", 3) == 0;
 -}
 -
- // Generic conversion function for case operations.
- // Return the converted equivalent of "a", which is a UCS-4 character.  Use
- // the given conversion "table".  Uses binary search on "table".
+ // Return the folded-case equivalent of "a", which is a UCS-4 character.  Uses
+ // full case folding.
+ int utf_fold(int a)
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 2f512f15ed..13a9e33c7c 100644
+index 440747be76..a29a050b33 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -1000,11 +1000,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -1045,11 +1045,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
    int c = utf_ptr2char(buf);
--  bool is_ambiwidth = utf_ambiguous_width(c);
+-  bool is_ambiwidth = utf_ambiguous_width(buf);
 -  if (is_doublewidth && (is_ambiwidth || utf_char2cells(c) == 1)) {
 -    // If the server used setcellwidths() to treat a single-width char as double-width,
 -    // it needs to be treated like an ambiguous-width char.
@@ -229,7 +235,7 @@ index 2f512f15ed..13a9e33c7c 100644
      // Clear the two screen cells.
      // If the char is single-width in host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -1013,11 +1009,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -1058,11 +1054,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
