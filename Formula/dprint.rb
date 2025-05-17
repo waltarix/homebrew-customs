@@ -1,18 +1,18 @@
 class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
-  ["0.49.0", nil].tap do |(v, r)|
+  ["0.49.1", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     if OS.linux?
       url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "46e71c29d8b8a90be74f4ea3420d868edbb868519a85112e647de013cf4e594f"
+      sha256 "1fd237facbe304804af8ab7d3afb7b5a162fef9348041248b05b6c8a1a23f24e"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "ac9bcb681c9a663fdd7261dbea93a8240f3e8788abf83ba9ed0c09159682a836"
+        sha256 "a19c0f7e8cc7cea6622d463b2cdb6682eb7f46f9055b5ec02357e73affe5be19"
       else
         url "https://github.com/waltarix/dprint/releases/download/#{v}-custom#{rev}/dprint-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "792af42de8dccfa52eee2b23026cdb908b7a9153e09d255f96711cad4bb5c21a"
+        sha256 "4a086884884976b90ad544373a75b64ac7badd82789e7612e3eb6e7418e5762d"
       end
     end
     revision r if r
