@@ -1,14 +1,43 @@
 class LibtreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.25.4.tar.gz"
-  sha256 "87eadc505905c70a692917c821958a819903f808f8d244068b1d273a033dc728"
+  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.25.6.tar.gz"
+  sha256 "ac6ed919c6d849e8553e246d5cd3fa22661f6c7b6497299264af433f3629957c"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
-  keg_only "conflicts with the TreeSitter formula"
+  conflicts_with "tree-sitter", because: "both install a `tree-sitter` binary"
+
+  resource "binary" do
+    "0.25.6".tap do |v|
+      if OS.linux?
+        url "https://github.com/tree-sitter/tree-sitter/releases/download/v#{v}/tree-sitter-linux-x64.gz"
+        sha256 "c300ea9f2ca368186ce1308793aaad650c3f6db78225257cbb5be961aeff4038"
+      else
+        if Hardware::CPU.arm?
+          url "https://github.com/tree-sitter/tree-sitter/releases/download/v#{v}/tree-sitter-macos-arm64.gz"
+          sha256 "4e6a8892b4b67eff13fc125ba8fc552d75ce02c1ed24bb634d3eb15f2d315356"
+        else
+          url "https://github.com/tree-sitter/tree-sitter/releases/download/v#{v}/tree-sitter-macos-x64.gz"
+          sha256 "b8fccb0e74dca7ad8e403acb0992e983d20e89ad2e2e14245a1443b76ed52025"
+        end
+      end
+    end
+  end
 
   def install
+    resource("binary").tap do |res|
+      res.stage do
+        Open3.popen3("gzip", "-dc", res.cached_download) do |_, stdout, _|
+          (bin/"tree-sitter").tap do |f|
+            f.write(stdout.read)
+            chmod 0755, f
+            system "strip", "-s", f
+          end
+        end
+      end
+    end
+
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     ENV.append "CFLAGS", "-flto"
     ENV.append "CFLAGS", "-ffat-lto-objects"
