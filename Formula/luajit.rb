@@ -10,22 +10,13 @@ class Luajit < Formula
   # Get the latest commit with:
   #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
   # This is a rolling release model so take care not to ignore CI failures that may be regressions.
-  url "https://github.com/LuaJIT/LuaJIT/archive/eec7a8016c3381b949b5d84583800d05897fa960.tar.gz"
+  url "https://github.com/LuaJIT/LuaJIT/archive/f9140a622a0c44a99efb391cc1c2358bc8098ab7.tar.gz"
   # Use the version scheme `2.1.timestamp` where `timestamp` is the Unix timestamp of the
   # latest commit at the time of updating.
   # `brew livecheck luajit` will generate the correct version for you automatically.
-  version "2.1.1744318430"
-  sha256 "220e2fd49f3a50abda874b888ac31e6cf86dd7ed3f221ebb47515315d9815eeb"
+  version "2.1.1748459687"
+  sha256 "2d3f26c3261f46ae59d3e9489c632e3910f2033c657a24a90666ee0acf032463"
   license "MIT"
-  head "https://luajit.org/git/luajit.git", branch: "v2.1"
-
-  livecheck do
-    url "https://api.github.com/repos/LuaJIT/LuaJIT/branches/v2.1"
-    strategy :json do |json|
-      date = json.dig("commit", "commit", "author", "date")
-      "2.1.#{DateTime.parse(date).strftime("%s")}"
-    end
-  end
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
