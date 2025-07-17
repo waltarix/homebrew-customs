@@ -1,8 +1,8 @@
 class Jq < Formula
   desc "Lightweight and flexible command-line JSON processor"
   homepage "https://jqlang.github.io/jq/"
-  url "https://github.com/waltarix/jq/releases/download/jq-1.8.0-custom/jq-1.8.0-custom.tar.xz"
-  sha256 "acd3c7183d8f0e5dd701f295575bbbd7043778fea9a06226cadcd80f441e0d8b"
+  url "https://github.com/waltarix/jq/releases/download/jq-1.8.1-custom/jq-1.8.1-custom.tar.xz"
+  sha256 "8778ce3ffab91656b8e3a58d5c61ca64a922d6066deb76bcacfc4c5d55c29e4e"
   license "MIT"
 
   depends_on "libtool" => :build
