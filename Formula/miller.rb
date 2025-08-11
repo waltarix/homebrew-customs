@@ -1,22 +1,22 @@
 class Miller < Formula
   desc "Like sed, awk, cut, join & sort for name-indexed data such as CSV"
   homepage "https://github.com/johnkerl/miller"
-  "6.13.0".tap do |v|
+  "6.14.0".tap do |v|
     if OS.linux?
       if Hardware::CPU.flags.grep(/\Aavx512/).size.zero?
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-linux_amd64_v2.tar.xz"
-        sha256 "963640cd2a4c0c9610bf232694a4c86f05d392c4a6a61a31d854c407964f6dd7"
+        sha256 "754cfec52e74348ad7ba09dd123dcc1a7331914d2bca55069b8ef516dfb849e9"
       else
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-linux_amd64_v4.tar.xz"
-        sha256 "4415a788fd318852f2882ba8a70c18d090e298e47a5f29adce6d3e0751e34857"
+        sha256 "34dde84506d35119ffd9e46d639fb6b86c76053316d5222581d5467e2ada1f37"
       end
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-darwin_arm64.tar.xz"
-        sha256 "cbbaedd906850d8ea983c6175b1e227174cbace5f0aa12f90e428e4b5f27022b"
+        sha256 "21181dff380db77dc744ae55b5578cda925a56cf15c747ba4223c37ca5f2a5a5"
       else
         url "https://github.com/waltarix/miller/releases/download/v#{v}-custom/mlr-#{v}-darwin_amd64_v3.tar.xz"
-        sha256 "3d384d93f3f2138b813cf2f109a457d348c2b1c799030f44cc7c2977838d55ec"
+        sha256 "63f67c5653757615e5f73159a935efdc6efc75ccc9deb8adec459521ca3641f6"
       end
     end
     version v
