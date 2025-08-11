@@ -1,8 +1,8 @@
 class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
-  url "https://hpjansson.org/chafa/releases/chafa-1.14.5.tar.xz"
-  sha256 "7b5b384d5fb76a641d00af0626ed2115fb255ea371d9bef11f8500286a7b09e5"
+  url "https://hpjansson.org/chafa/releases/chafa-1.16.2.tar.xz"
+  sha256 "657898dd9a89b45130a44c1efe1fc03e2c7bd00c2f543ed7111613cb9e7861df"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -23,8 +23,9 @@ class Chafa < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    flag_key = OS.mac? ? "LTO_FLAGS" : "CFLAGS"
+    ENV.append flag_key, "-flto"
+    ENV.append flag_key, "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     system "./configure", "--disable-silent-rules", *std_configure_args
