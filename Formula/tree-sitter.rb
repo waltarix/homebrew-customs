@@ -7,39 +7,36 @@ class TreeSitter < Formula
   revision 1
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
-  resource "binary" do
-    "0.25.8".tap do |v|
-      if OS.linux?
+  depends_on "tree-sitter-cli" if OS.mac?
+
+  if OS.linux?
+    resource "binary" do
+      "0.25.8".tap do |v|
         url "https://github.com/tree-sitter/tree-sitter/releases/download/v#{v}/tree-sitter-linux-x64.gz"
         sha256 "c9d46697e3e5ae6900a39ad4483667d2ba14c8ffb12c3f863bcf82a9564ee19f"
-      else
-        if Hardware::CPU.arm?
-          url "https://github.com/tree-sitter/tree-sitter/releases/download/v#{v}/tree-sitter-macos-arm64.gz"
-          sha256 "ae3bbba3ba68e759a949e7591a42100a12d660cae165837aba48cae76a599e64"
-        else
-          url "https://github.com/tree-sitter/tree-sitter/releases/download/v#{v}/tree-sitter-macos-x64.gz"
-          sha256 "49dffcfbf5fad3e85f657b09d0aef80223215919dcb7bef5173fe49846f55e5b"
-        end
       end
     end
   end
 
   def install
-    resource("binary").tap do |res|
-      res.stage do
-        Open3.popen3("gzip", "-dc", res.cached_download) do |_, stdout, _|
-          (bin/"tree-sitter").tap do |f|
-            f.write(stdout.read)
-            chmod 0755, f
-            system "strip", "-s", f
+    if OS.linux?
+      resource("binary").tap do |res|
+        res.stage do
+          Open3.popen3("gzip", "-dc", res.cached_download) do |_, stdout, _|
+            (bin/"tree-sitter").tap do |f|
+              f.write(stdout.read)
+              chmod 0755, f
+              system "strip", "-s", f
+            end
           end
         end
       end
     end
 
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    flag_key = OS.mac? ? "LTO_FLAGS" : "CFLAGS"
+    ENV.append flag_key, "-flto"
+    ENV.append flag_key, "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     system "make", "install", "AMALGAMATED=1", "PREFIX=#{prefix}"
