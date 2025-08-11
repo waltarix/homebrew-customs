@@ -3,14 +3,15 @@ class Neovim < Formula
   homepage "https://neovim.io/"
   url "https://github.com/neovim/neovim/archive/refs/tags/v0.11.3.tar.gz"
   sha256 "7f1ce3cc9fe6c93337e22a4bc16bee71e041218cc9177078bd288c4a435dbef0"
+  revision 1
   license "Apache-2.0"
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "gettext"
-  depends_on "waltarix/customs/libtree-sitter"
   depends_on "waltarix/customs/libvterm"
   depends_on "waltarix/customs/luajit"
+  depends_on "waltarix/customs/tree-sitter"
 
   uses_from_macos "unzip" => :build
 
