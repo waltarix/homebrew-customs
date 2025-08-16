@@ -29,8 +29,9 @@ class Sqlite < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append_to_cflags "-flto"
-    ENV.append_to_cflags "-ffat-lto-objects"
+    flag_key = OS.mac? ? "LTO_FLAGS" : "CFLAGS"
+    ENV.append flag_key, "-flto"
+    ENV.append flag_key, "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
