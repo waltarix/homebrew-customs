@@ -11,11 +11,13 @@ class Cmigemo < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
+    flag_key = OS.mac? ? "LTO_FLAGS" : "CFLAGS"
+    ENV.append flag_key, "-flto"
+    ENV.append flag_key, "-ffat-lto-objects"
 
     system "./configure", "--prefix=#{prefix}"
 
     os = OS.mac? ? "osx" : "gcc"
-    inreplace "compile/Make_#{os}.mak", /^(CFLAGS_MIGEMO.+)$/, "\\1 -flto -ffat-lto-objects"
     system "make", os
     system "make", "#{os}-dict"
     system "make", "#{os}-install"
