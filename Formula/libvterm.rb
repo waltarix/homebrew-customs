@@ -23,8 +23,9 @@ class Libvterm < Formula
 
   def install
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
-    ENV.append "CFLAGS", "-flto"
-    ENV.append "CFLAGS", "-ffat-lto-objects"
+    flag_key = OS.mac? ? "LTO_FLAGS" : "CFLAGS"
+    ENV.append flag_key, "-flto"
+    ENV.append flag_key, "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
     resource("wcwidth9.h").stage(buildpath/"src")
