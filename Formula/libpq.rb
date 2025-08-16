@@ -1,8 +1,8 @@
 class Libpq < Formula
   desc "Postgres C API library"
   homepage "https://www.postgresql.org/docs/current/libpq.html"
-  url "https://ftp.postgresql.org/pub/source/v17.5/postgresql-17.5.tar.bz2"
-  sha256 "fcb7ab38e23b264d1902cb25e6adafb4525a6ebcbd015434aeef9eda80f528d8"
+  url "https://ftp.postgresql.org/pub/source/v17.6/postgresql-17.6.tar.bz2"
+  sha256 "e0630a3600aea27511715563259ec2111cd5f4353a4b040e0be827f94cd7a8b0"
   license "PostgreSQL"
 
   livecheck do
@@ -10,7 +10,7 @@ class Libpq < Formula
     regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
-  keg_only "conflicts with postgres formula"
+  keg_only "it conflicts with PostgreSQL"
 
   depends_on "bison" => :build
   depends_on "flex" => :build
