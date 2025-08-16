@@ -1,23 +1,23 @@
 class Osc52 < Formula
   desc "Access the system clipboard from anywhere using the ANSI OSC52 sequence"
   homepage "https://github.com/theimpostor/osc"
-  ["0.4.7", nil].tap do |(v, r)|
+  ["0.4.8", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     if OS.linux?
       if Hardware::CPU.flags.grep(/\Aavx512/).size.zero?
         url "https://github.com/waltarix/osc/releases/download/v#{v}-custom#{rev}/osc-#{v}-linux_amd64_v2.tar.xz"
-        sha256 "8bc82add82a910e797329a0527f29e6145e55db49576e38fd10daed105bb1629"
+        sha256 "670356d84c35a99abd1f3b9ec914dde381008788381512e9fc7e87b61a23ecb5"
       else
         url "https://github.com/waltarix/osc/releases/download/v#{v}-custom#{rev}/osc-#{v}-linux_amd64_v4.tar.xz"
-        sha256 "9dd5ea09eb40b58fe6d20a78432bb17551ef72da7f0c891fcf5ef5659ffab84f"
+        sha256 "2e66e3765bf846260d0e1fdd3c0ec463ff1702d811f09e59c9e60ebde205564d"
       end
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/osc/releases/download/v#{v}-custom#{rev}/osc-#{v}-darwin_arm64.tar.xz"
-        sha256 "11794b8e4da1f94057606013661928657438b1a7fa67d12e72d9e884f170f758"
+        sha256 "486f975f3db302728aa6e8aff75016d7a7623f8334bc710d35ab1f05d6a92c6e"
       else
         url "https://github.com/waltarix/osc/releases/download/v#{v}-custom#{rev}/osc-#{v}-darwin_amd64_v3.tar.xz"
-        sha256 "4e0582e429c56590169585339c1b1adacc67d7ce1a504f935c432d237656d9d1"
+        sha256 "f57dae0d80cd2b5e8be847398a75353d7e41dd833c7a60ec2343d197ffba2278"
       end
     end
     version v
