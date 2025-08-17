@@ -1,18 +1,18 @@
 class Dufs < Formula
   desc "Static file server"
   homepage "https://github.com/sigoden/dufs"
-  ["0.43.0", 1].tap do |(v, r)|
+  ["0.44.0", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     if OS.linux?
       url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom#{rev}/dufs-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "81134ac4b805c59381bb23087e25528b8140af3ddac6c3e2065950df549cc924"
+      sha256 "2ff6fb37620ff104e10117db8118fd853a9bb479c462ad739969f03c31d7b285"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom#{rev}/dufs-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "913e605a37f34be1e3ef8d3fc80a2305ddf2a1c3eca8c90502c750959b146e24"
+        sha256 "d0058e64d3c4310e33e80a296e4bce2497a4461140d1d60c6a58f09e0a7f1c34"
       else
         url "https://github.com/waltarix/dufs/releases/download/v#{v}-custom#{rev}/dufs-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "11b9a948a5a0ce9e72f4c915019e6b6a4d210406f53124c04c96961acc911e0e"
+        sha256 "b1ef2008c67a8e351f35e1527ca9c7b6f00ff87f25343572f8255571ed0bfcbd"
       end
     end
     revision r if r
