@@ -1,10 +1,10 @@
 class OpensshMinimal < Formula
   desc "OpenBSD freely-licensed SSH connectivity tools"
   homepage "https://www.openssh.com/"
-  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.8p1.tar.gz"
-  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.8p1.tar.gz"
-  version "9.8p1"
-  sha256 "dd8bd002a379b5d499dfb050dd1fa9af8029e80461f4bb6c523c49973f5a39f3"
+  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-10.0p2.tar.gz"
+  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-10.0p2.tar.gz"
+  version "10.0p2"
+  sha256 "021a2e709a0edf4250b1256bd5a9e500411a90dddabea830ed59cef90eb9d85c"
   license "SSH-OpenSSH"
 
   livecheck do
@@ -14,12 +14,12 @@ class OpensshMinimal < Formula
 
   conflicts_with "openssh", because: "both install the same binaries"
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
   depends_on "zlib"
 
   def install
-    args = *std_configure_args + %W[
+    args = %W[
       --sysconfdir=#{etc}/ssh
       --with-ssl-dir=#{Formula["openssl@3"].opt_prefix}
       --with-ssl-engine
@@ -32,7 +32,7 @@ class OpensshMinimal < Formula
 
     args << "--with-privsep-path=#{var}/lib/sshd" if OS.linux?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     ENV.deparallelize
     system "make", "install"
@@ -41,13 +41,22 @@ class OpensshMinimal < Formula
     # potential to break scripts, so recreate it for now.
     # Debian have done the same thing.
     bin.install_symlink bin/"ssh" => "slogin"
+
+    # Don't hardcode Cellar paths in configuration files
+    # inreplace etc/"ssh/sshd_config", prefix, opt_prefix
   end
 
   test do
+    # (etc/"ssh").find do |pn|
+    #   next unless pn.file?
+    #
+    #   refute_match HOMEBREW_CELLAR.to_s, pn.read
+    # end
+
     assert_match "OpenSSH_", shell_output("#{bin}/ssh -V 2>&1")
 
     port = free_port
-    fork { exec sbin/"sshd", "-D", "-p", port.to_s }
+    spawn sbin/"sshd", "-D", "-p", port.to_s
     sleep 2
     assert_match "sshd", shell_output("lsof -i :#{port}")
   end
