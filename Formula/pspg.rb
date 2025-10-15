@@ -11,8 +11,8 @@ class Pspg < Formula
   depends_on "readline"
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/16.0.0/wcwidth9.h"
-    sha256 "a9ddb9059f0a17dc0efee89e7ed73c9b0412b10111987090068f49ba708bfa70"
+    url "https://github.com/waltarix/localedata/releases/download/17.0.0/wcwidth9.h"
+    sha256 "ea17af165beb85568f60bc68fc358972d442ffd3bdc73a9a8d8e5659216da86c"
   end
 
   def install
