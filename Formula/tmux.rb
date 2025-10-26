@@ -35,9 +35,7 @@ class Tmux < Formula
     ENV.append flag_key, "-ffat-lto-objects"
     ENV.append "LDFLAGS", "-Wl,-s"
 
-    ENV.append "LDFLAGS", "-lresolv"
     system "./configure", *args, *std_configure_args
-
     system "make", "install"
 
     pkgshare.install "example_tmux.conf"
