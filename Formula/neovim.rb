@@ -1,8 +1,8 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/refs/tags/v0.11.4.tar.gz"
-  sha256 "83cf9543bedab8bec8c11cd50ccd9a4bf1570420a914b9a28f83ad100ca6d524"
+  url "https://github.com/neovim/neovim/archive/refs/tags/v0.11.5.tar.gz"
+  sha256 "c63450dfb42bb0115cd5e959f81c77989e1c8fd020d5e3f1e6d897154ce8b771"
   license "Apache-2.0"
 
   depends_on "cmake" => :build
@@ -19,8 +19,8 @@ class Neovim < Formula
   end
 
   resource "wcwidth9.h" do
-    url "https://github.com/waltarix/localedata/releases/download/16.0.0/wcwidth9.h"
-    sha256 "a9ddb9059f0a17dc0efee89e7ed73c9b0412b10111987090068f49ba708bfa70"
+    url "https://github.com/waltarix/localedata/releases/download/17.0.0/wcwidth9.h"
+    sha256 "ea17af165beb85568f60bc68fc358972d442ffd3bdc73a9a8d8e5659216da86c"
   end
 
   patch :DATA
