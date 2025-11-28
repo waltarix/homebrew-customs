@@ -1,10 +1,9 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.5a-custom-r1/tmux-3.5a.tar.xz"
-  sha256 "a5e871d94cc3c2f0d9c43a75d74cf50b1710aa3d2f1b9bbae1324b4553e9ca35"
+  url "https://github.com/waltarix/tmux/releases/download/3.6-custom/tmux-3.6.tar.xz"
+  sha256 "1670ee499d29d9bdedeba3ff0b85dcd6d6a55c92b87f289f203aeff50b8a5d89"
   license "ISC"
-  revision 2
 
   depends_on "bison" => :build
   depends_on "pkgconf" => :build
@@ -19,7 +18,6 @@ class Tmux < Formula
 
   def install
     args = %W[
-      --enable-sixel
       --enable-jemalloc
       --disable-utf8proc
       --sysconfdir=#{etc}
