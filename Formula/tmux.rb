@@ -1,8 +1,8 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/waltarix/tmux/releases/download/3.6-custom/tmux-3.6.tar.xz"
-  sha256 "1670ee499d29d9bdedeba3ff0b85dcd6d6a55c92b87f289f203aeff50b8a5d89"
+  url "https://github.com/waltarix/tmux/releases/download/3.6a-custom/tmux-3.6a.tar.xz"
+  sha256 "b131dcda76fc6717c8bce09c8b560ec383a4e27b3a985724ec9301f2e2d098f0"
   license "ISC"
 
   depends_on "bison" => :build
