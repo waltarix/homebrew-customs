@@ -1,17 +1,17 @@
 class Dust < Formula
   desc "More intuitive version of du in rust"
   homepage "https://github.com/bootandy/dust"
-  "1.2.3".tap do |v|
+  "1.2.4".tap do |v|
     if OS.linux?
       url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "0469232c5147d6a4f955c549f07d226d6e5f94ba2c08f56baf618aed4133fdf1"
+      sha256 "02e929fbcacd277de96bfdb848c9e241f880213756059f5d4da79123c2bbef5e"
     else
       if Hardware::CPU.arm?
         url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-aarch64-apple-darwin.tar.xz"
-        sha256 "37915fcf947a966d7621d91b9076f185ad16be791ba82b6fc7a3cb5771d7cfb3"
+        sha256 "829b4c810554e638d91bcd2ec77713a77fb87d3630bffdacd391331862364d1a"
       else
         url "https://github.com/waltarix/dust/releases/download/v#{v}-custom/dust-#{v}-x86_64-apple-darwin.tar.xz"
-        sha256 "9898ab7259296390ef57a6a8f3858bdfa6e36c6906973920e72ca32dd443ce40"
+        sha256 "7c5363f4007f9a4c1ff6a87168f533b67ea6aa5b96d37bdff14809905de5d0d4"
       end
     end
   end
