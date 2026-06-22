@@ -1,8 +1,8 @@
 class TreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.25.10.tar.gz"
-  sha256 "ad5040537537012b16ef6e1210a572b927c7cdc2b99d1ee88d44a7dcdc3ff44c"
+  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.26.9.tar.gz"
+  sha256 "8e14780500933f43d86662fcaa1b0ce99ebe9c220f4680bc929dce09a0e0cfc6"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
@@ -10,28 +10,14 @@ class TreeSitter < Formula
 
   if OS.linux?
     resource "binary" do
-      "0.25.10".tap do |v|
+      "0.26.9".tap do |v|
         url "https://github.com/tree-sitter/tree-sitter/releases/download/v#{v}/tree-sitter-linux-x64.gz"
-        sha256 "8283ddba69253c698f6e987ba0e2f9285e079c8db4d36ebe1394b5bb3a0ebdfd"
+        sha256 "9ce82137caa65864e7ca8b869fd391cef88c9bd2a01c4371b9c4dd26c2585efb"
       end
     end
   end
 
   def install
-    if OS.linux?
-      resource("binary").tap do |res|
-        res.stage do
-          Open3.popen3("gzip", "-dc", res.cached_download) do |_, stdout, _|
-            (bin/"tree-sitter").tap do |f|
-              f.write(stdout.read)
-              chmod 0755, f
-              system "strip", "-s", f
-            end
-          end
-        end
-      end
-    end
-
     ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O3"
     flag_key = OS.mac? ? "LTO_FLAGS" : "CFLAGS"
     ENV.append flag_key, "-flto"
@@ -39,9 +25,44 @@ class TreeSitter < Formula
     ENV.append "LDFLAGS", "-Wl,-s"
 
     system "make", "install", "AMALGAMATED=1", "PREFIX=#{prefix}"
+
+    if OS.linux?
+      resource("binary").tap do |res|
+        res.stage do
+          libexec.mkpath
+          Open3.popen3("gzip", "-dc", res.cached_download) do |_, stdout, _|
+            (libexec/"tree-sitter").tap do |f|
+              f.write(stdout.read)
+              chmod 0755, f
+              system "strip", "-s", f
+            end
+          end
+        end
+      end
+
+      library_path = [
+        Formula["glibc"].opt_lib,
+        Formula["gcc"].opt_lib/"gcc/current",
+        HOMEBREW_PREFIX/"lib",
+      ].join(":")
+      args = %W[
+        --library-path
+        "#{library_path}"
+        "#{libexec/"tree-sitter"}"
+      ]
+      (bin/"tree-sitter").write_env_script(
+        Formula["glibc"].opt_lib/"ld-linux-x86-64.so.2",
+        args.join(" "),
+        {},
+      )
+    end
   end
 
   test do
+    if OS.linux?
+      assert_equal "tree-sitter #{version}", shell_output("#{bin}/tree-sitter --version").chomp
+    end
+
     (testpath/"test_program.c").write <<~C
       #include <stdio.h>
       #include <string.h>
