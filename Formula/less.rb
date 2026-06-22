@@ -1,10 +1,10 @@
 class Less < Formula
   desc "Pager program similar to more"
   homepage "https://www.greenwoodsoftware.com/less/index.html"
-  ["685", nil].tap do |(v, r)|
+  ["705", nil].tap do |(v, r)|
     rev = r ? "-r#{r}" : ""
     url "https://github.com/waltarix/less/releases/download/v#{v}-custom#{rev}/less-#{v}.tar.xz"
-    sha256 "d08ebb8b3cd472111a208440576d96bc3eeb6b8d9969e6dd80df276c96876e11"
+    sha256 "9c189ffd58c477307a0810f26a967b1d8f3936ee4fbd1d82c8fce516e6ceb657"
   end
   license "GPL-3.0-or-later"
 
