@@ -33,23 +33,6 @@ class Zsh < Formula
     sha256 "ea17af165beb85568f60bc68fc358972d442ffd3bdc73a9a8d8e5659216da86c"
   end
 
-  patch do
-    url "https://deb.debian.org/debian/pool/main/z/zsh/zsh_5.9-8.debian.tar.xz"
-    sha256 "001e005ed93c3c93fd3474ddbd473c06770ce470188a299a58aeb73106f1bcb2"
-    apply %w[
-      patches/further-mitigate-test-suite-hangs.patch
-      patches/update-debian-sections.patch
-      patches/use-pager-instead-of-more-by-default.patch
-      patches/cherry-pick-3e3cfabc-revert-38150-and-fix-in-calling-function-cfp_matcher_range-instead.patch
-      patches/cherry-pick-4b7a9fd0-additional-typset--p--m-fix-for-namespaces.patch
-      patches/cherry-pick-ecd3f9c9-1057610-support-texinfo-7.0.patch
-      patches/cherry-pick-4c89849c-50641-use-int-main-in-test-C-codes-in-configure.patch
-      patches/cherry-pick-ab4d62eb-52383-Avoid-incompatible-pointer-types-in-terminfo-global.patch
-      patches/cherry-pick-0bb140f9-52999-import-OLDPWD-from-environment-if-set.patch
-      patches/cherry-pick-727b493e-50736-silence-use-after-free-warning.patch
-    ]
-  end
-
   def install
     resource("wcwidth9.h").stage(buildpath/"Src")
 
