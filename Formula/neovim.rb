@@ -1,8 +1,8 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/refs/tags/v0.11.5.tar.gz"
-  sha256 "c63450dfb42bb0115cd5e959f81c77989e1c8fd020d5e3f1e6d897154ce8b771"
+  url "https://github.com/neovim/neovim/archive/refs/tags/v0.12.3.tar.gz"
+  sha256 "36a6c66bfbba5d96fa512110aecddb981148a4d013b5ecd01a42877c49855a41"
   license "Apache-2.0"
 
   depends_on "cmake" => :build
@@ -125,10 +125,10 @@ index f0fd4c66ea..a4f8d372cb 100755
 +curl -# -L -o "$UNIDIR/EastAsianWidth.txt" \
 +  "https://github.com/waltarix/localedata/releases/download/${UNIDIR_VERSION}/EastAsianWidth.txt"
 diff --git a/src/nvim/api/ui.c b/src/nvim/api/ui.c
-index aa9dc1098e..1605f57efb 100644
+index 7c13cf682d..cdb73887aa 100644
 --- a/src/nvim/api/ui.c
 +++ b/src/nvim/api/ui.c
-@@ -852,9 +852,6 @@ void remote_ui_raw_line(RemoteUI *ui, Integer grid, Integer row, Integer startco
+@@ -843,9 +843,6 @@ void remote_ui_raw_line(RemoteUI *ui, Integer grid, Integer row, Integer startco
        char sc_buf[MAX_SCHAR_SIZE];
        schar_get(sc_buf, chunk[i]);
        remote_ui_put(ui, sc_buf);
@@ -139,11 +139,11 @@ index aa9dc1098e..1605f57efb 100644
      if (endcol < clearcol) {
        remote_ui_cursor_goto(ui, row, endcol);
 diff --git a/src/nvim/mbyte.c b/src/nvim/mbyte.c
-index add650e7a9..57551f5c58 100644
+index 4d4c299423..7769074d60 100644
 --- a/src/nvim/mbyte.c
 +++ b/src/nvim/mbyte.c
-@@ -88,6 +88,8 @@ struct interval {
- #endif
+@@ -86,6 +86,8 @@ struct interval {
+ #include "mbyte.c.generated.h"
  // uncrustify:on
  
 +#include "wcwidth9.h"
@@ -151,7 +151,16 @@ index add650e7a9..57551f5c58 100644
  static const char e_list_item_nr_is_not_list[]
    = N_("E1109: List item %d is not a List");
  static const char e_list_item_nr_does_not_contain_3_numbers[]
-@@ -460,30 +462,18 @@ int utf_char2cells(int c)
+@@ -450,38 +452,25 @@ static bool prop_is_emojilike(const utf8proc_property_t *prop)
+ /// For UTF-8 character "c" return 2 for a double-width character, 1 for others.
+ /// Returns 4 or 6 for an unprintable character.
+ /// Is only correct for characters >= 0x80.
+-/// When p_ambw is "double", return 2 for a character with East Asian Width
+-/// class 'A'(mbiguous).
++/// Widths for characters >= 0x100 are taken from wcwidth9.
+ int utf_char2cells(int c)
+ {
+   if (c < 0x80) {
      return 1;
    }
  
@@ -191,7 +200,7 @@ index add650e7a9..57551f5c58 100644
    }
  
    return 1;
-@@ -1343,26 +1333,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
+@@ -1341,26 +1330,6 @@ int utf_class_tab(const int c, const uint64_t *const chartab)
    return 2;
  }
  
@@ -219,13 +228,35 @@ index add650e7a9..57551f5c58 100644
  // full case folding.
  int utf_fold(int a)
 diff --git a/src/nvim/tui/tui.c b/src/nvim/tui/tui.c
-index 440747be76..a29a050b33 100644
+index 96f6494ffd..0e87e78c1f 100644
 --- a/src/nvim/tui/tui.c
 +++ b/src/nvim/tui/tui.c
-@@ -1045,11 +1045,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -659,7 +659,6 @@ static void terminfo_disable(TUIData *tui)
+   terminfo_out(tui, kTerm_exit_attribute_mode);
+   // Reset cursor to normal before exiting alternate screen.
+   terminfo_out(tui, kTerm_cursor_normal);
+-  terminfo_out(tui, kTerm_reset_cursor_style);
+   terminfo_out(tui, kTerm_keypad_local);
+ 
+   // Reset the key encoding
+@@ -1229,10 +1228,10 @@ static void print_spaces(TUIData *tui, int width)
+ }
+ 
+ /// Move cursor to the position given by `row` and `col` and print the char in `cell`.
+-/// Allows grid and host terminal to assume different widths of ambiguous-width chars.
++/// Allows grid and host terminal to assume different widths for double-width cells.
+ ///
+ /// @param is_doublewidth  whether the char is double-width on the grid.
+-///                        If true and the char is ambiguous-width, clear two cells.
++///                        If true, clear two cells before printing.
+ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool is_doublewidth)
+ {
+   UGrid *grid = &tui->grid;
+@@ -1246,12 +1245,7 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+ 
    char buf[MAX_SCHAR_SIZE];
    schar_get(buf, cell->data);
-   int c = utf_ptr2char(buf);
+-  int c = utf_ptr2char(buf);
 -  bool is_ambiwidth = utf_ambiguous_width(buf);
 -  if (is_doublewidth && (is_ambiwidth || utf_char2cells(c) == 1)) {
 -    // If the server used setcellwidths() to treat a single-width char as double-width,
@@ -235,7 +266,7 @@ index 440747be76..a29a050b33 100644
      // Clear the two screen cells.
      // If the char is single-width in host terminal it won't change the second cell.
      update_attrs(tui, cell->attr);
-@@ -1058,11 +1054,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
+@@ -1260,11 +1254,6 @@ static void print_cell_at_pos(TUIData *tui, int row, int col, UCell *cell, bool
    }
  
    print_cell(tui, buf, cell->attr);
